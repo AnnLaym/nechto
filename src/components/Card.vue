@@ -1,0 +1,41 @@
+<template>
+    <div class="card">
+        <div class="kartinka">
+            <div class="name">{{ getCardName(card.id)}}</div>
+            <div class="opisanie">{{  getCardDescription(card.id) }}</div>
+        </div>
+    </div>
+</template>
+
+<script lang="ts" setup>
+import { getCardName, getKnopkaName, getCardDescription } from '../log';
+import { Card, useNechtoService, useNechtoState } from '../service';
+
+const service = useNechtoService()
+const state = useNechtoState()
+
+defineProps<{
+    card: Card
+    selected?: boolean
+}>()
+</script>
+ 
+<style scoped>
+.kartinka{
+    background-image: url(./cards/1.png);
+    background-size: cover;
+    flex: 1;
+}
+.name {
+    font-size: 20px;
+}
+.opisanie {
+    font-size: 16px;
+}
+.card {
+    background-color: black;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+}
+</style>

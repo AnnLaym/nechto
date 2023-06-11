@@ -1,0 +1,4 @@
+.dark-theme .panel {
+    box-shadow: none;
+    background-color: var(--surface-card) !important;
+}

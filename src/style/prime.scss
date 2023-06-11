@@ -1,0 +1,22 @@
+@import './generated/theme.css';
+@import './primeflex.css';
+@import 'primevue/resources/primevue.min.css';
+@import 'primeicons/primeicons.css';
+
+.pre-wrap {
+    white-space: pre-wrap;
+}
+
+:root {
+    font-family: unset;
+    line-height: unset;
+    -webkit-font-smoothing: unset;
+}
+
+a {
+    text-decoration: underline;
+}
+
+a:hover {
+    color: unset;
+}

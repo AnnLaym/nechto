@@ -1,0 +1,34 @@
+{
+  "name": "timeline",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "main": "module.cjs",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview"
+  },
+  "postinstall": "npm run build",
+  "dependencies": {
+    "vue": "^3.2.47",
+    "randomcolor": "0.5.3",
+    "nedb-promises": "^6.0.3",
+    "primeflex": "^3.3.0",
+    "primeicons": "^6.0.1",
+    "primevue": "^3.27.0",
+    "sass": "^1.61.0",
+    "ws-server-engine": "file:../ws-server-engine",
+    "@vite/vitejs-client": "^2.2.10"
+  },
+  "files": [
+    "module.js",
+    "public"
+  ],
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.1.0",
+    "typescript": "^4.9.3",
+    "vite": "^4.2.0",
+    "vue-tsc": "^1.2.0"
+  }
+}
