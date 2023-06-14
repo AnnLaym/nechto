@@ -44,7 +44,7 @@ interface NechtoState {
     dveri: Slot[];
     showAllHand?: Card[];
     allReadyNedeed: boolean;
-    gameLog: { action?: string; card?: Card; actors?: User[] };
+    gameLog: { action?: string; card?: Card; actors?: User[]; panika?: boolean }[];
     smallTimer: number;
     bigTimer: number;
     isObmenReady: boolean;
@@ -87,8 +87,10 @@ export function createNechtoService() {
         giveHost: (target: User) => socket.emit("give-host", target),
         setRoomMode: () => socket.emit('set-room-mode', false),
         vilojitCartuNaObmen: (index: number | null) => socket.emit('vilojit-kartu-na-obmen', index),
+        startWithNechto: () => socket.emit('start-with-nechto'),
         selectedCard: ref<number | null>(null),
-        selectedTarget: ref<Slot | null>(null)
+        selectedTarget: ref<Slot | null>(null),
+        changeName: (name: string) => socket.emit('change-name', name)
     };
 }
 
@@ -117,19 +119,19 @@ function maintainState() {
             };
         });
         watch(nechtoState, (state, prevState) => {
-            if(nechtoService?.selectedCard.value !== null){
-                if(prevState.target === prevState.userSlot && state.target !== state.userSlot){
+            if (nechtoService?.selectedCard.value !== null) {
+                if (prevState.target === prevState.userSlot && state.target !== state.userSlot) {
                     nechtoService?.selectedCard.value == null
                 }
-                if(prevState.currentPlayer === prevState.userSlot && state.currentPlayer !== state.userSlot){
+                if (prevState.currentPlayer === prevState.userSlot && state.currentPlayer !== state.userSlot) {
                     nechtoService?.selectedCard.value == null
                 }
             }
-            if(nechtoService?.selectedTarget.value !== null){
-                if(prevState.target === prevState.userSlot && state.target !== state.userSlot){
+            if (nechtoService?.selectedTarget.value !== null) {
+                if (prevState.target === prevState.userSlot && state.target !== state.userSlot) {
                     nechtoService?.selectedTarget.value == null
                 }
-                if(prevState.currentPlayer === prevState.userSlot && state.currentPlayer !== state.userSlot){
+                if (prevState.currentPlayer === prevState.userSlot && state.currentPlayer !== state.userSlot) {
                     nechtoService?.selectedTarget.value == null
                 }
             }

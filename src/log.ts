@@ -1,15 +1,26 @@
 import { CardId } from "./service";
-const lang = "ru"
+const lang = "ua"
 
 export function getCardName(cardId: CardId) {
     return cardsData[cardId]?.title[lang] ?? cardId
 }
+
 export function getCardDescription(cardId: CardId) {
     return cardsData[cardId]?.desciption[lang] ?? ""
 }
+
 export function getKnopkaName(KnopkaId: keyof typeof knopki) {
     return knopki[KnopkaId]?.title[lang] ?? KnopkaId
 }
+
+export function getCardLog(cardId: CardId) {
+    return cardsData[cardId]?.log[lang] ?? cardId
+}
+
+export function getActionLog(action: keyof typeof actionsData) {
+    return actionsData[action]?.log[lang] ?? action
+}
+
 
 type PartialRecord<K extends keyof any, T> = {
     [P in K]?: T;
@@ -46,8 +57,8 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
     analiz: {
         log: {
             ru: "проверяет",
-            ua: "",
-            en: "",
+            ua: "перевіряє",
+            en: "checks",
         },
         title: {
             ru: "Анализ",
@@ -81,7 +92,7 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
         log: {
             ru: "смотрит карту",
             ua: "дивиться карту",
-            en: "",
+            en: "checks cards",
         },
         title: {
             ru: "Подозрение",
@@ -164,9 +175,9 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
     },
     smaivayUdochki: {
         log: {
-            ru: "",
-            ua: "",
-            en: "",
+            ru: "меняется местами с",
+            ua: "міняється місцями з",
+            en: "swaps with",
         },
         title: {
             ru: "Сматый удочки!",
@@ -174,16 +185,16 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "You'd better run!",
         },
         desciption: {
-            ru: "",
-            ua: "",
-            en: "",
+            ru: "Поменяйтесь местами с любым игроком  по вашему выбору, если он не на карантине. Все заколоченные двери игнорируйте.",
+            ua: "Поміняйтеся з місцями з будь-яким гравцем на ваш вибір, якщо він не на карантині. Усі забиті двері ігноруйте.",
+            en: "Swap places with any player of your choice, as long as they are not in quarantine. Ignore all boarded up doors.",
         }
     },
     soblazn: {
         log: {
-            ru: "",
-            ua: "",
-            en: "",
+            ru: "обменивается картой с",
+            ua: "обмінюється карткою з",
+            en: "exchange card with",
         },
         title: {
             ru: "Соблазн",
@@ -191,16 +202,16 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "Seduction",
         },
         desciption: {
-            ru: "",
-            ua: "",
-            en: "",
+            ru: "Поменяйтесь одной картой с любым игроком по вашему выбору, если он не на карантине. Ваш ход заканчивается. ",
+            ua: "Поміняйтеся однією карткою з будь-яким гравцем на ваш вибір, якщо він не на карантині. Ваш хід закінчується.",
+            en: "Trade one card with any player of your choice, unless they are in quarantine. Your turn ends.",
         }
     },
     strah: {
         log: {
-            ru: "",
-            ua: "",
-            en: "",
+            ru: "не обменивается",
+            ua: "не обмінюється",
+            en: "not exchanged",
         },
         title: {
             ru: "Страх",
@@ -208,16 +219,16 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "Scary",
         },
         desciption: {
-            ru: "",
-            ua: "",
-            en: "",
+            ru: "Откажитесь от обмена и осмотрите карту, от которой отказались. Возьмите 1 карту событий.",
+            ua: "Відмовтеся від обміну та огляньте карту, від якої відмовилися. Візьміть 1 картку подій.",
+            en: "Refuse the exchange and inspect the card that was refused. Draw 1 card.",
         }
     },
     mneIZdesNePloha: {
         log: {
-            ru: "",
-            ua: "",
-            en: "",
+            ru: "не меняет место",
+            ua: "не змінює місце",
+            en: "does not change place",
         },
         title: {
             ru: "Мне и здесь не плохо",
@@ -225,16 +236,16 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "I'm comfortable",
         },
         desciption: {
-            ru: "",
-            ua: "",
-            en: "",
+            ru: "Отмените эффект карты 'меняемся местами!' или 'Сматывай удочки', если стали ее целью. Возьмите 1 карту события",
+            ua: "Скасуйте ефект карти 'Міняємось місцями!' або 'Краще біжи!', якщо стали її метою. Візьміть 1 картку події",
+            en: "Cancel the 'Change places!' card effect or 'You'd better run!' if that's her target. Draw 1 event card",
         }
     },
     netUjSpasibo: {
         log: {
-            ru: "",
-            ua: "",
-            en: "",
+            ru: "не обменивается",
+            ua: "не обмінюється",
+            en: "not exchanged",
         },
         title: {
             ru: "Нет уж спасибо!",
@@ -242,16 +253,16 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "No thanks!",
         },
         desciption: {
-            ru: "",
-            ua: "",
-            en: "",
+            ru: "Откажитесь от обмена картами. Возьмите 1 карту событий.",
+            ua: "Відмовтеся від обміну картами. Візьміть 1 карту подій",
+            en: "Stop exchanging cards. Draw 1 card",
         }
     },
     mimo: {
         log: {
-            ru: "",
-            ua: "",
-            en: "",
+            ru: "не обменивается",
+            ua: "не обмінюється",
+            en: "not exchanged",
         },
         title: {
             ru: "Мимо!",
@@ -259,16 +270,16 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "Missed!",
         },
         desciption: {
-            ru: "",
-            ua: "",
-            en: "",
+            ru: "Откажитесь от обмена картами. Вместо вас картами меняется следующий за ваи игрок. Возьмите 1 карту события.",
+            ua: "Відмовтеся від обміну картами. Замість вас картами змінюється наступний за ваш гравець. Візьміть 1 картку події.",
+            en: "Stop exchanging cards. Instead of you, the next player behind you changes cards. Draw 1 card.",
         }
     },
     nikakogoShahlika: {
         log: {
-            ru: "",
-            ua: "",
-            en: "",
+            ru: "выживает",
+            ua: "виживає",
+            en: "survives",
         },
         title: {
             ru: "Никакого шашлыка!",
@@ -276,16 +287,16 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "No barbecue!",
         },
         desciption: {
-            ru: "",
-            ua: "",
-            en: "",
+            ru: "Отмените эффект карты 'Огнемет', если вы стали ее целью. Возьмите 1 карту события. ",
+            ua: "Скасуйте ефект карти 'Вогнемет', якщо ви стали її метою. Візьміть 1 картку події",
+            en: "Cancel the effect of 'Flamethrower' if you are targeted by it. Draw 1 card",
         }
     },
     karantin: {
         log: {
-            ru: "",
-            ua: "",
-            en: "",
+            ru: "сажает на карантин",
+            ua: "садить на карантин",
+            en: "puts in quarantine",
         },
         title: {
             ru: "Карантин",
@@ -293,16 +304,16 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "Quarantine",
         },
         desciption: {
-            ru: "",
-            ua: "",
-            en: "",
+            ru: "Сыграйте эту карту на себя или соседнего игрока. Следующие 2 своих хода игрок на карантине не может меняться картами, играть карты событий или становится целью таких карт.",
+            ua: "Зіграйте цю карту на себе або сусіднього гравця. Наступні 2 своїх ходи гравець на карантині не може змінюватися картами, грати карти подій або стає метою таких карт.",
+            en: "Play this card on yourself or an adjacent player. For the next 2 of their turns, the quarantined player cannot swap cards, play event cards, or become the target of such cards.",
         }
     },
     zakolchennayDver: {
         log: {
-            ru: "",
-            ua: "",
-            en: "",
+            ru: "закрывается от",
+            ua: "зачиняється від",
+            en: "closes from",
         },
         title: {
             ru: "Заколоченная дверь",
@@ -310,9 +321,9 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "Barred door",
         },
         desciption: {
-            ru: "",
-            ua: "",
-            en: "",
+            ru: "Положите эту карту между собой и соседним игроком. Между вами не может совершаться никаких действий и обменов",
+            ua: "Покладіть цю карту між собою та сусіднім гравцем. Між вами не може відбуватися жодних дій та обмінів",
+            en: "Place this card between you and an adjacent player. No actions or exchanges can take place between you",
         }
     },
 
@@ -321,37 +332,37 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
 const actionsData: Record<string, ActionMetaData> = {
     'drop-card': {
         log: {
-            ru: "",
+            ru: "сбрасывает карту",
             ua: "",
-            en: "",
+            en: "discards",
         },
     },
     'grab-card': {
         log: {
-            ru: "",
-            ua: "",
-            en: "",
+            ru: "берет карту",
+            ua: "тягне карту",
+            en: "grabs card",
         },
     },
     'obmen': {
         log: {
-            ru: "",
-            ua: "",
-            en: "",
+            ru: "обменивается с",
+            ua: "обмінюється з",
+            en: "exchanges with",
         },
     },
     'start-game': {
         log: {
-            ru: "",
-            ua: "",
-            en: "",
+            ru: "Старт игры",
+            ua: "Початок гри",
+            en: "Game start",
         },
     },
     'end-game': {
         log: {
-            ru: "",
-            ua: "",
-            en: "",
+            ru: "Конец игры",
+            ua: "Кінець гри",
+            en: "End game",
         }
     },
 }
@@ -379,9 +390,9 @@ const knopki = {
     },
     sigratCartu: {
         title: {
-            ru: "взять карту",
-            ua: "тягнути карту",
-            en: "grab card",
+            ru: "сыграть карту",
+            ua: "зіграти карту",
+            en: "play card",
         },
     },
     skinutCartu:{
@@ -396,6 +407,13 @@ const knopki = {
             ru: "ок",
             ua: "ок",
             en: "ok",
+        },
+    },
+    sest:{
+        title: {
+            ru: "сесть",
+            ua: "сісти",
+            en: "join",
         },
     }
 

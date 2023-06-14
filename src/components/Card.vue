@@ -1,5 +1,5 @@
 <template>
-    <div class="card">
+    <div class="card" :class="{selectedCard: selected}">
         <div class="kartinka">
             <div class="name">{{ getCardName(card.id)}}</div>
             <div class="opisanie">{{  getCardDescription(card.id) }}</div>
@@ -25,6 +25,9 @@ defineProps<{
     background-image: url(./cards/1.png);
     background-size: cover;
     flex: 1;
+}
+.selectedCard{
+    
 }
 .name {
     font-size: 20px;

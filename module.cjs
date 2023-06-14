@@ -23,7 +23,7 @@ function init(wsServer, path) {
                 ...this.room,
                 inited: true,
                 hostId: hostId,
-                playerSlots: Array(11).fill(null),
+                playerSlots: Array(12).fill(null),
                 playerNames: {},
                 onlinePlayers: new JSONSet(),
                 spectators: new JSONSet(),
@@ -175,7 +175,7 @@ function init(wsServer, path) {
                             if (player !== null) {
                                 state.playerHand[slot] = state.deck.splice(0, 4);
                             } else {
-                                delete state.playerHand[slot] //FIXME: wtf nulls
+                                delete state.playerHand[slot]
                             }
                         });
                         startRound();
@@ -411,11 +411,13 @@ function init(wsServer, path) {
                     room.phase = 2; // разыгрывание карты или паники
                     if (room.karantin[room.currentPlayer])
                         room.karantin[room.currentPlayer]--
+                    room.gameLog.push({ action: 'grab-card', actors: [room.playerSlots[room.currentPlayer]] })
                     const card = state.deck.shift();
                     if (card.type == 'panika') {
                         room.currentPanika = card;
                         room.allReadyNedeed = card.allReady;
                         room.action = card.id;
+                        room.gameLog.push({ card: card, panika: true })
                     } else {
                         state.playerHand[room.currentPlayer].push(card)
                         if (card.type == 'nechto') {
@@ -461,6 +463,14 @@ function init(wsServer, path) {
                 endGame = () => {
                     room.currentPlayer = null;
                     room.phase = 0;
+                    room.teamsLocked = false;
+                    room.currentPanika = null;
+                    room.action = null;
+                    room.target = null;
+                    room.isObmenReady = false;
+                    state.nechto = null;
+                    state.zarajennie = [];
+                    state.uporstvoCards = {};
                     room.gameLog.push({ action: 'end-game' })
                     update();
                     updateState();
@@ -516,7 +526,7 @@ function init(wsServer, path) {
                 chekDropCard = (slot, index) => {
                     const card = state.playerHand[slot][index];
                     const zarajenieRuki = state.playerHand[slot].filter(card => card.id === 'zarajenie').length
-                    if (card.giveAble === false) return false
+                    if (card.id === 'nechto') return false
                     else if (!state.zarajennie.includes(slot) || zarajenieRuki >= 2) return true
                 },
                 obmenChekZarajeniy = (slot, index) => {
@@ -562,16 +572,20 @@ function init(wsServer, path) {
                     if (room.currentPlayer === slot && room.phase === 1)
                         grabCard()
                     reshuffle()
-                    room.gameLog.push({ action: 'grab-card', actors: [room.playerSlots[room.currentPlayer]] })
+                    update()
+                    updateState()
                 },
                 "drop-card": (slot, index) => {
                     if (room.currentPlayer === slot && room.phase === 2 && room.action === null && index >= 0 && index <= 4) {
                         if (chekDropCard(slot, index)) {
                             state.discard.push(state.playerHand[slot].splice(index, 1));
-                            room.gameLog.push({ action: 'drop-card', actors: [room.playerSlotsroom.currentPlayer] })
+                            room.gameLog.push({ action: 'drop-card', actors: [room.playerSlots][room.currentPlayer] })
                             startObmen()
                         }
+                        update()
+                        updateState()
                     }
+
                 },
                 "play-card": (slot, index, target) => {
                     if ((room.phase === 2 || room.action) && room.currentPlayer == slot && room.action === null && index >= 0 && index <= 4) {
@@ -581,7 +595,7 @@ function init(wsServer, path) {
                             state.playerHand[slot].splice(index, 1);
                         }
                         const logs = () => {
-                            room.gameLog.push({ card: card.id, actors: [room.playerSlots[room.currentPlayer], target ? room.playerSlots[room.target] : null] })
+                            room.gameLog.push({ card: card, actors: [room.playerSlots[room.currentPlayer], room.target ? room.playerSlots[room.target] : null] })
                         }
                         const nextPlayer = getNextPlayer(room.invertDirection), prevPLayer = getNextPlayer(!room.invertDirection);
                         if (!room.karantin[slot]) {
@@ -692,7 +706,7 @@ function init(wsServer, path) {
                             grabNewCard(room.target)
                         };
                         const logsOne = () => {
-                            room.gameLog.push({ card: card.id, actors: room.playerSlots[room.target] })
+                            room.gameLog.push({ card: card, actors: room.playerSlots[room.target] })
                         };
                         const dieLog = () => {
                             room.gameLog.push({ actors: room.playerSlots[room.target] })
@@ -735,11 +749,11 @@ function init(wsServer, path) {
                             }
                             if (nechtoIndex === index) {
                                 state.nechto = slot
-                                state.playerHand[slot].push(state.uporstvoCards.splice(index, 1))
+                                state.playerHand[slot].push(...state.uporstvoCards.splice(index, 1))
                                 state.discard.push(...state.uporstvoCards)
                             }
                             state.showCard = {}
-                            room.gameLog.push({ card: card.id, actors: room.playerSlots[room.currentPlaye] })
+                            room.gameLog.push({ card: card, actors: room.playerSlots[room.currentPlaye] })
                             isDead(slot)
                             startTimer()
                             update()
@@ -858,6 +872,10 @@ function init(wsServer, path) {
                         update();
                         updatePlayerState()
                     }
+                },
+                "start-with-nechto": (user) => {
+                    if (room.hostId === user)
+                        room.startWithNechto = !room.startWithNechto
                 },
                 "spectators-join": (user) => {
                     if (!room.teamsLocked && ~room.playerSlots.indexOf(user)) {

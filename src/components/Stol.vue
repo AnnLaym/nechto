@@ -49,49 +49,49 @@ const activeSlots = computed(() => {
         return {
             top: slots.splice(0, 2),
             right: slots.splice(0, 1),
-            bottom: slots.splice(0, 2),
+            bottom: slots.splice(0, 2).reverse(),
             left: slots.splice(0, 1),
         }
     } else if (slots.length === 7) {
         return {
             top: slots.splice(0, 3),
             right: slots.splice(0, 1),
-            bottom: slots.splice(0, 2),
+            bottom: slots.splice(0, 2).reverse(),
             left: slots.splice(0, 1),
         }
     } else if (slots.length === 8) {
         return {
             top: slots.splice(0, 3),
             right: slots.splice(0, 1),
-            bottom: slots.splice(0, 3),
+            bottom: slots.splice(0, 3).reverse(),
             left: slots.splice(0, 1),
         }
     } else if (slots.length === 9) {
         return {
             top: slots.splice(0, 4),
             right: slots.splice(0, 1),
-            bottom: slots.splice(0, 3),
+            bottom: slots.splice(0, 3).reverse(),
             left: slots.splice(0, 1),
         }
     } else if (slots.length === 10) {
         return {
             top: slots.splice(0, 4),
             right: slots.splice(0, 1),
-            bottom: slots.splice(0, 4),
+            bottom: slots.splice(0, 4).reverse(),
             left: slots.splice(0, 1),
         }
     } else if (slots.length === 11) {
         return {
             top: slots.splice(0, 5),
             right: slots.splice(0, 1),
-            bottom: slots.splice(0, 4),
+            bottom: slots.splice(0, 4).reverse(),
             left: slots.splice(0, 1),
         }
     } else {
         return {
             top: slots.splice(0, 5),
             right: slots.splice(0, 1),
-            bottom: slots.splice(0, 5),
+            bottom: slots.splice(0, 5).reverse(),
             left: slots.splice(0, 1),
         }
     }

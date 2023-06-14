@@ -1,17 +1,20 @@
 <template>
-    <div class="chel">
-        <div>
-            <div v-if="state.playerSlots[slot] === null && state.phase === 0" @click="service.playersJoin(slot)">сесть
-            </div>
+    <div class="chel" :class="`slot-color-${slot}`">
+        <div v-if="state.currentPlayer === slot" class="backgroundJ" />
+        <div class="roditel">
+            <div v-if="state.playerSlots[slot] === null &&
+                (state.phase === 0 || !state.teamsLocked)" @click="service.playersJoin(slot)">
+                {{ getKnopkaName('sest') }}</div>
             <div v-else @click="slotClick(slot)">
-                <span v-if="state.currentPlayer === slot">чичас играет:</span>
                 <span v-if="service.selectedTarget.value === slot && state.phase === 2">на него:</span>
-
                 {{ state.playerSlots[slot] ? state.playerNames[state.playerSlots[slot]!] : "" }}
+                <div class="host-cntrols">
+                    <div @click="service.removePLayer(state.userId)">kick</div>
+                    <div @click="handleClickChangeName()">imya</div>
+                </div>
             </div>
         </div>
         <img src="./avatars/1.png" class="kartinka">
-        <div></div>
     </div>
 </template>
 
@@ -28,27 +31,98 @@ function slotClick(index: number) {
         service.selectedTarget.value = service.selectedTarget.value !== index ? index : null
 }
 
+function handleClickChangeName() {
+    (window as any).popup.prompt(
+        { content: "New name", value: state.value.playerNames[state.value.userId] || "" }, (evt: any) => {
+            if (evt.proceed && evt.input_value.trim()) {
+                service.changeName(evt.input_value.trim())
+                localStorage.userName = evt.input_value.trim();
+            }
+        });
+}
+
 defineProps<{
     slot: Slot
 }>()
-
-
 
 </script>
 
 <style scoped>
 .kartinka {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     padding: 4px;
     border-radius: 27px;
 }
 
+.host-cntrols {
+    display: none;
+}
+
+.roditel:hover .host-cntrols {
+    display: block;
+
+}
+
 .chel {
-    background-color: #617777;
     border-radius: 31px;
     overflow: hidden;
-    background: linear-gradient(180deg, #653E29 0%, rgba(101, 62, 41, 0) 100%);
     border-radius: 36px;
+    position: relative;
+    overflow: visible;
+}
+
+.backgroundJ {
+    width: 90%;
+    position: absolute;
+    height: 90%;
+}
+
+.slot-color-1 {
+    background: linear-gradient(180deg, #7A3434 0%, rgba(122, 52, 52, 0) 100%);
+}
+
+.slot-color-2 {
+    background: linear-gradient(180deg, #653E29 0%, rgba(101, 62, 41, 0) 100%);
+}
+
+.slot-color-3 {
+    background: linear-gradient(180deg, #C48144 0%, rgba(196, 129, 68, 0) 100%);
+}
+
+.slot-color-4 {
+    background: linear-gradient(180deg, #D5C74A 0%, rgba(132, 126, 79, 0) 100%);
+}
+
+.slot-color-5 {
+    background: linear-gradient(180deg, #769D70 0%, rgba(118, 157, 112, 0) 100%)
+}
+
+.slot-color-6 {
+    background: linear-gradient(180deg, #29572B 0%, rgba(41, 87, 43, 0) 100%)
+}
+
+.slot-color-7 {
+    background: linear-gradient(180deg, #2D6E72 0%, rgba(45, 110, 114, 0) 100%);
+}
+
+.slot-color-8 {
+    background: linear-gradient(180deg, #898989 0%, rgba(137, 137, 137, 0) 100%);
+}
+
+.slot-color-9 {
+    background: linear-gradient(180deg, #2C3E7C 0%, rgba(44, 62, 124, 0) 100%);
+}
+
+.slot-color-10 {
+    background: linear-gradient(180deg, #543B89 0%, rgba(84, 59, 137, 0) 100%);
+}
+
+.slot-color-11 {
+    background: linear-gradient(180deg, #984B67 0%, rgba(152, 75, 103, 0) 100%);
+}
+
+.slot-color-0 {
+    background: linear-gradient(180deg, #D58787 0%, rgba(213, 135, 135, 0) 100%);
 }
 </style>

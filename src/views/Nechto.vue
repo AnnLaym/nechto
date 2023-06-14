@@ -1,8 +1,8 @@
 <template>
     <div>
         <DashMenu :bottom-buttons="bottomButtons" :number-settings="numberSettings" />
-        <Log />
         <Stol />
+        <Log />
         <Hand />
     </div>
 </template>
@@ -43,6 +43,24 @@ const bottomButtons = computed<DashMenuButton[]>(() => {
                 service.startGame();
             },
         },
+        {
+            icon: 'stop_circle',
+            onClick: () => {
+                service.abortGame();
+            }
+        },
+        {
+            icon: 'person',
+            onClick: () => {
+                service.startWithNechto();
+            }
+        },
+        {
+            icon: 'lock',
+            onClick: () => {
+                service.toggleLock();
+            }
+        }
     ];
 });
 
@@ -60,11 +78,12 @@ const numberSettings: DashMenuNumberSetting[] = [
 
 <style>
 body.dark-theme {
-    background-color: #161816 !important;;
+    background-color: #161816 !important;
+    ;
     color: var(--text-color);
     padding-top: 10px;
     place-items: start;
-    background: url(../components/fon.png);
+    background: url(../components/img/fon.png);
     background-size: contain;
     background-repeat: no-repeat;
 }
