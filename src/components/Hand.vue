@@ -1,18 +1,18 @@
 <template>
     <div>
-        <div class="knopki">
-            <div v-if="service.selectedCard.value !== null && state.phase == 2 &&
-                !state.currentPanika && state.userSlot === state.currentPlayer">
-                <div @click="playCardClick()"> {{ getKnopkaName('sigratCartu') }} </div>
-            </div>
-            <div
-                v-if="state.phase == 2 && state.currentPlayer == state.userSlot && !state.currentPanika && service.selectedCard.value !== null">
-                <div @click="dropCardClick()"> {{ getKnopkaName('skinutCartu') }} </div>
-            </div>
-        </div>
         <div class="ruka">
             <div v-for="(card, index) in state.cards" @click="cardClick(index)">
-                <Card :card="card" :selected="service.selectedCard.value == index"/>
+                <div v-if="service.selectedCard.value == index">
+                    <div v-if="service.selectedCard.value !== null && state.phase == 2 &&
+                        !state.currentPanika && state.userSlot === state.currentPlayer" class="knopki">
+                        <div @click="playCardClick()"> {{ getKnopkaName('sigratCartu') }} </div>
+                    </div>
+                    <div v-if="state.phase == 2 && state.currentPlayer == state.userSlot && !state.currentPanika
+                        && service.selectedCard.value !== null" class="knopki">
+                        <div @click="dropCardClick()"> {{ getKnopkaName('skinutCartu') }} </div>
+                    </div>
+                </div>
+                <Card :card="card" :selected="service.selectedCard.value == index" />
             </div>
         </div>
     </div>
@@ -58,11 +58,13 @@ function dropCardClick() {
     left: 0px;
     margin-bottom: 30px;
 }
-.knopki{
+
+.knopki {
     display: flex;
     justify-content: center;
     gap: 20px;
 }
+
 .selected {
     height: 1px;
 }

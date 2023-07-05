@@ -1,6 +1,7 @@
 <template>
     <div>
         <DashMenu :bottom-buttons="bottomButtons" :number-settings="numberSettings" />
+        <SPECTATORSI />
         <Stol />
         <Log />
         <Hand />
@@ -15,6 +16,7 @@ import { useNechtoService, useNechtoState } from '../service';
 import Stol from '../components/Stol.vue';
 import Hand from '../components/Hand.vue';
 import Log from '../components/Log.vue';
+import SPECTATORSI from '../components/SPECTATORSI.vue';
 
 defineProps();
 

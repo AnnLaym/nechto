@@ -7,7 +7,7 @@
                     <div>Deck: {{ state.deckSize }}</div>
                 </div>
                 <div>
-                    <img src="./cards/3.png" class="deka">
+                    <img src="./cards/4.png" class="deka">
                     <div>Diskard: {{ state.discardSize }}</div>
                 </div>
             </div>
@@ -16,8 +16,8 @@
         <div v-if="state.currentPanika">
             <div> panika: {{ getCardName(state.currentPanika.id) }}</div>
         </div>
-        <div> {{  state.time }}</div>
-        <div v-if="state.phase === 1 && state.currentPlayer === state.userSlot" @click="service.grabCard()">
+        <div> {{ state.time }}</div>
+        <div v-if="state.phase === 1 && state.currentPlayer === state.userSlot" @click="service.grabCard()" class="knopka">
             {{ getKnopkaName('vzyatKartu') }}
         </div>
         <div v-if="(state.phase === 2 || state.phase === 3) && state.target === state.userSlot"
@@ -25,7 +25,7 @@
             {{ getKnopkaName("sigrat") }}</div>
         <div v-if="state.phase === 2 && state.target === state.userSlot" @click="service.resolvePassActin()">
             скип нахуй</div>
-        <div v-if="state.phase === 3 && state.currentPlayer === state.userSlot"
+        <div v-if="state.phase === 3 && state.currentPlayer === state.userSlot && !state.isObmenReady"
             @click="service.vilojitCartuNaObmen(service.selectedCard.value)">
             {{ getKnopkaName('polojitKartuNaObmen') }}</div>
         <div v-if="state.phase === 3 && state.target === state.userSlot && state.isObmenReady"
@@ -36,15 +36,14 @@
         </div>
         <div>
             <div v-if="state.chekCards?.length" class="uporstvo">
-                <div v-for="card, index in state.chekCards">
-                    <div @click="uporstvoClick(index)">
-                        {{ card.id }}
-                    </div>
-                    <Card :card="card" :selected="false" class="jopa"/>
+                <div v-for="card, index in state.chekCards" @click="uporstvoClick(index)">
+                    <Card :card="card" :selected="false" class="jopa" />
                 </div>
             </div>
-            <div v-if="state.showAllHand?.length !== 0">
-                showcard:{{ state.showAllHand }}
+            <div v-if="state.showAllHand?.length !== 0" class="uporstvo">
+                <div v-for="card, index in state.showAllHand">
+                    <Card :card="card"/>
+                </div>
             </div>
             <div> phase:{{ state.phase }} </div>
 
@@ -74,17 +73,27 @@ function uporstvoClick(index: number) {
 <style scoped>
 .stol {
     width: 750px;
-    background-image: url(./img/stol.png);
+    background-image: url(./img/stol69.png);
     height: 400px;
     padding: 10px;
     border-radius: 100px;
     background-size: cover;
     flex: 1;
 }
+
+.knopka {
+    background-color: rgb(103, 228, 105);
+    color: black;
+    border: 1px;
+    width: 140px;
+    height: 35px;
+}
+
 .jopa {
     height: 100px;
     width: 100px;
 }
+
 .deki {
     padding: 20px;
     display: flex;

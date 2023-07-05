@@ -81,21 +81,25 @@ function init(wsServer, path) {
                     if (room.phase === 0) {
                         send(user, "player-state", {
                             nechto: state.nechto, zarajennie: state.zarajennie,
-                            cards: state.playerHand[slot],
+                            cards: null, chekCards: null
                         });
                     } else if (room.playerSlots.includes(user)) {
                         if (state.nechto === slot)
                             send(user, "player-state", {
                                 nechto: state.nechto, zarajennie: state.zarajennie,
-                                cards: state.playerHand[slot], chekCards: state.showCard[slot]
+                                cards: state.playerHand[slot] ? state.playerHand[slot] : null,
+                                chekCards: state.showCard[slot] ? state.showCard[slot] : null
                             });
                         else if (state.zarajennie.includes(slot))
                             send(user, "player-state", {
-                                cards: state.playerHand[slot], nechto: state.nechto, chekCards: state.showCard[slot], zarajennie: [slot]
+                                cards: state.playerHand[slot], nechto: state.nechto,
+                                chekCards: state.showCard[slot] ? state.showCard[slot] : null,
+                                zarajennie: [slot]
                             });
                         else
                             send(user, "player-state", {
-                                cards: state.playerHand[slot], chekCards: state.showCard[slot]
+                                cards: state.playerHand[slot],
+                                chekCards: state.showCard[slot] ? state.showCard[slot] : null
                             });
                     } else {
                         send(user, "player-state", {});
@@ -232,7 +236,7 @@ function init(wsServer, path) {
                             return state.playerHand[slot].indexOf(shuffleArray(cards)[0])
                         } else {
                             const cards = state.playerHand[slot].filter(i => i.id !== 'nechto' && i.id !== 'zarajenie')
-                            return state.playerHand[slot].indexOf(shuffleArray(cards)[0])
+                            return state.playerHand[slot].indexOf(shuffleArray(cards)[0]);
                         }
                     }
                     if (room.phase === 1) {
@@ -241,6 +245,7 @@ function init(wsServer, path) {
                     if (room.phase === 3) {
                         if (!state.obmenCardIndex) {
                             room.obmenCardIndex = getRandomObmenCard(room.currentPlayer)
+                            startTimer()
                         }
                         if (state.obmenCardIndex) {
                             obmenProcces(getRandomObmenCard(room.target))
@@ -248,8 +253,10 @@ function init(wsServer, path) {
                         }
                     };
                     if (room.action) {
+                        const logi = (chel, act) => room.gameLog.push({ actors: chel, result: act })
                         if (room.action === 'ognemet') {
                             playerKill(room.target)
+                            logi(room.currentPlayer)
                             startObmen()
                         } else if (room.action === 'soblazn') {
                             obmenProcces(getRandomObmenCard(room.target))
@@ -272,7 +279,6 @@ function init(wsServer, path) {
                             Object.Keys(state.playerHand).forEach(slot => {
                                 if (!room.readyPlayers[slot]) {
                                     state.tsepnayaReaksiaObmenKard[slot] = getRandomObmenCard(slot)
-
                                 }
                             });
                             startTsepnayaReaksia()
@@ -336,7 +342,8 @@ function init(wsServer, path) {
                 PanikaiViEtoNazivaeteVecherinkoy = () => {
                     function isOdd(num) { return num % 2; }
                     let start = room.currentPlayer, kolvoSmen;
-                    isOdd(Object.keys(state.playerHand).length) ? kolvoSmen = Object.keys(state.playerHand).length / 2 : kolvoSmen = (Object.keys(state.playerHand).length - 1) / 2;
+                    isOdd(Object.keys(state.playerHand).length)
+                        ? kolvoSmen = Object.keys(state.playerHand).length / 2 : kolvoSmen = (Object.keys(state.playerHand).length - 1) / 2;
                     const spisok = []
                     let chetchik = getNextPlayer(room.invertDirection, getNextPlayer(room.invertDirection))
                     spisok.push(room.currentPlayer, getNextPlayer(room.invertDirection))
@@ -545,7 +552,8 @@ function init(wsServer, path) {
                     return Object.keys(room.readyPlayers).length === Object.keys(state.playerHand).length
                 },
                 obmenProcces = (i) => {
-                    room.gameLog.push({ action: 'obmen', actors: [room.playerSlots[room.currentPlayer], room.playerSlots[room.target]] })
+                    if (room.action !== 'soblazn')
+                        room.gameLog.push({ action: 'obmen', actors: [room.playerSlots[room.currentPlayer], room.playerSlots[room.target]] })
                     let karta1 = state.playerHand[room.currentPlayer][state.obmenCardIndex];
                     let karta2 = state.playerHand[room.target][i];
                     if (karta1.type === 'zarajenie' && room.currentPlayer !== state.nechto && !state.zarajennie.has(room.currentPlayer)) {
@@ -609,7 +617,7 @@ function init(wsServer, path) {
                                     } else if (card.id === 'soblazn') {
                                         room.action = 'soblazn'
                                         room.target = target
-                                        state.obmenCardIndex = index
+                                        state.obmenCardIndex = index //FIXME: wtf index....
                                         sigrat()
                                         logs()
                                     }
@@ -744,16 +752,19 @@ function init(wsServer, path) {
                         if (slot == room.currentPlayer && index >= 0 && index < 3) {
                             let nechtoIndex = state.uporstvoCards.findIndex(c => c.id === 'nechto')
                             if (nechtoIndex == -1) {
-                                state.playerHand[slot].push(state.uporstvoCards.splice(index, 1))
-                                state.discard.push(...state.uporstvoCards)
-                            }
-                            if (nechtoIndex === index) {
-                                state.nechto = slot
                                 state.playerHand[slot].push(...state.uporstvoCards.splice(index, 1))
                                 state.discard.push(...state.uporstvoCards)
                             }
+                            else if (nechtoIndex === index) {
+                                state.nechto = slot
+                                state.playerHand[slot].push(...state.uporstvoCards.splice(index, 1))
+                                state.discard.push(...state.uporstvoCards)
+                                //room.gameLog.push({ card: card, actors: room.playerSlots[room.currentPlayer] })
+                            } else {
+                                return false
+                            }
+                            room.action = null;
                             state.showCard = {}
-                            room.gameLog.push({ card: card, actors: room.playerSlots[room.currentPlaye] })
                             isDead(slot)
                             startTimer()
                             update()

@@ -1,26 +1,21 @@
 import { CardId } from "./service";
-const lang = "ua"
+const lang = "ru"
 
 export function getCardName(cardId: CardId) {
     return cardsData[cardId]?.title[lang] ?? cardId
 }
-
 export function getCardDescription(cardId: CardId) {
     return cardsData[cardId]?.desciption[lang] ?? ""
 }
-
 export function getKnopkaName(KnopkaId: keyof typeof knopki) {
     return knopki[KnopkaId]?.title[lang] ?? KnopkaId
 }
-
 export function getCardLog(cardId: CardId) {
     return cardsData[cardId]?.log[lang] ?? cardId
 }
-
 export function getActionLog(action: keyof typeof actionsData) {
     return actionsData[action]?.log[lang] ?? action
 }
-
 
 type PartialRecord<K extends keyof any, T> = {
     [P in K]?: T;
@@ -40,7 +35,7 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
     ognemet: {
         log: {
             ru: "сжигает",
-            ua: "сжигає",
+            ua: "спалює",
             en: "flames",
         },
         title: {
@@ -414,6 +409,20 @@ const knopki = {
             ru: "сесть",
             ua: "сісти",
             en: "join",
+        },
+    },
+    spektators:{
+        title: {
+            ru: "зрители",
+            ua: "глядачі",
+            en: "spectators",
+        },
+    },
+    panika:{
+        title: {
+            ru: "паника",
+            ua: "паніка",
+            en: "panic",
         },
     }
 

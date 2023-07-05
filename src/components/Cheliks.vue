@@ -6,11 +6,18 @@
                 (state.phase === 0 || !state.teamsLocked)" @click="service.playersJoin(slot)">
                 {{ getKnopkaName('sest') }}</div>
             <div v-else @click="slotClick(slot)">
-                <span v-if="service.selectedTarget.value === slot && state.phase === 2">на него:</span>
-                {{ state.playerSlots[slot] ? state.playerNames[state.playerSlots[slot]!] : "" }}
-                <div class="host-cntrols">
-                    <div @click="service.removePLayer(state.userId)">kick</div>
-                    <div @click="handleClickChangeName()">imya</div>
+                <div class="suka">
+                    <span v-if="state.currentPlayer === slot && state.phase !== 0">чичас играет</span>
+                    <span v-if="service.selectedTarget.value === slot && state.phase === 2">на него:</span>
+                    {{ state.playerSlots[slot] ? state.playerNames[state.playerSlots[slot]!] : "" }}
+                    <div class="host-cntrols">
+                        <span @click="service.removePLayer(state.playerSlots[slot])">
+                            <i className="material-icons host-button" title="Remove"> delete_forever</i>
+                        </span>
+                        <span @click="handleClickChangeName()" v-if="state.userSlot == slot">
+                            <i className="material-icons settings-button">edit</i>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -55,13 +62,22 @@ defineProps<{
     border-radius: 27px;
 }
 
+.suka {
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+}
+
 .host-cntrols {
     display: none;
 }
 
 .roditel:hover .host-cntrols {
-    display: block;
-
+    display: flex;
+    gap: 10px
 }
 
 .chel {
@@ -70,6 +86,8 @@ defineProps<{
     border-radius: 36px;
     position: relative;
     overflow: visible;
+    max-width: 128px;
+    max-height: 148px;
 }
 
 .backgroundJ {

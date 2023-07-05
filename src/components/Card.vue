@@ -1,8 +1,8 @@
 <template>
-    <div class="card" :class="{selectedCard: selected}">
+    <div class="card" :class="{ selectedCard: selected }">
         <div class="kartinka">
-            <div class="name">{{ getCardName(card.id)}}</div>
-            <div class="opisanie">{{  getCardDescription(card.id) }}</div>
+            <div class="name">{{ getCardName(card.id) }}</div>
+            <div class="opisanie" v-if="selected">{{ getCardDescription(card.id) }}</div>
         </div>
     </div>
 </template>
@@ -21,24 +21,28 @@ defineProps<{
 </script>
  
 <style scoped>
-.kartinka{
+.kartinka {
     background-image: url(./cards/1.png);
     background-size: cover;
     flex: 1;
 }
-.selectedCard{
-    
+
+.selectedCard {
+    height: 200px;
+    width: 150px;
 }
+
 .name {
     font-size: 20px;
 }
+
 .opisanie {
     font-size: 16px;
 }
+
 .card {
     background-color: black;
     padding: 5px;
     display: flex;
     justify-content: center;
-}
-</style>
+}</style>

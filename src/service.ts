@@ -44,7 +44,7 @@ interface NechtoState {
     dveri: Slot[];
     showAllHand?: Card[];
     allReadyNedeed: boolean;
-    gameLog: { action?: string; card?: Card; actors?: User[]; panika?: boolean }[];
+    gameLog: { action?: string; card?: Card; actors?: User[]; panika?: boolean }[]; result?: string;
     smallTimer: number;
     bigTimer: number;
     isObmenReady: boolean;
@@ -83,7 +83,7 @@ export function createNechtoService() {
         abortGame: () => socket.emit("abort-game"),
         playersJoin: (target: Slot) => socket.emit("players-join", target),
         spectatorsJoin: () => socket.emit("spectators-join"),
-        removePLayer: (target: User) => socket.emit("remove-player", target),
+        removePLayer: (target: User | null) => socket.emit("remove-player", target),
         giveHost: (target: User) => socket.emit("give-host", target),
         setRoomMode: () => socket.emit('set-room-mode', false),
         vilojitCartuNaObmen: (index: number | null) => socket.emit('vilojit-kartu-na-obmen', index),
