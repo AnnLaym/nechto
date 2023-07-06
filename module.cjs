@@ -47,7 +47,8 @@ function init(wsServer, path) {
                 smallTimer: 20,
                 bigTimer: 60,
                 isObmenReady: false,
-                voting: false
+                voting: false,
+                currentCardPanik: null
 
             };
             if (testMode)
@@ -171,6 +172,7 @@ function init(wsServer, path) {
                         room.action = null;
                         room.karantin = {};
                         room.dveri = [];
+                        room.currentCardPanik = null
                         room.showAllHand = []
                         state.deck = utils.createDeck(state.playersCount, room.startWithNechto);
                         if (room.winnerPlayer != null)
@@ -193,6 +195,7 @@ function init(wsServer, path) {
                     state.uporstvoCards = {};
                     state.showCard = {};
                     state.tsepnayaReaksiaObmenKard = {}
+                    room.currentCardPanik = null
                 },
                 startTimer = () => {
                     if (room.timed) {
@@ -425,6 +428,7 @@ function init(wsServer, path) {
                         room.allReadyNedeed = card.allReady;
                         room.action = card.id;
                         room.gameLog.push({ card: card, panika: true })
+                        room.currentCardPanik = card
                     } else {
                         state.playerHand[room.currentPlayer].push(card)
                         if (card.type == 'nechto') {
@@ -683,6 +687,7 @@ function init(wsServer, path) {
                             } else {
                                 if (card.id === 'uporstvo') {
                                     room.action = 'uporstvo';
+                                    room.target = null
                                     logs()
                                     sigrat()
                                     state.uporstvoCards = [dealNewCard(), dealNewCard(), dealNewCard()]
