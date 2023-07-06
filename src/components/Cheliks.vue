@@ -7,7 +7,6 @@
                 {{ getKnopkaName('sest') }}</div>
             <div v-else @click="slotClick(slot)">
                 <div class="suka">
-                    <span v-if="state.currentPlayer === slot && state.phase !== 0">чичас играет</span>
                     <span v-if="service.selectedTarget.value === slot && state.phase === 2">на него:</span>
                     {{ state.playerSlots[slot] ? state.playerNames[state.playerSlots[slot]!] : "" }}
                     <div class="host-cntrols">
