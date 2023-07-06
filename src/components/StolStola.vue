@@ -13,26 +13,33 @@
             </div>
             <div> direction: {{ state.invertDirection }}</div>
         </div>
-        <div v-if="state.currentPanika">
-            <div> panika: {{ getCardName(state.currentPanika.id) }}</div>
+        <div v-if="state.currentPanika" class="action">
+            <div>
+                <Card :card="state.currentCardPanik!" class="jopa" />
+            </div>
         </div>
         <div> {{ state.time }}</div>
-        <div v-if="state.phase === 1 && state.currentPlayer === state.userSlot" @click="service.grabCard()" class="knopka">
-            {{ getKnopkaName('vzyatKartu') }}
-        </div>
-        <div v-if="(state.phase === 2 || state.phase === 3) && state.target === state.userSlot"
-            @click="service.resolveAction(service.selectedCard.value)">
-            {{ getKnopkaName("sigrat") }}</div>
-        <div v-if="state.phase === 2 && state.target === state.userSlot" @click="service.resolvePassActin()">
-            скип нахуй</div>
-        <div v-if="state.phase === 3 && state.currentPlayer === state.userSlot && !state.isObmenReady"
-            @click="service.vilojitCartuNaObmen(service.selectedCard.value)">
-            {{ getKnopkaName('polojitKartuNaObmen') }}</div>
-        <div v-if="state.phase === 3 && state.target === state.userSlot && state.isObmenReady"
-            @click="service.resolveObmen(service.selectedCard.value!)">
-            {{ getKnopkaName('polojitKartuNaObmen') }}</div>
-        <div v-if="state.userSlot === state.currentPlayer && state.chekCards?.length && state.phase == 2">
-            <div @click="service.resolvePassActin()">{{ getKnopkaName('ok') }}</div>
+        <div class="knopkee">
+            <div v-if="state.phase === 1 &&
+                state.currentPlayer === state.userSlot" @click="service.grabCard()" class="knopka">
+                {{ getKnopkaName('vzyatKartu') }}
+            </div>
+            <div v-if="(state.phase === 2 || state.phase === 3) && state.target === state.userSlot"
+                @click="service.resolveAction(service.selectedCard.value)" class="knopka">
+                {{ getKnopkaName("sigrat") }}</div>
+            <div v-if="state.phase === 2 &&
+                state.target === state.userSlot" @click="service.resolvePassActin()" class="knopka">
+                {{ getKnopkaName('ok') }}</div>
+            <div v-if="state.phase === 3 && state.currentPlayer === state.userSlot && !state.isObmenReady"
+                @click="service.vilojitCartuNaObmen(service.selectedCard.value)" class="knopka">
+                {{ getKnopkaName('polojitKartuNaObmen') }}</div>
+            <div v-if="state.phase === 3 && state.target === state.userSlot && state.isObmenReady"
+                @click="service.resolveObmen(service.selectedCard.value!)" class="knopka">
+                {{ getKnopkaName('polojitKartuNaObmen') }}</div>
+            <div v-if="state.userSlot === state.currentPlayer && state.chekCards?.length
+                && state.action !== `uporstvo` && state.phase == 2" class="knopka">
+                <div @click="service.resolvePassActin()">{{ getKnopkaName('ok') }}</div>
+            </div>
         </div>
         <div>
             <div v-if="state.chekCards?.length" class="uporstvo">
@@ -42,7 +49,7 @@
             </div>
             <div v-if="state.showAllHand?.length !== 0" class="uporstvo">
                 <div v-for="card, index in state.showAllHand">
-                    <Card :card="card"/>
+                    <Card :card="card" />
                 </div>
             </div>
             <div> phase:{{ state.phase }} </div>
@@ -87,6 +94,21 @@ function uporstvoClick(index: number) {
     border: 1px;
     width: 140px;
     height: 35px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    bottom: 0px;
+}
+
+.knopkee {
+    justify-content: center;
+    display: flex;
+    bottom: -114px;
+    position: relative;
+}
+
+.action {
+    left: 0px;
 }
 
 .jopa {

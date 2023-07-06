@@ -35,7 +35,7 @@ interface NechtoState {
     invertDirection: boolean;
     startWithNechto: boolean;
     currentPanika: Card | null;
-    action: CardId | null;
+    action: CardId | null | string;
     karantin: Record<Slot, number>;
     time: number;
     timed: boolean;
@@ -58,6 +58,7 @@ interface NechtoState {
     userId: User;
     userSlot: Slot | null;
     umerSlots: Slot[];
+    currentCardPanik: Card | null;
 }
 
 declare const window: ReactAppWindow<NechtoState>;
