@@ -11,14 +11,12 @@
                     <div>Diskard: {{ state.discardSize }}</div>
                 </div>
             </div>
-            <div> direction: {{ state.invertDirection }}</div>
         </div>
         <div v-if="state.currentPanika" class="action">
             <div>
                 <Card :card="state.currentCardPanik!" class="jopa" />
             </div>
         </div>
-        <div> {{ state.time }}</div>
         <div class="knopkee">
             <div v-if="state.phase === 1 &&
                 state.currentPlayer === state.userSlot" @click="service.grabCard()" class="knopka">
@@ -42,7 +40,7 @@
                 <div>{{ getKnopkaName('ok') }}</div>
             </div>
             <div v-if="state.currentPanika &&
-                state.userSlot === state.currentPlayer">{{ getKnopkaName(`goPanika`) }}</div>
+                state.userSlot === state.currentPlayer" class="knopka">{{ getKnopkaName(`goPanika`) }}</div>
         </div>
         <div>
             <div v-if="state.chekCards?.length" class="uporstvo">
@@ -55,8 +53,6 @@
                     <Card :card="card" />
                 </div>
             </div>
-            <div> phase:{{ state.phase }} </div>
-
         </div>
     </div>
 </template>
@@ -108,11 +104,14 @@ function uporstvoClick(index: number) {
     display: flex;
     bottom: -114px;
     position: relative;
+
     gap: 10px;
 }
 
 .action {
     left: 0px;
+    width: 50px;
+    height: 70px;
 }
 
 .jopa {

@@ -173,7 +173,7 @@ function init(wsServer, path) {
                         room.karantin = {};
                         room.dveri = [];
                         room.currentCardPanik = null
-                        room.showAllHand = []
+                        room.showAllHand = null
                         state.deck = utils.createDeck(state.playersCount, room.startWithNechto);
                         if (room.winnerPlayer != null)
                             utils.shuffle(room.playerSlots);

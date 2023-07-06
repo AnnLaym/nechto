@@ -1,16 +1,6 @@
 <template>
     <div class="fixed bottom-0 right-0 wrap bg-panel p-2 surface-card flex flex-column gap-2">
         <div class="hidden-part">
-            <div v-for="(setting, index) of props.numberSettings" :key="index" class="flex gap-2 text-xs">
-                <InputNumber v-model="settingsValues[index]" @update:model-value="settingChange(index)"
-                             class="p-inputtext-sm"
-                             show-buttons
-                             input-class="p-2"
-                             :min="setting.min"
-                             :max="setting.max" />
-            </div>
-        </div>
-        <div class="hidden-part">
             <slot />
         </div>
         <div class="flex gap-2 justify-content-end">

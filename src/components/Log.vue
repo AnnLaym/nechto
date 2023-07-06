@@ -63,19 +63,22 @@ const colors = [
     position: fixed;
     left: 0px;
     height: 300px;
-    width: 400px;
+    width: 300px;
     bottom: 0px;
     background-color: black;
+    padding: 10px;
 }
 
 .messageCard {
     display: flex;
     flex-flow: row;
-    justify-content: center;
+    justify-content: left;
     gap: 3px;
 }
 
 .podskazkaLoga {
-    color: gray;
+    font-size: 16px;
+    text-shadow: 0 0 3px black;
+    color: #cecac1;
 }
 </style>

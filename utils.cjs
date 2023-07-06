@@ -116,7 +116,7 @@ const cardsDeck = {
         count: { 4: 1, 5: 1, 6: 1, 7: 1, 8: 1, 9: 1, 10: 1, 11: 1, 12: 1 }
     },
     zarajenie: {
-        type: "card", 
+        type: "card",
         count: { 4: 8, 5: 9, 6: 12, 7: 13, 8: 15, 9: 16, 10: 19, 11: 19, 12: 19 }
     },
     nechto: {
@@ -147,8 +147,8 @@ const createDeck = (players, startWithNechto) => {
         }
     });
     let newDeck = realdeck.filter(card => card.id !== "zarajenie" && card.type == "card" && card.id !== "nechto");
-    //let panikDeck = realdeck.filter(card => card.type == "panika");
-    let panikDeck = realdeck.filter(card => card.type == "p")
+    let panikDeck = realdeck.filter(card => card.type == "panika");
+    //let panikDeck = realdeck.filter(card => card.type == "p")
     let zarajenieDeck = realdeck.filter(card => card.id == "zarajenie");
     let nechtoDeck = realdeck.filter(card => card.id == "nechto");
     let shuffledDeck = shuffleArray([...newDeck]);
