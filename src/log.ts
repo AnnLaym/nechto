@@ -397,6 +397,13 @@ const knopki = {
             en: "discard",
         },
     },
+    goPanika:{
+        title:{
+            ru: "сыграть панику",
+            ua: "грати паніку",
+            en: "play panic",
+        }
+    },
     ok:{
         title: {
             ru: "ок",
@@ -423,6 +430,13 @@ const knopki = {
             ru: "паника",
             ua: "паніка",
             en: "panic",
+        },
+    },
+    pass:{
+        title: {
+            ru: "пасс",
+            ua: "пасувати",
+            en: "pass",
         },
     }
 

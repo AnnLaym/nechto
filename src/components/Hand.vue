@@ -2,7 +2,7 @@
     <div>
         <div class="ruka">
             <div v-for="(card, index) in state.cards" @click="cardClick(index)">
-                <div v-if="service.selectedCard.value == index">
+                <div v-if="service.selectedCard.value == index" class="dveKnopki">
                     <div v-if="service.selectedCard.value !== null && state.phase == 2 &&
                         !state.currentPanika && state.userSlot === state.currentPlayer" class="knopki">
                         <div @click="playCardClick()"> {{ getKnopkaName('sigratCartu') }} </div>
@@ -58,11 +58,19 @@ function dropCardClick() {
     left: 0px;
     margin-bottom: 30px;
 }
+.dveKnopki{
+    display: flex;
+    flex-flow: row;
+    gap: 10px;
+}
 
 .knopki {
     display: flex;
     justify-content: center;
     gap: 20px;
+    background-color: green;
+    border: 1;
+    color: black;
 }
 
 .selected {

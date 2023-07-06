@@ -29,7 +29,7 @@
                 {{ getKnopkaName("sigrat") }}</div>
             <div v-if="state.phase === 2 &&
                 state.target === state.userSlot" @click="service.resolvePassActin()" class="knopka">
-                {{ getKnopkaName('ok') }}</div>
+                {{ getKnopkaName('pass') }}</div>
             <div v-if="state.phase === 3 && state.currentPlayer === state.userSlot && !state.isObmenReady"
                 @click="service.vilojitCartuNaObmen(service.selectedCard.value)" class="knopka">
                 {{ getKnopkaName('polojitKartuNaObmen') }}</div>
@@ -37,9 +37,12 @@
                 @click="service.resolveObmen(service.selectedCard.value!)" class="knopka">
                 {{ getKnopkaName('polojitKartuNaObmen') }}</div>
             <div v-if="state.userSlot === state.currentPlayer && state.chekCards?.length
-                && state.action !== `uporstvo` && state.phase == 2" class="knopka">
-                <div @click="service.resolvePassActin()">{{ getKnopkaName('ok') }}</div>
+                && state.action !== `uporstvo` &&
+                state.phase == 2" class="knopka" @click="service.resolvePassActin()">
+                <div>{{ getKnopkaName('ok') }}</div>
             </div>
+            <div v-if="state.currentPanika &&
+                state.userSlot === state.currentPlayer">{{ getKnopkaName(`goPanika`) }}</div>
         </div>
         <div>
             <div v-if="state.chekCards?.length" class="uporstvo">
@@ -105,6 +108,7 @@ function uporstvoClick(index: number) {
     display: flex;
     bottom: -114px;
     position: relative;
+    gap: 10px;
 }
 
 .action {

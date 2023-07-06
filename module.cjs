@@ -319,6 +319,15 @@ function init(wsServer, path) {
                             state.playerHand[slot].push(izDeki)
                         }
                     }
+                    if (room.phase === 2) {
+                        const card = getRandomObmenCard(room.currentPlayer)
+                        const cardInd = state.playerHand[room.currentPlayer].indexOf(card)
+                        state.discard.push(state.playerHand[room.currentPlayer].splice(cardInd, 1));
+                        room.gameLog.push({ action: 'drop-card', actors: [room.playerSlots[room.currentPlayer]] })
+                        startObmen()
+                        update()
+                        updateState()
+                    }
                 },
                 startTsepnayaReaksia = () => {
                     Object.Keys(state.tsepnayaReaksiaObmenKard).forEach(slot => {
@@ -591,7 +600,7 @@ function init(wsServer, path) {
                     if (room.currentPlayer === slot && room.phase === 2 && room.action === null && index >= 0 && index <= 4) {
                         if (chekDropCard(slot, index)) {
                             state.discard.push(state.playerHand[slot].splice(index, 1));
-                            room.gameLog.push({ action: 'drop-card', actors: [room.playerSlots][room.currentPlayer] })
+                            room.gameLog.push({ action: 'drop-card', actors: [room.playerSlots[room.currentPlayer]] })
                             startObmen()
                         }
                         update()
@@ -600,7 +609,8 @@ function init(wsServer, path) {
 
                 },
                 "play-card": (slot, index, target) => {
-                    if ((room.phase === 2 || room.action) && room.currentPlayer == slot && room.action === null && index >= 0 && index <= 4) {
+                    if ((room.phase === 2 || room.action) && room.currentPlayer == slot
+                        && room.action === null && index >= 0 && index <= 4) {
                         const card = state.playerHand[slot][index];
                         const sigrat = () => {
                             state.discard.push(card);
@@ -620,13 +630,13 @@ function init(wsServer, path) {
                                         logs()
                                     } else if (card.id === 'soblazn') {
                                         room.action = 'soblazn'
-                                        room.target = target
-                                        state.obmenCardIndex = index //FIXME: wtf index....
+                                        room.target = target//FIXME: wtf index....
                                         sigrat()
                                         logs()
                                     }
                                 }
-                            } else if (card.target === 'sosed' && (prevPLayer === target || nextPlayer === target)) {
+                            } else if (card.target === 'sosed' &&
+                                (prevPLayer === target || nextPlayer === target)) {
                                 if (!room.karantin[target] && chekSosedaNaPidora(target)) {
                                     if (card.id === 'ognemet') {
                                         room.action = 'ognemet'
@@ -638,6 +648,7 @@ function init(wsServer, path) {
                                         updateState()
                                     } else if (card.id === 'analiz') {
                                         room.action = 'analiz'
+                                        room.target = target
                                         logs()
                                         state.showCard[room.currentPlayer] = state.playerHand[room.target]
                                         sigrat()
@@ -719,7 +730,7 @@ function init(wsServer, path) {
                             grabNewCard(room.target)
                         };
                         const logsOne = () => {
-                            room.gameLog.push({ card: card, actors: room.playerSlots[room.target] })
+                            room.gameLog.push({ card: card, actors: [room.playerSlots[room.target]] })
                         };
                         const dieLog = () => {
                             room.gameLog.push({ actors: room.playerSlots[room.target] })
@@ -753,6 +764,9 @@ function init(wsServer, path) {
                                 }
                             }
                         }
+                    } else if (slot === room.currentPlayer && room.action === 'soblazn') {
+                        state.obmenCardIndex = index;
+                        room.isObmenReady = true;
                     } else if (room.action === 'uporstvo') {
                         if (slot == room.currentPlayer && index >= 0 && index < 3) {
                             let nechtoIndex = state.uporstvoCards.findIndex(c => c.id === 'nechto')
