@@ -1,6 +1,7 @@
 const { read } = require("fs");
 const { start } = require("repl");
 const utils = require('./utils.cjs');
+const { get } = require("http");
 
 function init(wsServer, path) {
     const
@@ -286,12 +287,20 @@ function init(wsServer, path) {
                             });
                             startTsepnayaReaksia()
                         } else if (room.currentPanika === 'tolkoMejduNami') {
-                            state.showCard = {}
-                            startObmen()
+                            const sosedi = [getNextPlayer(true), getNextPlayer(false)]
+                            tolkoMejduNamiPanika(sosedi[shuffleArray([0, 1])], room.currentPlayer)
                         } else if (room.currentPanika === 'razDva') {
+                            if (!room.target) {
+                                if (room.karantin[getThirdPlayers()[0]])
+                                    room.target = getThirdPlayers()
+                                else if (room.karantin[getThirdPlayers()[1]])
+                                    room.target = getThirdPlayers()
+                                else endRound()
+                            }
                             smenaMest(room.target, room.currentPlayer)
                             endRound()
                         } else if (room.currentPanika === 'iViEtoNazivaeteVecherinkoy') {
+                            iViEtoNazivaeteVecherinkoyPanika()
                             PanikaiViEtoNazivaeteVecherinkoy()
                             startObmen()
                         } else if (room.currentPanika === 'davaiDrujit') {
@@ -317,9 +326,12 @@ function init(wsServer, path) {
                             deck.push(state.playerHand[slot][i])
                             state.playerHand[slot].splice(i, 1)
                             state.playerHand[slot].push(izDeki)
+                        } else if (room.currentPanika === "ubiraysyaProchPanika") {
+                             tsel = shuffleArray(Object.Keys(state.playerHand))
+                            ubiraysyaProchPanika()
                         }
                     }
-                    if (room.phase === 2) {
+                    if (room.phase === 2 && !room.currentPanika) {
                         const card = getRandomObmenCard(room.currentPlayer)
                         const cardInd = state.playerHand[room.currentPlayer].indexOf(card)
                         state.discard.push(state.playerHand[room.currentPlayer].splice(cardInd, 1));
@@ -355,7 +367,8 @@ function init(wsServer, path) {
                     function isOdd(num) { return num % 2; }
                     let start = room.currentPlayer, kolvoSmen;
                     isOdd(Object.keys(state.playerHand).length)
-                        ? kolvoSmen = Object.keys(state.playerHand).length / 2 : kolvoSmen = (Object.keys(state.playerHand).length - 1) / 2;
+                        ? kolvoSmen = Object.keys(state.playerHand).length / 2 :
+                        kolvoSmen = (Object.keys(state.playerHand).length - 1) / 2;
                     const spisok = []
                     let chetchik = getNextPlayer(room.invertDirection, getNextPlayer(room.invertDirection))
                     spisok.push(room.currentPlayer, getNextPlayer(room.invertDirection))
@@ -583,6 +596,71 @@ function init(wsServer, path) {
                 chekSosedaNaPidora = (target) => {
                     const nextPlayer = getNextPlayer(room.invertDirection), prevPLayer = getNextPlayer(!room.invertDirection);
                     return (!room.dveri.includes(prevPLayer) && prevPLayer === target) || (!room.dveri.includes(nextPlayer) && nextPlayer === target)
+                },
+                starieVerevkiPanika = () => {
+                    delete room.karantin[target]
+                    update()
+                    startObmen()
+                },
+                triChetyrePanika = () => {
+                    room.dveri = []
+                    startObmen()
+                },
+                uuupsPamnika = () => {
+                    room.showAllHand = state.playerHand[room.currentPlayer]
+                    startObmen()
+                },
+                iViEtoNazivaeteVecherinkoyPanika = () => {
+                    room.dveri = [];
+                    room.karantin = {};
+                },
+                razDvaPanika = (target) => {
+                    if ((target === getThirdPlayers(3)[0]) || (target === getThirdPlayers(3)[1])) {
+                        room.target = target
+                        resolvePassAction()
+                    }
+                },
+                ubiraysyaProchPanika = (target, slot) => {
+                    if (!room.karantin[target]) {
+                        smenaMest(slot, target);
+                        startObmen()
+                    }
+                },
+                tolkoMejduNamiPanika = (target, slot) => {
+                    if (target === getNextPlayer(true)
+                        | target === getNextPlayer(false)) {
+                        state.showCard[target] = state.playerHand[slot]
+                        startObmen()
+                    }
+                },
+                davaiDrujitPanika = (target, slot, index) => {
+                    //FIXME: dveri add nije
+                    if (!room.karantin[target]) {
+                        if (slot === room.currentPlayer) {
+                            if (obmenChekZarajeniy(slot, index)) {
+                                state.obmenCardIndex = index
+                                room.target = target
+                            }
+                        } else if (slot === room.target) {
+                            if (obmenChekZarajeniy(slot, index)) {
+                                obmenProcces(index)
+                                startObmen()
+                            }
+                        }
+                    }
+                },
+                tsepnayaReaksiaPanika = (slot, index) => {
+                    if (obmenChekZarajeniy(slot, index)) {
+                        state.tsepnayaReaksiaObmenKard[slot] = index
+                        room.readyPlayers[slot] = true
+                        if (isAllPlayersReady()) {
+                            startTsepnayaReaksia()
+                        }
+                    }
+                },
+                svidanieVSlepuyuPanika = (slot, index) => {
+                    state.deck.splice(0, 1).push(state.playerHand[slot])
+                    deck.push(state.playerHand[slot][index])
                 }
 
             this.userJoin = userJoin;
@@ -630,7 +708,7 @@ function init(wsServer, path) {
                                         logs()
                                     } else if (card.id === 'soblazn') {
                                         room.action = 'soblazn'
-                                        room.target = target//FIXME: wtf index....
+                                        room.target = target
                                         sigrat()
                                         logs()
                                     }
@@ -785,6 +863,7 @@ function init(wsServer, path) {
                             room.action = null;
                             state.showCard = {}
                             isDead(slot)
+                            room.action = null
                             startTimer()
                             update()
                             updateState()
@@ -817,61 +896,29 @@ function init(wsServer, path) {
                     const card = room.currentPanika
                     if (room.phase == 2 && card.type === 'panika' && room.playerHand[slot]) {
                         if (card.id === 'iViEtoNazivaeteVecherinkoy') {
-                            room.dveri = [];
-                            room.karantin = {};
-                            room.currentPanika = 'iViEtoNazivaeteVecherinkoy';
-                        } else if (card.id === 'razDva') {
-                            if ((target === getThirdPlayers(3)[0]) || (target === getThirdPlayers(3)[1])) {
-                                room.target = target
-                                resolvePassAction()
-                            }
-                        } else if (card.id === 'ubiraysyaProch') {
-                            if (!room.karantin[target]) {
-                                smenaMest(slot, target);
-                                startObmen()
-                            }
-                        } else if (card.id === 'starieVerevki') {
-                            delete room.karantin[target]
+                            iViEtoNazivaeteVecherinkoyPanika()
+                            PanikaiViEtoNazivaeteVecherinkoy()
                             startObmen()
+                        } else if (card.id === 'razDva') {
+                            razDvaPanika(target)
+                        } else if (card.id === 'ubiraysyaProch') {
+                            ubiraysyaProchPanika(target, slot)
+                        } else if (card.id === 'starieVerevki') {
+                            starieVerevkiPanika()
                         } else if (card.id === 'tolkoMejduNami') {
-                            if (target === getNextPlayer(true) || target === getNextPlayer(false)) {
-                                state.showCard[target] = state.playerHand[slot]
-                            }
+                            tolkoMejduNamiPanika(target, slot)
                         } else if (card.id === 'davaiDrujit') {
-                            //FIXME: dveri add nije
-                            if (!room.karantin[target]) {
-                                if (slot === room.currentPlayer) {
-                                    if (obmenChekZarajeniy(slot, index)) {
-                                        state.obmenCardIndex = index
-                                        room.target = target
-                                    }
-                                } else if (slot === room.target) {
-                                    if (obmenChekZarajeniy(slot, index)) {
-                                        obmenProcces(index)
-                                        startObmen()
-                                    }
-                                }
-
-                            }
+                            davaiDrujitPanika(target, slot, index)
                         } else if (card.id === 'vremyaPriznaniy') {
                             //TODO: НЕ ДЕЛАЮ ХУЙНЮ
                         } else if (card.id === 'tsepnayaReaksia') {
-                            if (obmenChekZarajeniy(slot, index)) {
-                                state.tsepnayaReaksiaObmenKard[slot] = index
-                                room.readyPlayers[slot] = true
-                                if (isAllPlayersReady()) {
-                                    startTsepnayaReaksia()
-                                }
-                            }
+                            tsepnayaReaksiaPanika(slot, index) //TODO: mb bug tut (index|target)
                         } else if (card.id === 'triChetyre') {
-                            room.dveri = []
-                            startObmen(Object.keys())
+                            triChetyrePanika()
                         } else if (card.id === 'uups') {
-                            room.showAllHand = state.playerHand[room.currentPlayer]
-                            startObmen()
+                            uuupsPamnika()
                         } else if (card.id === 'svidanieVSlepuyu') {
-                            state.deck.splice(0, 1).push(state.playerHand[slot])
-                            deck.push(state.playerHand[slot][index])
+                            svidanieVSlepuyuPanika(slot, index)
                         } else if (card.id === 'zabivchivost') {
 
                         }
@@ -929,6 +976,7 @@ function init(wsServer, path) {
                 },
             };
         }
+
 
         getPlayerCount() {
             return Object.keys(this.room.playerNames).length;
