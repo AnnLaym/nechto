@@ -61,21 +61,20 @@ const colors = [
 <style scoped>
 .bodyLog {
     position: fixed;
-    left: 0px;
+    right: 0px;
     height: 300px;
     width: 300px;
     bottom: 0px;
     background-color: black;
     padding: 10px;
+    margin-bottom: 50px;
 }
-
 .messageCard {
     display: flex;
     flex-flow: row;
     justify-content: left;
     gap: 3px;
 }
-
 .podskazkaLoga {
     font-size: 16px;
     text-shadow: 0 0 3px black;

@@ -321,6 +321,244 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "Place this card between you and an adjacent player. No actions or exchanges can take place between you",
         }
     },
+    iViEtoNazivaeteVecherinkoy: {
+        log: {
+            ru: "",
+            ua: "",
+            en: "",
+        },
+        title: {
+            ru: "И это вы называете вечеринкой?",
+            ua: "І це ви звете вечіркою?",
+            en: "",
+        },
+        desciption: {
+            ru: "",
+            ua: "",
+            en: "",
+        }
+    },
+    razDva: {
+        log: {
+            ru: "",
+            ua: "",
+            en: "",
+        },
+        title: {
+            ru: "Раз, два",
+            ua: "Раз, два",
+            en: "",
+        },
+        desciption: {
+            ru: "",
+            ua: "",
+            en: "",
+        }
+    },
+    ubiraysyaProch: {
+        log: {
+            ru: "",
+            ua: "",
+            en: "",
+        },
+        title: {
+            ru: "Убирайся прочь",
+            ua: "Геть звідси",
+            en: "",
+        },
+        desciption: {
+            ru: "",
+            ua: "",
+            en: "",
+        }
+    },
+    starieVerevki: {
+        log: {
+            ru: "",
+            ua: "",
+            en: "",
+        },
+        title: {
+            ru: "Старые верёвки",
+            ua: "Старі мотузки",
+            en: "",
+        },
+        desciption: {
+            ru: "",
+            ua: "",
+            en: "",
+        }
+    },
+    tolkoMejduNami: {
+        log: {
+            ru: "",
+            ua: "",
+            en: "",
+        },
+        title: {
+            ru: "Только между нами",
+            ua: "Тільки між нами",
+            en: "",
+        },
+        desciption: {
+            ru: "",
+            ua: "",
+            en: "",
+        }
+    },
+    davaiDrujit: {
+        log: {
+            ru: "",
+            ua: "",
+            en: "",
+        },
+        title: {
+            ru: "Давай дружить",
+            ua: "Давай дружити",
+            en: "",
+        },
+        desciption: {
+            ru: "",
+            ua: "",
+            en: "",
+        }
+    },
+    vremyaPriznaniy: {
+        log: {
+            ru: "",
+            ua: "",
+            en: "",
+        },
+        title: {
+            ru: "Время признаний",
+            ua: "Час відвертостей",
+            en: "",
+        },
+        desciption: {
+            ru: "",
+            ua: "",
+            en: "",
+        }
+    },
+    tsepnayaReaksia: {
+        log: {
+            ru: "",
+            ua: "",
+            en: "",
+        },
+        title: {
+            ru: "Цеепная реакция",
+            ua: "Ціпна реакція",
+            en: "",
+        },
+        desciption: {
+            ru: "",
+            ua: "",
+            en: "",
+        }
+    },
+    triChetyre: {
+        log: {
+            ru: "",
+            ua: "",
+            en: "",
+        },
+        title: {
+            ru: "Три, четыре",
+            ua: "Три, чотири",
+            en: "",
+        },
+        desciption: {
+            ru: "",
+            ua: "",
+            en: "",
+        }
+    },
+    uups: {
+        log: {
+            ru: "",
+            ua: "",
+            en: "",
+        },
+        title: {
+            ru: "Уупс",
+            ua: "Уупс",
+            en: "",
+        },
+        desciption: {
+            ru: "",
+            ua: "",
+            en: "",
+        }
+    },
+    svidanieVSlepuyu: {
+        log: {
+            ru: "",
+            ua: "",
+            en: "",
+        },
+        title: {
+            ru: "Свидание в слепую",
+            ua: "Побачення в сліпу",
+            en: "",
+        },
+        desciption: {
+            ru: "",
+            ua: "",
+            en: "",
+        }
+    },
+    zabivchivost: {
+        log: {
+            ru: "",
+            ua: "",
+            en: "",
+        },
+        title: {
+            ru: "Забывчивость",
+            ua: "Забудькуватість",
+            en: "",
+        },
+        desciption: {
+            ru: "",
+            ua: "",
+            en: "",
+        }
+    },
+    zarajenie: {
+        log: {
+            ru: "",
+            ua: "",
+            en: "",
+        },
+        title: {
+            ru: "Заражение",
+            ua: "Зараження",
+            en: "",
+        },
+        desciption: {
+            ru: "",
+            ua: "",
+            en: "",
+        }
+    },
+    nechto: {
+        log: {
+            ru: "",
+            ua: "",
+            en: "",
+        },
+        title: {
+            ru: "Нечто",
+            ua: "Щось",
+            en: "Something",
+        },
+        desciption: {
+            ru: "",
+            ua: "",
+            en: "",
+        }
+    }
 
 
 };
@@ -390,49 +628,49 @@ const knopki = {
             en: "play card",
         },
     },
-    skinutCartu:{
+    skinutCartu: {
         title: {
             ru: "скинуть карту",
             ua: "скинути карту",
             en: "discard",
         },
     },
-    goPanika:{
-        title:{
+    goPanika: {
+        title: {
             ru: "сыграть панику",
             ua: "грати паніку",
             en: "play panic",
         }
     },
-    ok:{
+    ok: {
         title: {
             ru: "ок",
             ua: "ок",
             en: "ok",
         },
     },
-    sest:{
+    sest: {
         title: {
             ru: "сесть",
             ua: "сісти",
             en: "join",
         },
     },
-    spektators:{
+    spektators: {
         title: {
             ru: "зрители",
             ua: "глядачі",
             en: "spectators",
         },
     },
-    panika:{
+    panika: {
         title: {
             ru: "паника",
             ua: "паніка",
             en: "panic",
         },
     },
-    pass:{
+    pass: {
         title: {
             ru: "пасс",
             ua: "пасувати",
