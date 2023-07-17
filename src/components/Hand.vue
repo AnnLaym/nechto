@@ -39,9 +39,6 @@ function dropCardClick() {
     if (service.selectedCard.value !== null)
         service.dropCard(service.selectedCard.value)
 }
-
-
-
 </script>
 
 <style scoped>

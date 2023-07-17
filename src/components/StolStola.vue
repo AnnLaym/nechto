@@ -13,9 +13,7 @@
             </div>
         </div>
         <div v-if="state.currentPanika" class="action">
-            <div>
-                <Card :card="state.currentCardPanik!" class="jopa" />
-            </div>
+            <Card :card="state.currentCardPanik!" class="jopa" />
         </div>
         <div class="knopkee">
             <div v-if="state.phase === 1 &&
@@ -40,7 +38,8 @@
                 <div>{{ getKnopkaName('ok') }}</div>
             </div>
             <div v-if="state.currentPanika &&
-                state.userSlot === state.currentPlayer" class="knopka">{{ getKnopkaName(`goPanika`) }}</div>
+                state.userSlot === state.currentPlayer" class="knopka" @click="service.panicAction">{{
+        getKnopkaName(`goPanika`) }}</div>
         </div>
         <div>
             <div v-if="state.chekCards?.length" class="uporstvo">

@@ -59,6 +59,7 @@ interface NechtoState {
     userSlot: Slot | null;
     umerSlots: Slot[];
     currentCardPanik: Card | null;
+    fullTimer: number;
 }
 
 declare const window: ReactAppWindow<NechtoState>;

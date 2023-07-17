@@ -1,5 +1,6 @@
 <template>
     <div class="bodyLog">
+        <div class="button" @click="clickLog()">X</div>
         <div v-for="message in state.gameLog">
             <div v-if="message.action && !message.panika" class="messageCard">
                 <span v-if="message.actors?.[0]" :style="{
@@ -39,6 +40,12 @@ import { getCardName, getCardLog, getActionLog, getKnopkaName } from '../log';
 import { useNechtoService, useNechtoState } from '../service';
 
 const state = useNechtoState()
+let isClossed = false;
+
+const clickLog = () => {
+    isClossed = !isClossed
+}
+
 const colors = [
     '#D58787',
     '#7A3434',
@@ -47,10 +54,9 @@ const colors = [
     '#D5C74A',
     '#769D70',
     '#29572B',
+    "#2D6E72",
     '#898989',
     '#2C3E7C',
-    '#543B89',
-    '#543B89',
     '#543B89',
     '#984B67'
 ]
@@ -69,12 +75,24 @@ const colors = [
     padding: 10px;
     margin-bottom: 50px;
 }
+
+.button {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    background-color: gray;
+}
+
 .messageCard {
     display: flex;
     flex-flow: row;
     justify-content: left;
     gap: 3px;
 }
+
 .podskazkaLoga {
     font-size: 16px;
     text-shadow: 0 0 3px black;

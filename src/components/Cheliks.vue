@@ -20,7 +20,13 @@
                 </div>
             </div>
         </div>
-        <img src="./avatars/1.png" class="kartinka">
+        <div>
+            <div class="kartinka">
+                <img src="./avatars/1.png" class="otdelnii">
+                <div :style="{ width: `${timerWidth}%` }" class="timerbar"
+                    v-if="state.currentPlayer === slot && state.timed"></div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -28,9 +34,30 @@
 import { Slot, useNechtoService, useNechtoState } from '../service';
 import { getCardName, getKnopkaName } from '../log';
 import { computed } from '@vue/reactivity';
+import { ref, watch } from 'vue';
 
 const service = useNechtoService()
 const state = useNechtoState()
+const timerWidth = computed(() => {
+    const time = state.value.time - timePassed.value
+    const percentage = (time / state.value.fullTimer) * 100;
+    return percentage >= 0 ? percentage : 0;
+})
+
+const timePassed = ref(0)
+
+let interval: number
+
+watch(state, () => {
+    clearInterval(interval);
+    timePassed.value = 0
+    if (state.value.time) { //TODO: paused and ..
+        interval = setInterval(() => {
+            timePassed.value += 1000
+        }, 1000)
+    }
+})
+
 
 function slotClick(index: number) {
     if (state.value.phase === 2)
@@ -59,6 +86,23 @@ defineProps<{
     height: 120px;
     padding: 4px;
     border-radius: 27px;
+    z-index: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+.otdelnii {
+    height: 100%;
+    object-fit: fill;
+    width: 100%;
+}
+
+.timerbar {
+    position: absolute;
+    height: 100%;
+    background-color: #0000007a;
+    transition: all 0.2s;
+    top: 4px;
 }
 
 .suka {
@@ -67,7 +111,6 @@ defineProps<{
     align-items: center;
     justify-content: center;
     gap: 10px;
-
 }
 
 .host-cntrols {

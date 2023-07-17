@@ -49,8 +49,8 @@ function init(wsServer, path) {
                 bigTimer: 60,
                 isObmenReady: false,
                 voting: false,
-                currentCardPanik: null
-
+                currentCardPanik: null,
+                fullTimer: 0
             };
             if (testMode)
                 [1, 2, 3, 4].forEach((_, ind) => {
@@ -215,6 +215,7 @@ function init(wsServer, path) {
                             } else {
 
                             }
+
                         }
                         else if (room.phase === 3)
                             room.time = room.bigTimer * 1000;
@@ -229,9 +230,9 @@ function init(wsServer, path) {
                                 };
                             }
                         }, 100);
+                        room.fullTimer = room.time
                         update()
                     }
-
                 },
                 resolvePassAction = () => {
                     const getRandomObmenCard = (slot) => {
@@ -662,7 +663,6 @@ function init(wsServer, path) {
                     state.deck.splice(0, 1).push(state.playerHand[slot])
                     deck.push(state.playerHand[slot][index])
                 }
-
             this.userJoin = userJoin;
             this.userLeft = userLeft;
             this.userEvent = userEvent;
@@ -894,7 +894,7 @@ function init(wsServer, path) {
                 },
                 "panic-action": (slot, target, index) => {
                     const card = room.currentPanika
-                    if (room.phase == 2 && card.type === 'panika' && room.playerHand[slot]) {
+                    if (room.phase == 2 && card.type === 'panika') {
                         if (card.id === 'iViEtoNazivaeteVecherinkoy') {
                             iViEtoNazivaeteVecherinkoyPanika()
                             PanikaiViEtoNazivaeteVecherinkoy()
