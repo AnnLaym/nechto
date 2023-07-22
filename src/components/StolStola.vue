@@ -20,7 +20,8 @@
                 state.currentPlayer === state.userSlot" @click="service.grabCard()" class="knopka">
                 {{ getKnopkaName('vzyatKartu') }}
             </div>
-            <div v-if="(state.phase === 2 || state.phase === 3) && state.target === state.userSlot"
+            <div v-if="(state.phase === 2 && state.target === state.userSlot)
+                || (state.target === state.userSlot && state.phase === 2 && state.isObmenReady)"
                 @click="service.resolveAction(service.selectedCard.value)" class="knopka">
                 {{ getKnopkaName("sigrat") }}</div>
             <div v-if="state.phase === 2 &&
@@ -38,8 +39,9 @@
                 <div>{{ getKnopkaName('ok') }}</div>
             </div>
             <div v-if="state.currentPanika &&
-                state.userSlot === state.currentPlayer" class="knopka" @click="service.panicAction">{{
-        getKnopkaName(`goPanika`) }}</div>
+                state.userSlot === state.currentPlayer" class="knopka"
+                @click=" service.panicAction(service.selectedCard.value, service.selectedTarget.value!)">{{
+                    getKnopkaName(`goPanika`) }}</div>
         </div>
         <div>
             <div v-if="state.chekCards?.length" class="uporstvo">
@@ -69,7 +71,6 @@ const state = useNechtoState()
 function uporstvoClick(index: number) {
     service.resolveAction(index)
 }
-
 
 
 

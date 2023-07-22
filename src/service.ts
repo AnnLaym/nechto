@@ -80,7 +80,7 @@ export function createNechtoService() {
         resolveAction: (index: number | null) => socket.emit("resolve-action", index),
         resolveObmen: (index: number) => socket.emit("resolve-obmen", index),
         resolvePassActin: () => socket.emit("resolve-pass-action"),
-        panicAction: (index: number, target: Slot) => socket.emit("panic-action", index, target),
+        panicAction: (index: number | null, target: Slot) => socket.emit("panic-action", target, index),
         startGame: () => socket.emit("start-game"),
         abortGame: () => socket.emit("abort-game"),
         playersJoin: (target: Slot) => socket.emit("players-join", target),

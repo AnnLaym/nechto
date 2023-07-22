@@ -30,7 +30,7 @@
                 <div v-if="message.card" class="podskazkaLoga"> ({{ getCardName(message.card.id) }})</div>
             </div>
             <div v-if="message.card && message.panika" class="messageCard" :style="{ color: '#C71585' }">
-                {{ getKnopkaName('panika') }} {{ message.card.id }}</div>
+                {{ getKnopkaName('panika') }} {{ getCardName(message.card.id) }}</div>
         </div>
     </div>
 </template>
