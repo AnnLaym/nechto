@@ -974,6 +974,31 @@ function init(wsServer, path) {
                     }
                     update();
                 },
+                "toggle-paused": (user) => {
+                    if (user === room.hostId) {
+                        room.paused = !room.paused;
+                        if (!room.paused && room.timeChanged) {
+                            room.timeChanged = false;
+                            startTimer();
+                        }
+                    }
+                    update();
+                },
+                "toggle-timed": (user) => {
+                    if (user === room.hostId) {
+                        room.timed = !room.timed;
+                        if (!room.timed) {
+                            room.paused = true;
+                            clearInterval(timerInterval);
+                        } else {
+                            if (room.phase !== "idle") {
+                                room.paused = false;
+                                startTimer();
+                            } else room.paused = true;
+                        }
+                    }
+                    update();
+                },
             };
         }
 

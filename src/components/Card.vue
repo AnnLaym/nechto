@@ -1,6 +1,9 @@
 <template>
     <div class="card" :class="{ selectedCard: selected }">
-        <div class="kartinka">
+        <div class="kartinka" :style="{
+            'background-image': `url(/nechto/cards/${card.type !== 'panika'
+                ? card.id : 'panika'}.png)`
+        }">
             <div class="name">{{ getCardName(card.id) }}</div>
             <div class="opisanie" v-if="selected">{{ getCardDescription(card.id) }}</div>
         </div>
@@ -22,9 +25,10 @@ defineProps<{
  
 <style scoped>
 .kartinka {
-    background-image: url(./cards/1.png);
+    /* background-image: url(cards/karantin.png) !important; */
     background-size: cover;
     flex: 1;
+    user-select: none;
 }
 
 .selectedCard {
@@ -45,4 +49,5 @@ defineProps<{
     padding: 5px;
     display: flex;
     justify-content: center;
-}</style>
+}
+</style>
