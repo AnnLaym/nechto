@@ -1,36 +1,38 @@
 <template>
-    <div class="bodyLog">
-        <div class="button" @click="clickLog()">X</div>
-        <div v-for="message in state.gameLog">
-            <div v-if="message.action && !message.panika" class="messageCard">
-                <span v-if="message.actors?.[0]" :style="{
-                    'color':
-                        colors[state.playerSlots.indexOf(message.actors?.[0])]
-                }">
-                    {{ state.playerNames[message.actors[0]] }}
-                </span>
-                <span> {{ getActionLog(message.action) }}</span>
-                <span v-if="message.actors?.[1]" :style="{
-                    'color':
-                        colors[state.playerSlots.indexOf(message.actors?.[1])]
-                }">
-                    {{ state.playerNames[message.actors[1]] }} </span>
+    <div class="button" @click="clickLog()">X</div>
+    <div v-if="isClossed">
+        <div class="bodyLog">
+            <div v-for="message in state.gameLog">
+                <div v-if="message.action && !message.panika" class="messageCard">
+                    <span v-if="message.actors?.[0]" :style="{
+                        'color':
+                            colors[state.playerSlots.indexOf(message.actors?.[0])]
+                    }">
+                        {{ state.playerNames[message.actors[0]] }}
+                    </span>
+                    <span> {{ getActionLog(message.action) }}</span>
+                    <span v-if="message.actors?.[1]" :style="{
+                        'color':
+                            colors[state.playerSlots.indexOf(message.actors?.[1])]
+                    }">
+                        {{ state.playerNames[message.actors[1]] }} </span>
+                </div>
+                <div v-else-if="message.card && !message.panika" class="messageCard">
+                    <span v-if="message.actors?.[0]" :style="{
+                        'color':
+                            colors[state.playerSlots.indexOf(message.actors?.[0])]
+                    }"> {{ state.playerNames[message.actors[0]] }} </span>
+                    <span> {{ getCardLog(message.card.id) }} </span>
+                    <span v-if="message.actors?.[1]" :style="{
+                        'color':
+                            colors[state.playerSlots.indexOf(message.actors?.[1])]
+                    }">
+                        {{ state.playerNames[message.actors[1]] }}</span>
+                    <div v-if="message.card" class="podskazkaLoga"> ({{ getCardName(message.card.id) }})</div>
+                </div>
+                <div v-if="message.card && message.panika" class="messageCard" :style="{ color: '#C71585' }">
+                    {{ getKnopkaName('panika') }} {{ getCardName(message.card.id) }}</div>
             </div>
-            <div v-else-if="message.card && !message.panika" class="messageCard">
-                <span v-if="message.actors?.[0]" :style="{
-                    'color':
-                        colors[state.playerSlots.indexOf(message.actors?.[0])]
-                }"> {{ state.playerNames[message.actors[0]] }} </span>
-                <span> {{ getCardLog(message.card.id) }} </span>
-                <span v-if="message.actors?.[1]" :style="{
-                    'color':
-                        colors[state.playerSlots.indexOf(message.actors?.[1])]
-                }">
-                    {{ state.playerNames[message.actors[1]] }}</span>
-                <div v-if="message.card" class="podskazkaLoga"> ({{ getCardName(message.card.id) }})</div>
-            </div>
-            <div v-if="message.card && message.panika" class="messageCard" :style="{ color: '#C71585' }">
-                {{ getKnopkaName('panika') }} {{ getCardName(message.card.id) }}</div>
         </div>
     </div>
 </template>
@@ -40,7 +42,7 @@ import { getCardName, getCardLog, getActionLog, getKnopkaName } from '../log';
 import { useNechtoService, useNechtoState } from '../service';
 
 const state = useNechtoState()
-let isClossed = false;
+var isClossed: boolean = true;
 
 const clickLog = () => {
     isClossed = !isClossed
@@ -78,8 +80,8 @@ const colors = [
 
 .button {
     position: absolute;
-    right: 0px;
-    top: 0px;
+    bottom: 10px;
+    right: 10px;
     width: 30px;
     height: 30px;
     cursor: pointer;

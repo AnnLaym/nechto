@@ -80,7 +80,8 @@ export function createNechtoService() {
         resolveAction: (index: number | null) => socket.emit("resolve-action", index),
         resolveObmen: (index: number) => socket.emit("resolve-obmen", index),
         resolvePassActin: () => socket.emit("resolve-pass-action"),
-        panicAction: (index: number | null, target: Slot) => socket.emit("panic-action", target, index),
+        panicAction: (index: number | null, target: Slot | null, index1?: number | null, index2?: number | null, index3?: number | null) =>
+            socket.emit("panic-action", target, index, index1, index2, index3),
         startGame: () => socket.emit("start-game"),
         abortGame: () => socket.emit("abort-game"),
         playersJoin: (target: Slot) => socket.emit("players-join", target),
@@ -92,7 +93,11 @@ export function createNechtoService() {
         startWithNechto: () => socket.emit('start-with-nechto'),
         selectedCard: ref<number | null>(null),
         selectedTarget: ref<Slot | null>(null),
-        changeName: (name: string) => socket.emit('change-name', name)
+        selectedZabivchivost1: ref<Slot | null>(null),
+        selectedZabivchivost2: ref<Slot | null>(null),
+        selectedZabivchivost3: ref<Slot | null>(null),
+        changeName: (name: string) => socket.emit('change-name', name),
+        soblaznResolve: (index: number) => socket.emit("resolve-soblazn", index)
     };
 }
 

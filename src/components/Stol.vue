@@ -49,7 +49,7 @@ const activeSlots = computed(() => {
         return {
             top: slots.splice(0, 2),
             right: slots.splice(0, 1),
-            bottom: slots.splice(0, 2).reverse,
+            bottom: slots.splice(0, 2).reverse(),
             left: slots.splice(0, 1),
         }
     } else if (slots.length === 7) {

@@ -530,10 +530,8 @@ function init(wsServer, path) {
                         room.spectators.add(user);
                     room.onlinePlayers.add(user);
                     room.playerNames[user] = data.userName.substr && data.userName.substr(0, 60);
-                    console.log("hui")
                     update();
                     updateState()
-                    console.log("hui2")
                 },
                 userLeft = (user) => {
                     room.onlinePlayers.delete(user);
@@ -554,7 +552,7 @@ function init(wsServer, path) {
                         if (this.userEventHandlers[event])
                             this.userEventHandlers[event](user, data[0], data[1], data[2], data[3]);
                         else if (this.slotEventHandlers[event] && ~room.playerSlots.indexOf(user))
-                            this.slotEventHandlers[event](room.playerSlots.indexOf(user), data[0], data[1], data[2], data[3]);
+                            this.slotEventHandlers[event](room.playerSlots.indexOf(user), data[0], data[1], data[2], data[3], data[4]);
                     } catch (error) {
                         console.error(error);
                         registry.log(error.message);
@@ -670,10 +668,31 @@ function init(wsServer, path) {
                 },
                 svidanieVSlepuyuPanika = (slot, index) => {
                     const kek = state.deck.splice(0, 1)
-                    room.deck.push(state.playerHand[slot][index]) //FIXME: .push fix
+                    state.deck.push(state.playerHand[slot][index])
                     state.playerHand[slot].push(kek)
                     room.currentPanika = null
                     endRound()
+                },
+                zabivchivostPanika = (slot, index1, index2, index3) => {
+                    if (slot === room.currentPlayer &&
+                        [index1, index2, index3].every((ind) => ind >= 0 && ind <= 4
+                            && state.playerHand[slot][ind].id !== "nechto")
+                        && new Set([index1, index2, index3]).size == 3) {
+                        state.discard.push(state.playerHand[slot][index1])
+                        state.discard.push(state.playerHand[slot][index2])
+                        state.discard.push(state.playerHand[slot][index3])
+                        delete state.playerHand[slot][index1]
+                        delete state.playerHand[slot][index2]
+                        delete state.playerHand[slot][index3]
+                        state.playerHand[slot].push(dealNewCard())
+                        state.playerHand[slot].push(dealNewCard())
+                        state.playerHand[slot].push(dealNewCard())
+                        //FIXME: big ist hier state.playerHand[slot][456 instead of 123]
+                        room.currentCardPanik = null
+                        update()
+                        updateState()
+                        startObmen()
+                    }
                 }
             this.userJoin = userJoin;
             this.userLeft = userLeft;
@@ -723,6 +742,7 @@ function init(wsServer, path) {
                                         room.target = target
                                         sigrat()
                                         logs()
+                                        update()
                                     }
                                 }
                             } else if (card.target === 'sosed' &&
@@ -847,6 +867,8 @@ function init(wsServer, path) {
                                     logsOne()
                                     state.showCard[room.currentPlayer] = [state.playerHand[room.target][state.obmenCardIndex]]
                                     room.action = 'strah'
+                                    update()
+                                    updateState()
                                 } else if (card.id === 'netUjSpasibo') {
                                     logsOne()
                                     sigrat()
@@ -857,6 +879,7 @@ function init(wsServer, path) {
                     } else if (slot === room.currentPlayer && room.action === 'soblazn') {
                         state.obmenCardIndex = index;
                         room.isObmenReady = true;
+                        update()
                     } else if (room.action === 'uporstvo') {
                         if (slot == room.currentPlayer && index >= 0 && index < 3) {
                             let nechtoIndex = state.uporstvoCards.findIndex(c => c.id === 'nechto')
@@ -881,6 +904,12 @@ function init(wsServer, path) {
                             updateState()
                         }
                     }
+
+                },
+                "resolve-soblazn": (slot, index) => {
+                    if (slot === room.target && index >= 0 && index < 4 && room.action === 'soblazn' && room.isObmenReady && obmenChekZarajeniy(slot, index)) {
+                        obmenProcces(index)
+                    }
                 },
                 "resolve-obmen": (slot, index) => {
                     if (slot === room.target && index >= 0 && index < 4) {
@@ -904,7 +933,7 @@ function init(wsServer, path) {
                         resolvePassAction()
                     }
                 },
-                "panic-action": (slot, target, index) => {
+                "panic-action": (slot, target, index, index1, index2, index3) => {
                     const card = room.currentPanika
                     room.target = target
                     if (room.phase == 2 && card.type === 'panika') {
@@ -931,7 +960,7 @@ function init(wsServer, path) {
                             //TODO: НЕ ДЕЛАЮ ХУЙНЮ
                         } else if (card.id === 'tsepnayaReaksia') {
                             if (target !== null) //FIXME: bug ist hier
-                                tsepnayaReaksiaPanika(slot, target) //TODO: mb bug tut (index|target)
+                                tsepnayaReaksiaPanika(slot, target)
                         } else if (card.id === 'triChetyre') {
                             triChetyrePanika()
                         } else if (card.id === 'uups') {
@@ -940,7 +969,7 @@ function init(wsServer, path) {
                             if (index !== null)
                                 svidanieVSlepuyuPanika(slot, target)
                         } else if (card.id === 'zabivchivost') {
-                            //TODO: fix me
+                            zabivchivostPanika(slot, index1, index2, index3)
                         }
                     }
                 }

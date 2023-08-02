@@ -12,7 +12,10 @@
                         <div @click="dropCardClick()"> {{ getKnopkaName('skinutCartu') }} </div>
                     </div>
                 </div>
-                <Card :card="card" :selected="service.selectedCard.value == index" />
+                <Card :card="card" :selected="service.selectedCard.value == index ||
+                    service.selectedZabivchivost1.value == index ||
+                    service.selectedZabivchivost2.value == index ||
+                    service.selectedZabivchivost3.value == index" />
             </div>
         </div>
     </div>
@@ -27,7 +30,25 @@ const service = useNechtoService()
 const state = useNechtoState()
 
 function cardClick(index: number) {
-    service.selectedCard.value = service.selectedCard.value === index ? null : index
+    if (state.value.currentPanika!.id !== "zabivchivost") {
+        service.selectedCard.value = service.selectedCard.value === index ? null : index;
+    } else {
+        if (service.selectedZabivchivost1.value === index) {
+            service.selectedZabivchivost1.value = null;
+        } else if (service.selectedZabivchivost2.value === index) {
+            service.selectedZabivchivost2.value = null;
+        } else if (service.selectedZabivchivost3.value === index) {
+            service.selectedZabivchivost3.value = null;
+        } else {
+            if (service.selectedZabivchivost1.value === null) {
+                service.selectedZabivchivost1.value = index;
+            } else if (service.selectedZabivchivost2.value === null) {
+                service.selectedZabivchivost2.value = index;
+            } else if (service.selectedZabivchivost3.value === null) {
+                service.selectedZabivchivost3.value = index;
+            }
+        }
+    }
 }
 
 function playCardClick() {
@@ -55,7 +76,8 @@ function dropCardClick() {
     left: 0px;
     margin-bottom: 30px;
 }
-.dveKnopki{
+
+.dveKnopki {
     display: flex;
     flex-flow: row;
     gap: 10px;
