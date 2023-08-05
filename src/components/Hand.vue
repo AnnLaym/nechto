@@ -69,7 +69,7 @@ function dropCardClick() {
     align-items: center;
     justify-content: center;
     height: 100px;
-    gap: 10px;
+    gap: 4px;
     position: fixed;
     bottom: 0;
     width: 100%;

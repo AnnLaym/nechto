@@ -72,9 +72,9 @@
                 </div>
             </div>
         </div>
-        <div>{{ service.selectedZabivchivost1.value}}</div>
-        <div>{{ service.selectedZabivchivost2.value}}</div>
-        <div>{{ service.selectedZabivchivost3.value}}</div>
+        <div>{{ service.selectedZabivchivost1.value }}</div>
+        <div>{{ service.selectedZabivchivost2.value }}</div>
+        <div>{{ service.selectedZabivchivost3.value }}</div>
     </div>
 </template>
 
@@ -93,8 +93,11 @@ function uporstvoClick(index: number) {
 }
 
 function ZabivchivostClick() {
-    service.panicAction(null, null, service.selectedZabivchivost1.value, service.selectedZabivchivost2.value,
-        service.selectedZabivchivost3.value)
+    service.panicAction(null, null, service.selectedZabivchivost1.value, service.selectedZabivchivost2.value, service.selectedZabivchivost3.value);
+    service.selectedZabivchivost1.value = null;
+    service.selectedZabivchivost2.value = null;
+    service.selectedZabivchivost3.value = null;
+
 }
 
 </script>

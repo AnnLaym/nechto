@@ -661,6 +661,7 @@ function init(wsServer, path) {
                     if (obmenChekZarajeniy(slot, index)) {
                         state.tsepnayaReaksiaObmenKard[slot] = index
                         room.readyPlayers[slot] = true
+                        //TODO: all ready
                         if (isAllPlayersReady()) {
                             startTsepnayaReaksia()
                         }
@@ -681,14 +682,15 @@ function init(wsServer, path) {
                         state.discard.push(state.playerHand[slot][index1])
                         state.discard.push(state.playerHand[slot][index2])
                         state.discard.push(state.playerHand[slot][index3])
-                        delete state.playerHand[slot][index1]
-                        delete state.playerHand[slot][index2]
-                        delete state.playerHand[slot][index3]
+                        const sortedIndices = [index1, index2, index3].sort((a, b) => a - b);
+                        state.playerHand[slot].splice(sortedIndices[2], 1)
+                        state.playerHand[slot].splice(sortedIndices[1], 1)
+                        state.playerHand[slot].splice(sortedIndices[0], 1)
                         state.playerHand[slot].push(dealNewCard())
                         state.playerHand[slot].push(dealNewCard())
                         state.playerHand[slot].push(dealNewCard())
-                        //FIXME: big ist hier state.playerHand[slot][456 instead of 123]
                         room.currentCardPanik = null
+                        room.currentPanika = null 
                         update()
                         updateState()
                         startObmen()

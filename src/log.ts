@@ -1,5 +1,5 @@
 import { CardId } from "./service";
-const lang = "ru"
+const lang = "en"
 
 export function getCardName(cardId: CardId) {
     return cardsData[cardId]?.title[lang] ?? cardId
