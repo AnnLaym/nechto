@@ -85,7 +85,7 @@ body.dark-theme {
     color: var(--text-color);
     padding-top: 10px;
     place-items: start;
-    background: url(../components/img/fon.png);
+    background: url(../components/img/newFon.png);
     background-size: contain;
     background-repeat: no-repeat;
 }

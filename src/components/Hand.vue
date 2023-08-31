@@ -30,7 +30,8 @@ const service = useNechtoService()
 const state = useNechtoState()
 
 function cardClick(index: number) {
-    if (state.value.currentPanika!.id !== "zabivchivost") {
+    if ((state.value.currentPanika && state.value.currentPanika.id !== "zabivchivost")
+        || !(state.value.currentPanika)) {
         service.selectedCard.value = service.selectedCard.value === index ? null : index;
     } else {
         if (service.selectedZabivchivost1.value === index) {
@@ -90,6 +91,7 @@ function dropCardClick() {
     background-color: green;
     border: 1;
     color: black;
+    top: 60px
 }
 
 .selected {

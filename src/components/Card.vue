@@ -33,9 +33,20 @@ defineProps<{
 }
 
 @font-face {
+    font-family: "matToni3";
+    /* Название вашего кастомного шрифта */
+    src: url("/src/shrifty/BebasNeue Bold.otf") format("opentype");
+}
+@font-face {
+    font-family: "matToni5";
+    /* Название вашего кастомного шрифта */
+    src: url("/src/shrifty/Bebas_Neue_Cyrillic.ttf");
+}
+
+@font-face {
     font-family: 'matToni2';
-    src: url("./src/shrifty/HeadingPro-Regular.woff2") format("woff2"),
-        url("./src/shrifty/HeadingPro-Regular.woff") format("woff");
+    src: url("/src/shrifty/HeadingPro-Regular.woff2") format("woff2"),
+        url("/src/shrifty/HeadingPro-Regular.woff") format("woff");
 }
 
 .kartinka {
@@ -45,9 +56,9 @@ defineProps<{
     user-select: none;
 }
 
-.selectedCard {
-    height: 200px;
-    width: 150px;
+.card.selectedCard {
+   zoom: 1.5;
+   margin-top: -50;
 }
 
 .podkladka {
@@ -60,14 +71,13 @@ defineProps<{
 
 .name {
     font-size: 25px;
-    background: linear-gradient(to top, #b3e55e 0%, #b3e55e 33.33%, #ffffff 33.33%, #ffffff 100%);
+    background: repeating-linear-gradient(to top, #8fbd82, white, white);
     -webkit-background-clip: text;
     transition: background 0.5s ease;
     background-clip: text;
     color: transparent;
-    font-family: matToni;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    white-space: nowrap;
+    font-family: matToni5;
+    filter: drop-shadow(2px 4px 6px black);
 }
 
 .opisanie {
