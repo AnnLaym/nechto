@@ -82,6 +82,15 @@ function dropCardClick() {
     display: flex;
     flex-flow: row;
     gap: 10px;
+    top: -80px;
+    position: relative;
+    font-size: 16px;
+    justify-content: center;
+    height: 50px;
+}
+
+.dveKnopki div:nth-child(2) {
+    background: red;
 }
 
 .knopki {

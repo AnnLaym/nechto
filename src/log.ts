@@ -1,20 +1,20 @@
-import { CardId } from "./service";
-const lang = "ua"
+import { Ref } from "vue";
+import { CardId, UserLang, userLang } from "./service";
 
 export function getCardName(cardId: CardId) {
-    return cardsData[cardId]?.title[lang] ?? cardId
+    return cardsData[cardId]?.title[userLang.value] ?? cardId
 }
 export function getCardDescription(cardId: CardId) {
-    return cardsData[cardId]?.desciption[lang] ?? ""
+    return cardsData[cardId]?.desciption[userLang.value] ?? ""
 }
-export function getKnopkaName(KnopkaId: keyof typeof knopki) {
-    return knopki[KnopkaId]?.title[lang] ?? KnopkaId
+export function getKnopkaName(knopkaId: keyof typeof knopki) {
+    return knopki[knopkaId]?.title[userLang.value]
 }
 export function getCardLog(cardId: CardId) {
-    return cardsData[cardId]?.log[lang] ?? cardId
+    return cardsData[cardId]?.log[userLang.value] ?? cardId
 }
 export function getActionLog(action: keyof typeof actionsData) {
-    return actionsData[action]?.log[lang] ?? action
+    return actionsData[action]?.log[userLang.value] ?? action
 }
 
 type PartialRecord<K extends keyof any, T> = {
@@ -29,7 +29,7 @@ interface ActionMetaData {
     log: PartialRecord<string, string>;
 }
 interface KnopkaMetaData {
-    title: PartialRecord<string, string>;
+    title: PartialRecord<any, any>;
 }
 const cardsData: PartialRecord<CardId, CardMetaData> = {
     ognemet: {
@@ -623,15 +623,15 @@ const knopki = {
     },
     sigratCartu: {
         title: {
-            ru: "сыграть карту",
-            ua: "зіграти карту",
+            ru: "сыграть",
+            ua: "зіграти",
             en: "play card",
         },
     },
     skinutCartu: {
         title: {
-            ru: "скинуть карту",
-            ua: "скинути карту",
+            ru: "скинуть",
+            ua: "скинути",
             en: "discard",
         },
     },

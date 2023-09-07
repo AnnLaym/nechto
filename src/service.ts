@@ -1,4 +1,4 @@
-import { ref, watch } from 'vue';
+import { Ref, ref, watch } from 'vue';
 import { processWrappedRequest, ReactAppWindow, requestWrap, SocketWrappedRequestResult } from './react-common';
 
 
@@ -69,6 +69,25 @@ export function useNechtoService() {
         nechtoService = createNechtoService()
     return nechtoService
 }
+export type UserLang = 'ua' | 'ru' | 'en';
+export const userLang: Ref<UserLang> = ref('ua')
+
+export function toggleLanguage1() {
+  switch (userLang.value) {
+    case 'ua':
+      userLang.value = 'ru';
+      break;
+    case 'ru':
+      userLang.value = 'en';
+      break;
+    case 'en':
+      userLang.value = 'ua';
+      break;
+    default:
+      break;
+  }
+}
+
 
 export function createNechtoService() {
     const socket = window.socket.of(GAME_CHANNEL);
