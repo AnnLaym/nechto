@@ -20,7 +20,7 @@
                 class="knopka">
                 {{ getKnopkaName('vzyatKartu') }}
             </div>
-            <div v-if="(state.phase === 2 && state.target === state.userSlot)
+            <div v-if="(state.phase === 2 && state.target === state.userSlot && state.showAllHand?.length == 0 )
                 || (state.target === state.userSlot && state.phase === 2 && state.isObmenReady
                     && (state.action === 'ognemet' || state.action === 'menyaemsyaMestami'
                         || state.action === 'smaivayUdochki'))"
