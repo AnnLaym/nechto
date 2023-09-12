@@ -14,7 +14,7 @@ function init(wsServer, path) {
         testMode = true
 
     app.use("/nechto", wsServer.static(`${__dirname}/dist`));
-    registry.handleAppPage(path, `${__dirname}/dist/index.html`, `${__dirname}/dist/manifest.json`, '/necto/');
+    registry.handleAppPage(path, `${__dirname}/dist/index.html`, `${__dirname}/dist/manifest.json`, '/nechto/');
 
     class GameState extends wsServer.users.RoomState {
         constructor(hostId, hostData, userRegistry, registry) {
