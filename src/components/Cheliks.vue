@@ -49,10 +49,10 @@ const timePassed = ref(0)
 let interval: number
 
 watch(state, () => {
-    clearInterval(interval);
+    window.clearInterval(interval);
     timePassed.value = 0
     if (state.value.time) { //TODO: paused and ..
-        interval = setInterval(() => {
+        interval = window.setInterval(() => {
             timePassed.value += 1000
         }, 1000)
     }
