@@ -23,9 +23,5 @@
     "typescript": "^4.9.3",
     "vite": "^4.2.0",
     "vue-tsc": "^1.2.0"
-  },
-  "files": [
-    "module.js",
-    "public"
-  ]
+  }
 }
