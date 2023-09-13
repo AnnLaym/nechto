@@ -8,7 +8,7 @@
                 </div>
                 <div>
                     <img src="./cards/4.png" class="deka">
-                    <div>Diskard: {{ state.discardSize }}</div>
+                    <div>Discard: {{ state.discardSize }}</div>
                 </div>
             </div>
         </div>
@@ -20,7 +20,7 @@
                 class="knopka">
                 {{ getKnopkaName('vzyatKartu') }}
             </div>
-            <div v-if="(state.phase === 2 && state.target === state.userSlot && state.showAllHand?.length == 0 )
+            <div v-if="(state.phase === 2 && state.target === state.userSlot && state.showAllHand?.length == 0)
                 || (state.target === state.userSlot && state.phase === 2 && state.isObmenReady
                     && (state.action === 'ognemet' || state.action === 'menyaemsyaMestami'
                         || state.action === 'smaivayUdochki'))"
@@ -50,15 +50,13 @@
                 state.phase == 2" class="knopka" @click="service.resolvePassActin()">
                 <div>{{ getKnopkaName('ok') }}</div>
             </div>
-            <div v-if="state.currentPanika
-                && state.userSlot === state.currentPlayer
+            <div v-if="state.currentPanika && state.userSlot === state.currentPlayer
                 && state.currentPanika.id !== 'zabivchivost'" class="knopka"
                 @click=" service.panicAction(service.selectedCard.value, service.selectedTarget.value!)">{{
                     getKnopkaName(`goPanika`) }}</div>
-            <div v-if="state.currentPanika
-                && state.userSlot === state.currentPlayer
+            <div v-if="state.currentPanika && state.userSlot === state.currentPlayer
                 && state.currentPanika.id == 'zabivchivost'" class="knopka" @click="ZabivchivostClick()"> {{
-        getKnopkaName(`goPanika`) }} хуй</div>
+        getKnopkaName(`goPanika`) }}</div>
         </div>
         <div>
             <div v-if="state.chekCards?.length" class="uporstvo">
@@ -141,8 +139,8 @@ function ZabivchivostClick() {
 }
 
 .jopa {
-    height: 100px;
-    width: 100px;
+    height: 150px;
+    width: 90px;
 }
 
 .deki {

@@ -11,7 +11,7 @@ function init(wsServer, path) {
         //utils = require('./utils.cjs'),
         channel = "citadels",
         //testMode = process.argv[2] === "debug";
-        testMode = true
+        testMode = false
 
     app.use("/nechto", wsServer.static(`${__dirname}/dist`));
     registry.handleAppPage(path, `${__dirname}/dist/index.html`, `${__dirname}/dist/manifest.json`, '/nechto/');
@@ -162,11 +162,12 @@ function init(wsServer, path) {
                         room.playerHand = {};
                         room.teamsLocked = true;
                         room.currentPanika = null;
-                        //room.currentPlayer = shuffleArray(room.playerSlots.map((it, index) => index).filter(inx => room.playerSlots[inx]))[0]
+                        room.currentPlayer = shuffleArray(room.playerSlots.map((it, index) => index).filter(inx => room.playerSlots[inx]))[0]
                         state.zarajennie = [];
-                        room.currentPlayer = 4
+                        //room.currentPlayer = 4
                         room.gameLog = [];
                         state.showCard = {};
+                        state.discard = [];
                         room.gameLog.push({ action: 'start-game' })
                         state.nechto = null;
                         room.action = null;
@@ -278,7 +279,6 @@ function init(wsServer, path) {
                             state.showCard = {}
                             endRound()
                         }
-
                         if (room.currentPanika === 'tsepnayaReaksia') {
                             Object.Keys(state.playerHand).forEach(slot => {
                                 if (!room.readyPlayers[slot]) {
@@ -337,9 +337,9 @@ function init(wsServer, path) {
                         const cardInd = state.playerHand[room.currentPlayer].indexOf(card)
                         state.discard.push(state.playerHand[room.currentPlayer].splice(cardInd, 1));
                         room.gameLog.push({ action: 'drop-card', actors: [room.playerSlots[room.currentPlayer]] })
-                        startObmen()
                         update()
                         updateState()
+                        startObmen()
                     }
                 },
                 startTsepnayaReaksia = () => {
@@ -690,7 +690,7 @@ function init(wsServer, path) {
                         state.playerHand[slot].push(dealNewCard())
                         state.playerHand[slot].push(dealNewCard())
                         room.currentCardPanik = null
-                        room.currentPanika = null 
+                        room.currentPanika = null
                         update()
                         updateState()
                         startObmen()
@@ -744,6 +744,7 @@ function init(wsServer, path) {
                                         room.target = target
                                         sigrat()
                                         logs()
+                                        updateState()
                                         update()
                                     }
                                 }

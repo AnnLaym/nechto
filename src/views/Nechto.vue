@@ -93,6 +93,6 @@ body.dark-theme {
     place-items: start;
     background: url(../components/img/newFon.png);
     background-size: contain;
-    background-repeat: no-repeat;
+    background-repeat: repeat;
 }
 </style>

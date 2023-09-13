@@ -22,7 +22,7 @@
         </div>
         <div>
             <div class="kartinka">
-                <img src="./avatars/1.png" class="otdelnii">
+                <img src="./avatars/avatar1.png" class="otdelnii">
                 <div :style="{ width: `${timerWidth}%` }" class="timerbar"
                     v-if="state.currentPlayer === slot && state.timed"></div>
             </div>

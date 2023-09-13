@@ -333,7 +333,7 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "",
         },
         desciption: {
-            ru: "",
+            ru: "Все сыгранные карты 'карантин' и 'заколоченная дверь' сбрасываются. Затем начиная с Вас и по часовой стрелке все игроки парами меянются местами.",
             ua: "",
             en: "",
         }
@@ -350,7 +350,7 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "",
         },
         desciption: {
-            ru: "",
+            ru: "Поменяйтесь с третьим игроком слева или справа (по вашему выбору). Если игрок на карантине - смены мест не происходит.",
             ua: "",
             en: "",
         }
@@ -367,7 +367,7 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "",
         },
         desciption: {
-            ru: "",
+            ru: "Поменяйтесь местами с любым игроком (по вашему выбору), если он не на карантине",
             ua: "",
             en: "",
         }
@@ -384,7 +384,7 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "",
         },
         desciption: {
-            ru: "",
+            ru: "Все сыгранные карты 'Карантин' сбрасываются",
             ua: "",
             en: "",
         }
@@ -401,7 +401,7 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "",
         },
         desciption: {
-            ru: "",
+            ru: "Покажите карты на руке соседнему игроку по вашему выбору",
             ua: "",
             en: "",
         }
@@ -418,7 +418,7 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "",
         },
         desciption: {
-            ru: "",
+            ru: "Поменяйтесь 1 картой с любым игроком (по вашему выбору), если он не на карантине",
             ua: "",
             en: "",
         }
@@ -435,7 +435,7 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "",
         },
         desciption: {
-            ru: "",
+            ru: "хуета не работает, рестартите игру",
             ua: "",
             en: "",
         }
@@ -452,7 +452,7 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "",
         },
         desciption: {
-            ru: "",
+            ru: "Каждый игрок одновременно с остальными отдает 1 карту следующему по порядку хода игроку, игнорируя все сыгранные карты 'Карантин' и 'Заколоченная дверь'. Нечто может заразить передав 'Заражение'. от обмена отказаться невозможно. Ваш ход заканчивается.",
             ua: "",
             en: "",
         }
@@ -469,7 +469,7 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "",
         },
         desciption: {
-            ru: "",
+            ru: "Все карты 'Заколоченная дверь' сбрасываются",
             ua: "",
             en: "",
         }
@@ -486,7 +486,7 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "",
         },
         desciption: {
-            ru: "",
+            ru: "Покажите все карты на руке другим игрокам",
             ua: "",
             en: "",
         }
@@ -503,7 +503,7 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "",
         },
         desciption: {
-            ru: "",
+            ru: "Поменяйте одну карту с руки на на карту общей колоды. Ваш ход заканчивается.",
             ua: "",
             en: "",
         }
@@ -520,7 +520,7 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "",
         },
         desciption: {
-            ru: "",
+            ru: "Сбросьте 3 карты с руки и возьмите 3 новые карты",
             ua: "",
             en: "",
         }
@@ -566,7 +566,7 @@ const actionsData: Record<string, ActionMetaData> = {
     'drop-card': {
         log: {
             ru: "сбрасывает карту",
-            ua: "",
+            ua: "скидує карту",
             en: "discards",
         },
     },

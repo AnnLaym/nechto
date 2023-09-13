@@ -8,6 +8,9 @@
             <div v-if="selected" class="podkladka">
                 <div class="opisanie" v-if="selected">{{ getCardDescription(card.id) }}</div>
             </div>
+            <div v-if="card.type == 'panika'" class="podkladka">
+                <div class="opisanie">{{ getCardDescription(card.id) }}</div>
+            </div>
         </div>
     </div>
 </template>
@@ -37,6 +40,7 @@ defineProps<{
     /* Название вашего кастомного шрифта */
     src: url("/src/shrifty/BebasNeue Bold.otf") format("opentype");
 }
+
 @font-face {
     font-family: "matToni5";
     /* Название вашего кастомного шрифта */
@@ -57,8 +61,8 @@ defineProps<{
 }
 
 .card.selectedCard {
-   zoom: 1.5;
-   margin-top: -50;
+    zoom: 1.5;
+    margin-top: -50;
 }
 
 .podkladka {
@@ -78,6 +82,7 @@ defineProps<{
     color: transparent;
     font-family: matToni5;
     filter: drop-shadow(2px 4px 6px black);
+    
 }
 
 .opisanie {
