@@ -515,8 +515,8 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "",
         },
         title: {
-            ru: "Забывчивость",
-            ua: "Забудькуватість",
+            ru: "Забыв- чивость",
+            ua: "Забудьку- ватість",
             en: "",
         },
         desciption: {

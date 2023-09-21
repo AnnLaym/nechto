@@ -20,6 +20,25 @@
 </script>
 
 <style scoped>
+.top{
+    display: flex;
+    justify-content: space-between;
+    flex-basis: 100px !important
+}
+.top-left{
+    background-image: url(./img/1.png);
+}
+.top-mid{
+    background-image: url(./img/2.png);
+    background-repeat: repeat-x !important;
+    max-width: 100% !important;
+    background-size: inherit !important;
+}
+.top-right{
+    background-image: url(./img/3.png);
+    background-position: right;
+    background-position: top;
+}
 .center-left{
     background-image: url(./img/4.png);
 }
@@ -30,6 +49,7 @@
 .bottom-left{
     background-image: url(./img/6.png);
     background-position: bottom;
+    background-position: left;
 }
 .bottom-right{
     background-image: url(./img/7.png);

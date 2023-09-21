@@ -82,6 +82,7 @@ function dropCardClick() {
     width: 100%;
     left: 0px;
     margin-bottom: 30px;
+    z-index: 1;
 }
 
 .dveKnopki {

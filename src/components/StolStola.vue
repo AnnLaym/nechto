@@ -2,13 +2,11 @@
     <div class="stol">
         <div class="top">
             <div class="deki">
-                <div>
-                    <img src="./cards/1.png" class="deka">
-                    <div>Deck: {{ state.deckSize }}</div>
+                <div :style="{ 'background-image': `url(/nechto/cards/1.png)` }" class="deka">
+                    <div class="deka-count">{{ state.deckSize }}</div>
                 </div>
-                <div>
-                    <img src="./cards/4.png" class="deka">
-                    <div>Discard: {{ state.discardSize }}</div>
+                <div :style="{ 'background-image': `url(/nechto/cards/4.png)` }" class="deka">
+                    <div class="deka-count">{{ state.discardSize }}</div>
                 </div>
             </div>
         </div>
@@ -70,9 +68,6 @@
                 </div>
             </div>
         </div>
-        <div>{{ service.selectedZabivchivost1.value }}</div>
-        <div>{{ service.selectedZabivchivost2.value }}</div>
-        <div>{{ service.selectedZabivchivost3.value }}</div>
     </div>
 </template>
 
@@ -106,6 +101,7 @@ function ZabivchivostClick() {
     /* Название вашего кастомного шрифта */
     src: url("/src/shrifty/Montserrat-Regular.ttf");
 }
+
 .stol {
     width: 750px;
     background-image: url(./img/stol69.png);
@@ -132,16 +128,16 @@ function ZabivchivostClick() {
 .knopkee {
     justify-content: center;
     display: flex;
-    bottom: -114px;
     position: relative;
-
     gap: 10px;
+    height: 24%;
 }
 
 .action {
-    left: 0px;
-    width: 50px;
-    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50%;
 }
 
 .jopa {
@@ -165,10 +161,16 @@ function ZabivchivostClick() {
 
 .top {
     margin-top: 10px;
+    height: 24%;
 }
 
 .deka {
     width: 50px;
     height: 70px;
+    background-size: cover;
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 </style>

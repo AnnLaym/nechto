@@ -79,9 +79,11 @@ const colors = [
     width: 300px;
     bottom: 0px;
     background-color: black;
+    opacity: 70%;
     padding: 10px;
     margin-bottom: 50px;
     font-family: matToni1234;
+    z-index: 1;
 }
 
 .button {

@@ -1,12 +1,12 @@
 <template>
-    <div class="card" :class="{ selectedCard: selected }">
+    <div class="card" :class="{ selectedCard: selected && !zoomed, zoomed }" @mousedown="mouseDaun()">
         <div class="kartinka" :style="{
             'background-image': `url(/nechto/cards/${card.type !== 'panika'
                 ? card.id : 'panika'}.png)`
         }">
             <div class="name">{{ getCardName(card.id).toUpperCase() }}</div>
-            <div v-if="selected" class="podkladka">
-                <div class="opisanie" v-if="selected">{{ getCardDescription(card.id) }}</div>
+            <div v-if="selected || zoomed" class="podkladka">
+                <div class="opisanie" v-if="selected || zoomed">{{ getCardDescription(card.id) }}</div>
             </div>
             <div v-if="card.type == 'panika'" class="podkladka">
                 <div class="opisanie">{{ getCardDescription(card.id) }}</div>
@@ -16,11 +16,25 @@
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue';
 import { getCardName, getKnopkaName, getCardDescription } from '../log';
 import { Card, useNechtoService, useNechtoState } from '../service';
 
 const service = useNechtoService()
 const state = useNechtoState()
+const zoomed = ref(false)
+let cardTimer: number
+
+window.addEventListener('mouseup', () => {
+    zoomed.value = false;
+    clearTimeout(cardTimer)
+})
+
+function mouseDaun() {
+    cardTimer = setTimeout(() => {
+        zoomed.value = true
+    }, 500)
+}
 
 defineProps<{
     card: Card
@@ -58,6 +72,14 @@ defineProps<{
     background-size: cover;
     flex: 1;
     user-select: none;
+}
+
+.zoomed {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(3);
+    z-index: 2;
 }
 
 .card.selectedCard {

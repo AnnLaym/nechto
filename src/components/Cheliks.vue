@@ -11,7 +11,7 @@
                     {{ state.playerSlots[slot] ? state.playerNames[state.playerSlots[slot]!] : "" }}
                     <div class="host-cntrols">
                         <span @click="service.removePLayer(state.playerSlots[slot])">
-                            <i className="material-icons host-button" title="Remove"> delete_forever</i>
+                            <i className="material-icons host-button " title="Remove"> delete_forever</i>
                         </span>
                         <span @click="handleClickChangeName()" v-if="state.userSlot == slot">
                             <i className="material-icons settings-button">edit</i>
@@ -149,8 +149,8 @@ defineProps<{
 }
 
 .roditel:hover .host-cntrols {
-    display: flex;
-    gap: 10px;
+    display: block;
+    gap: 5px;
 }
 
 .chel {
