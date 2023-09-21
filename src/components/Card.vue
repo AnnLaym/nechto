@@ -27,11 +27,11 @@ let cardTimer: number
 
 window.addEventListener('mouseup', () => {
     zoomed.value = false;
-    clearTimeout(cardTimer)
+    window.clearTimeout(cardTimer)
 })
 
 function mouseDaun() {
-    cardTimer = setTimeout(() => {
+    cardTimer = window.setTimeout(() => {
         zoomed.value = true
     }, 500)
 }

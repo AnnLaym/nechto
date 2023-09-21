@@ -38,14 +38,15 @@
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue';
 import { getCardName, getCardLog, getActionLog, getKnopkaName } from '../log';
 import { useNechtoService, useNechtoState } from '../service';
 
 const state = useNechtoState()
-var isClossed: boolean = true;
+var isClossed = ref(true);
 
 const clickLog = () => {
-    isClossed = !isClossed
+    isClossed.value = !isClossed.value
 }
 
 const colors = [
