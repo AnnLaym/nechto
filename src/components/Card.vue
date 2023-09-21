@@ -82,7 +82,7 @@ defineProps<{
     color: transparent;
     font-family: matToni5;
     filter: drop-shadow(2px 4px 6px black);
-    
+
 }
 
 .opisanie {

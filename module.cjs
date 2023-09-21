@@ -164,7 +164,7 @@ function init(wsServer, path) {
                         room.currentPanika = null;
                         room.currentPlayer = shuffleArray(room.playerSlots.map((it, index) => index).filter(inx => room.playerSlots[inx]))[0]
                         state.zarajennie = [];
-                        //room.currentPlayer = 4
+                        room.currentPlayer = 4
                         room.gameLog = [];
                         state.showCard = {};
                         state.discard = [];
@@ -190,13 +190,14 @@ function init(wsServer, path) {
                 },
                 startRound = () => {
                     room.phase = 1; // чел фоткает стол и нажимает кнопку взять карту
-                    startTimer();
-                    update();
-                    updateState();
                     state.uporstvoCards = {};
                     state.showCard = {};
                     state.tsepnayaReaksiaObmenKard = {}
                     room.currentCardPanik = null
+                    room.gameLog.push({ action: 'start-round', actors: [room.playerSlots[room.currentPlayer]] })
+                    startTimer();
+                    update();
+                    updateState();
                 },
                 startTimer = () => {
                     if (room.timed) {

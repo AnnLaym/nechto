@@ -57,7 +57,7 @@ interface NechtoState {
     deckSize: number;
     userId: User;
     userSlot: Slot | null;
-    umerSlots: Slot[];
+    umerSlots: Slot[] | null;
     currentCardPanik: Card | null;
     fullTimer: number;
 }

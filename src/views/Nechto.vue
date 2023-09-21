@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="state.inited">
         <DashMenu :bottom-buttons="bottomButtons" :number-settings="numberSettings" />
         <SPECTATORSI />
         <Stol />

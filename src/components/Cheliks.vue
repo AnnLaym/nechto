@@ -22,6 +22,12 @@
         </div>
         <div>
             <div class="kartinka">
+                <div v-if="state.umerSlots!.includes(state.userSlot!)">
+                    УМЕР
+                </div>
+                <div v-if="state.playerSlots[slot] === state.playerSlots[state.currentPlayer!]">
+                    Ходит
+                </div>
                 <img src="./avatars/avatar1.png" class="otdelnii">
                 <div :style="{ width: `${timerWidth}%` }" class="timerbar"
                     v-if="state.currentPlayer === slot && state.timed"></div>

@@ -598,6 +598,13 @@ const actionsData: Record<string, ActionMetaData> = {
             en: "End game",
         }
     },
+    'start-round': {
+        log: {
+            ru: 'ходит',
+            ua: 'ходить',
+            en: '`s turn'
+        }
+    }
 }
 const knopki = {
     sigrat: {
