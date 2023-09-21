@@ -67,6 +67,11 @@ const colors = [
 </script>
 
 <style scoped>
+@font-face {
+    font-family: "matToni1234";
+    /* Название вашего кастомного шрифта */
+    src: url("/src/shrifty/Montserrat-Regular.ttf");
+}
 .bodyLog {
     position: fixed;
     right: 0px;
@@ -76,6 +81,7 @@ const colors = [
     background-color: black;
     padding: 10px;
     margin-bottom: 50px;
+    font-family: matToni1234;
 }
 
 .button {

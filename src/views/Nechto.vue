@@ -1,5 +1,6 @@
 <template>
     <div v-if="state.inited">
+        <PhoneXd />
         <DashMenu :bottom-buttons="bottomButtons" :number-settings="numberSettings" />
         <SPECTATORSI />
         <Stol />
@@ -17,6 +18,7 @@ import Stol from '../components/Stol.vue';
 import Hand from '../components/Hand.vue';
 import Log from '../components/Log.vue';
 import SPECTATORSI from '../components/SPECTATORSI.vue';
+import PhoneXd from '../components/phoneXd.vue';
 
 defineProps();
 
@@ -91,7 +93,7 @@ body.dark-theme {
     color: var(--text-color);
     padding-top: 10px;
     place-items: start;
-    background: url(../components/img/newFon.png);
+    background: url(../components/img/phone.png);
     background-size: contain;
     background-repeat: repeat;
 }

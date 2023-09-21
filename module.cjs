@@ -164,7 +164,7 @@ function init(wsServer, path) {
                         room.currentPanika = null;
                         room.currentPlayer = shuffleArray(room.playerSlots.map((it, index) => index).filter(inx => room.playerSlots[inx]))[0]
                         state.zarajennie = [];
-                        room.currentPlayer = 4
+                        //room.currentPlayer = 4
                         room.gameLog = [];
                         state.showCard = {};
                         state.discard = [];
@@ -279,6 +279,28 @@ function init(wsServer, path) {
                         } else if (room.action == 'strah') {
                             state.showCard = {}
                             endRound()
+                        } else if (room.action == 'uporstvo') {
+                            let nechtoIndex = state.uporstvoCards.findIndex(c => c.id === 'nechto')
+                            if (nechtoIndex == -1) {
+                                let index = shuffleArray([1, 2, 3])[0]
+                                state.playerHand[room.currentPlayer].push(...state.uporstvoCards.splice(index, 1))
+                                state.discard.push(...state.uporstvoCards)
+                            } else if (nechtoIndex === 0 || nechtoIndex) {
+                                let index = nechtoIndex
+                                state.nechto = room.currentPlayer
+                                state.playerHand[room.currentPlayer].push(...state.uporstvoCards.splice(index, 1))
+                                state.discard.push(...state.uporstvoCards)
+                            } else {
+                                return false
+                            }
+                            room.action = null;
+                            state.showCard = {}
+                            isDead(room.currentPlayer)
+                            room.action = null
+                            startTimer()
+                            update()
+                            updateState()
+
                         }
                         if (room.currentPanika === 'tsepnayaReaksia') {
                             Object.Keys(state.playerHand).forEach(slot => {
@@ -287,25 +309,25 @@ function init(wsServer, path) {
                                 }
                             });
                             startTsepnayaReaksia()
-                        } else if (room.currentPanika === 'tolkoMejduNami') {
+                        } else if (room.currentPanika.id === 'tolkoMejduNami') {
                             const sosedi = [getNextPlayer(true), getNextPlayer(false)]
                             tolkoMejduNamiPanika(sosedi[shuffleArray([0, 1])], room.currentPlayer)
-                        } else if (room.currentPanika === 'razDva') {
+                        } else if (room.currentPanika.id === 'razDva') {
                             if (!room.target) {
                                 if (room.karantin[getThirdPlayers()[0]])
                                     room.target = getThirdPlayers()
                                 else if (room.karantin[getThirdPlayers()[1]])
                                     room.target = getThirdPlayers()
-                                else endRound()
+                                else startObmen()
                             }
                             smenaMest(room.target, room.currentPlayer)
                             room.currentPanika = null
-                            endRound()
-                        } else if (room.currentPanika === 'iViEtoNazivaeteVecherinkoy') {
+                            startObmen()
+                        } else if (room.currentPanika.id === 'iViEtoNazivaeteVecherinkoy') {
                             iViEtoNazivaeteVecherinkoyPanika()
                             PanikaiViEtoNazivaeteVecherinkoy()
                             startObmen()
-                        } else if (room.currentPanika === 'davaiDrujit') {
+                        } else if (room.currentPanika.id === 'davaiDrujit') {
                             if (!state.obmenCardIndex) {
                                 state.obmenCardIndex = getRandomObmenCard(room.currentPlayer)
                                 const canBeTarget = [
@@ -321,14 +343,14 @@ function init(wsServer, path) {
                             else if (state.obmenCardIndex) {
                                 obmenProcces(getRandomObmenCard(room.target))
                             }
-                        } else if (room.currentPanika === 'svidanieVSlepuyu') {
+                        } else if (room.currentPanika.id === 'svidanieVSlepuyu') {
                             const slot = room.currentPlayer;
                             const i = getRandomObmenCard()
                             const izDeki = state.deck.splice(0, 1)
                             deck.push(state.playerHand[slot][i])
                             state.playerHand[slot].splice(i, 1)
                             state.playerHand[slot].push(izDeki)
-                        } else if (room.currentPanika === "ubiraysyaProchPanika") {
+                        } else if (room.currentPanika.id === "ubiraysyaProchPanika") {
                             tsel = shuffleArray(Object.Keys(state.playerHand))
                             ubiraysyaProchPanika()
                         }
@@ -495,6 +517,7 @@ function init(wsServer, path) {
                     room.currentPanika = null;
                     room.action = null;
                     room.target = null;
+                    state.obmenCardIndex = null
                     room.isObmenReady = false;
                     startRound();
                 },

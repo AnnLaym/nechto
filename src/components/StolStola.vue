@@ -101,6 +101,11 @@ function ZabivchivostClick() {
 </script>
 
 <style scoped>
+@font-face {
+    font-family: "matToni1234";
+    /* Название вашего кастомного шрифта */
+    src: url("/src/shrifty/Montserrat-Regular.ttf");
+}
 .stol {
     width: 750px;
     background-image: url(./img/stol69.png);
@@ -109,6 +114,7 @@ function ZabivchivostClick() {
     border-radius: 100px;
     background-size: cover;
     flex: 1;
+    font-family: matToni1234;
 }
 
 .knopka {
@@ -139,8 +145,8 @@ function ZabivchivostClick() {
 }
 
 .jopa {
-    height: 150px;
-    width: 90px;
+    max-height: 150px;
+    max-width: 110px;
 }
 
 .deki {

@@ -3,7 +3,7 @@
         <div v-if="state.currentPlayer === slot" class="backgroundJ" />
         <div class="roditel">
             <div v-if="state.playerSlots[slot] === null &&
-                (state.phase === 0 || !state.teamsLocked)" @click="service.playersJoin(slot)">
+                (state.phase === 0 || !state.teamsLocked)" @click="service.playersJoin(slot)" class="mini-roditel">
                 {{ getKnopkaName('sest') }}</div>
             <div v-else @click="slotClick(slot)">
                 <div class="suka">
@@ -20,15 +20,15 @@
                 </div>
             </div>
         </div>
-        <div>
+        <div v-if="state.umerSlots!.includes(state.userSlot!)">
+            УМЕР
+        </div>
+        <div v-if="state.playerSlots[slot] === state.playerSlots[state.currentPlayer!]">
+            Ходит
+        </div>
+        <div class="mamaMami">
             <div class="kartinka">
-                <div v-if="state.umerSlots!.includes(state.userSlot!)">
-                    УМЕР
-                </div>
-                <div v-if="state.playerSlots[slot] === state.playerSlots[state.currentPlayer!]">
-                    Ходит
-                </div>
-                <img src="./avatars/avatar1.png" class="otdelnii">
+                <img src="./avatars/avatar2.png" class="otdelnii">
                 <div :style="{ width: `${timerWidth}%` }" class="timerbar"
                     v-if="state.currentPlayer === slot && state.timed"></div>
             </div>
@@ -87,14 +87,30 @@ defineProps<{
 </script>
 
 <style scoped>
+@font-face {
+    font-family: "matToni123";
+    /* Название вашего кастомного шрифта */
+    src: url("/src/shrifty/Montserrat-Bold.ttf");
+}
+@font-face {
+    font-family: "matToni1234";
+    /* Название вашего кастомного шрифта */
+    src: url("/src/shrifty/Montserrat-Light.ttf");
+}
+
 .kartinka {
-    width: 120px;
-    height: 120px;
-    padding: 4px;
+    width: 124px;
+    height: 124px;
     border-radius: 27px;
     z-index: 1;
     position: relative;
     overflow: hidden;
+    padding-left: 0px;
+    padding-right: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5px;
 }
 
 .otdelnii {
@@ -103,10 +119,13 @@ defineProps<{
     width: 100%;
 }
 
+.mini-roditel{
+  text-decoration: underline;
+}
 .timerbar {
     position: absolute;
     height: 100%;
-    background-color: #0000007a;
+    background-color: #ceb5b57a;
     transition: all 0.2s;
     top: 4px;
 }
@@ -117,15 +136,21 @@ defineProps<{
     align-items: center;
     justify-content: center;
     gap: 10px;
+    font-family: matToni123;
 }
 
 .host-cntrols {
     display: none;
 }
 
+.roditel {
+    margin-top: 7px;
+    font-family: matToni1234;
+}
+
 .roditel:hover .host-cntrols {
     display: flex;
-    gap: 10px
+    gap: 10px;
 }
 
 .chel {
@@ -134,8 +159,14 @@ defineProps<{
     border-radius: 36px;
     position: relative;
     overflow: visible;
-    max-width: 128px;
-    max-height: 148px;
+    width: 136px;
+    height: 157px;
+}
+
+.mamaMami {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .backgroundJ {
