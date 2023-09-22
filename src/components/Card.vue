@@ -8,9 +8,6 @@
             <div v-if="selected || zoomed" class="podkladka">
                 <div class="opisanie" v-if="selected || zoomed">{{ getCardDescription(card.id) }}</div>
             </div>
-            <div v-if="card.type == 'panika'" class="podkladka">
-                <div class="opisanie">{{ getCardDescription(card.id) }}</div>
-            </div>
         </div>
     </div>
 </template>
@@ -67,6 +64,11 @@ defineProps<{
         url("/src/shrifty/HeadingPro-Regular.woff") format("woff");
 }
 
+@font-face {
+    font-family: 'matToni10';
+    src: url("/src/shrifty/HeadingPro-Light.ttf")
+}
+
 .kartinka {
     /* background-image: url(cards/karantin.png) !important; */
     background-size: cover;
@@ -80,6 +82,17 @@ defineProps<{
     left: 50%;
     transform: translate(-50%, -50%) scale(3);
     z-index: 2;
+}
+
+.zoomed .podkladka {
+    border-radius: 0px;
+    bottom: 5px;
+    padding-top: 10px;
+}
+
+.zoomed .opisanie {
+    font-family: matToni10 !important;
+    font-size: 10px; 
 }
 
 .card.selectedCard {

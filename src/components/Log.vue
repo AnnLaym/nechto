@@ -2,7 +2,7 @@
     <div class="button" @click="clickLog()">X</div>
     <div v-if="isClossed">
         <div class="bodyLog">
-            <div v-for="message in state.gameLog">
+            <div v-for="message in state.gameLog.reverse()">
                 <div v-if="message.action && !message.panika" class="messageCard">
                     <span v-if="message.actors?.[0]" :style="{
                         'color':
@@ -85,6 +85,8 @@ const colors = [
     margin-bottom: 50px;
     font-family: matToni1234;
     z-index: 1;
+    overflow-y: auto;
+    -webkit-mask-image: none;
 }
 
 .button {

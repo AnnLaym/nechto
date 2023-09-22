@@ -14,6 +14,16 @@
             <Card :card="state.currentCardPanik!" class="jopa" />
         </div>
         <div class="knopkee">
+            <div v-if="service.selectedCard.value! >= 0 && state.action !== 'soblazn'" class="knopkee">
+                <div v-if="service.selectedCard.value !== null && state.phase == 2 &&
+                    !state.currentPanika && state.userSlot === state.currentPlayer" class="knopka">
+                    <div @click="playCardClick()"> {{ getKnopkaName('sigratCartu') }} </div>
+                </div>
+                <div v-if="state.phase == 2 && state.currentPlayer == state.userSlot && !state.currentPanika
+                    && service.selectedCard.value !== null" class="knopka">
+                    <div @click="dropCardClick()"> {{ getKnopkaName('skinutCartu') }} </div>
+                </div>
+            </div>
             <div v-if="state.phase === 1 && state.currentPlayer === state.userSlot" @click="service.grabCard()"
                 class="knopka">
                 {{ getKnopkaName('vzyatKartu') }}
@@ -91,6 +101,16 @@ function ZabivchivostClick() {
     service.selectedZabivchivost2.value = null;
     service.selectedZabivchivost3.value = null;
 
+}
+
+function playCardClick() {
+    if (service.selectedCard.value !== null)
+        service.playCard(service.selectedCard.value, service.selectedTarget.value)
+}
+
+function dropCardClick() {
+    if (service.selectedCard.value !== null)
+        service.dropCard(service.selectedCard.value)
 }
 
 </script>

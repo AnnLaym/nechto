@@ -60,6 +60,7 @@ interface NechtoState {
     umerSlots: Slot[] | null;
     currentCardPanik: Card | null;
     fullTimer: number;
+    waitMoveSlot: Slot | null;
 }
 
 declare const window: ReactAppWindow<NechtoState>;
@@ -69,23 +70,27 @@ export function useNechtoService() {
         nechtoService = createNechtoService()
     return nechtoService
 }
-export type UserLang = 'ua' | 'ru' | 'en';
+export type UserLang = 'ua' | 'ru' | 'en'; 
 export const userLang: Ref<UserLang> = ref('ua')
 
+export const hyphenate = ((window as any).createHyphenator as any)((window as any).hyphenationPatternsRu as any) as  (text: string) => string;
+export const hyphenateEn = ((window as any).createHyphenator as any)((window as any).hyphenationPatternsEnUs as any) as  (text: string) => string;
+
+
 export function toggleLanguage1() {
-  switch (userLang.value) {
-    case 'ua':
-      userLang.value = 'ru';
-      break;
-    case 'ru':
-      userLang.value = 'en';
-      break;
-    case 'en':
-      userLang.value = 'ua';
-      break;
-    default:
-      break;
-  }
+    switch (userLang.value) {
+        case 'ua':
+            userLang.value = 'ru';
+            break;
+        case 'ru':
+            userLang.value = 'en';
+            break;
+        case 'en':
+            userLang.value = 'ua';
+            break;
+        default:
+            break;
+    }
 }
 
 
@@ -145,20 +150,22 @@ function maintainState() {
             };
         });
         watch(nechtoState, (state, prevState) => {
+            if (!nechtoService)
+                return
             if (nechtoService?.selectedCard.value !== null) {
                 if (prevState.target === prevState.userSlot && state.target !== state.userSlot) {
-                    nechtoService?.selectedCard.value == null
+                    nechtoService.selectedCard.value = null
                 }
                 if (prevState.currentPlayer === prevState.userSlot && state.currentPlayer !== state.userSlot) {
-                    nechtoService?.selectedCard.value == null
+                    nechtoService.selectedCard.value = null
                 }
             }
             if (nechtoService?.selectedTarget.value !== null) {
                 if (prevState.target === prevState.userSlot && state.target !== state.userSlot) {
-                    nechtoService?.selectedTarget.value == null
+                    nechtoService.selectedTarget.value = null
                 }
                 if (prevState.currentPlayer === prevState.userSlot && state.currentPlayer !== state.userSlot) {
-                    nechtoService?.selectedTarget.value == null
+                    nechtoService.selectedTarget.value = null
                 }
             }
         })

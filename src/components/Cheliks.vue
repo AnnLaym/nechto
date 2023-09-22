@@ -28,9 +28,9 @@
         </div>
         <div class="mamaMami">
             <div class="kartinka">
+                <div class="newTimer" v-if="state.waitMoveSlot === slot && state.timed"
+                    :style="{ 'background-position': `${timerWidth}px 124px` }"> </div>
                 <img src="./avatars/avatar2.png" class="otdelnii">
-                <div :style="{ width: `${timerWidth}%` }" class="timerbar"
-                    v-if="state.currentPlayer === slot && state.timed"></div>
             </div>
         </div>
     </div>
@@ -46,8 +46,9 @@ const service = useNechtoService()
 const state = useNechtoState()
 const timerWidth = computed(() => {
     const time = state.value.time - timePassed.value
-    const percentage = (time / state.value.fullTimer) * 100;
-    return percentage >= 0 ? percentage : 0;
+    //const percentage = (time / state.value.fullTimer) * 100;
+    const tile = (Math.round((869 * time) / state.value.fullTimer)) * 124;
+    return tile >= 0 ? tile : 0;
 })
 
 const timePassed = ref(0)
@@ -59,8 +60,8 @@ watch(state, () => {
     timePassed.value = 0
     if (state.value.time) { //TODO: paused and ..
         interval = window.setInterval(() => {
-            timePassed.value += 1000
-        }, 1000)
+            timePassed.value += 50
+        }, 50)
     }
 })
 
@@ -92,6 +93,7 @@ defineProps<{
     /* Название вашего кастомного шрифта */
     src: url("/src/shrifty/Montserrat-Bold.ttf");
 }
+
 @font-face {
     font-family: "matToni1234";
     /* Название вашего кастомного шрифта */
@@ -119,15 +121,23 @@ defineProps<{
     width: 100%;
 }
 
-.mini-roditel{
-  text-decoration: underline;
+.mini-roditel {
+    text-decoration: underline;
 }
+
 .timerbar {
     position: absolute;
     height: 100%;
     background-color: #ceb5b57a;
     transition: all 0.2s;
     top: 4px;
+}
+
+.newTimer {
+    position: absolute;
+    height: 100%;
+    background-image: url(./img/timerAvatar.png);
+    width: 100%;
 }
 
 .suka {

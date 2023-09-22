@@ -2,16 +2,6 @@
     <div>
         <div class="ruka">
             <div v-for="(card, index) in state.cards" @click="cardClick(index)">
-                <div v-if="service.selectedCard.value == index && state.action !== 'soblazn'" class="dveKnopki">
-                    <div v-if="service.selectedCard.value !== null && state.phase == 2 &&
-                        !state.currentPanika && state.userSlot === state.currentPlayer" class="knopki">
-                        <div @click="playCardClick()"> {{ getKnopkaName('sigratCartu') }} </div>
-                    </div>
-                    <div v-if="state.phase == 2 && state.currentPlayer == state.userSlot && !state.currentPanika
-                        && service.selectedCard.value !== null" class="knopki">
-                        <div @click="dropCardClick()"> {{ getKnopkaName('skinutCartu') }} </div>
-                    </div>
-                </div>
                 <Card :card="card" :selected="service.selectedCard.value == index ||
                     service.selectedZabivchivost1.value == index ||
                     service.selectedZabivchivost2.value == index ||
@@ -22,6 +12,7 @@
 </template>
 
 <script lang="ts" setup>
+import { watch } from 'vue';
 import { getCardName, getKnopkaName } from '../log';
 import { useNechtoService, useNechtoState } from '../service';
 import Card from './Card.vue';
@@ -58,15 +49,6 @@ function cardClick(index: number) {
     }
 }
 
-function playCardClick() {
-    if (service.selectedCard.value !== null)
-        service.playCard(service.selectedCard.value, service.selectedTarget.value)
-}
-
-function dropCardClick() {
-    if (service.selectedCard.value !== null)
-        service.dropCard(service.selectedCard.value)
-}
 </script>
 
 <style scoped>

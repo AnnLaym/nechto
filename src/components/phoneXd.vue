@@ -53,8 +53,8 @@
 }
 .bottom-right{
     background-image: url(./img/7.png);
-    background-position: right;
     background-position: bottom;
+    background-position: right;
 }
 .root {
     position: fixed;
