@@ -51,7 +51,8 @@ function init(wsServer, path) {
                 voting: false,
                 currentCardPanik: null,
                 fullTimer: 0,
-                waitMoveSlot: null
+                waitMoveSlot: null,
+                startSlotColor: {}
             };
             if (testMode)
                 [1, 2, 3, 4].forEach((_, ind) => {
@@ -186,6 +187,9 @@ function init(wsServer, path) {
                                 delete state.playerHand[slot]
                             }
                         });
+                        room.playerSlots.forEach((player, slot) => {
+                            room.startSlotColor[player] = slot
+                        });
                         startRound();
                     }
                 },
@@ -302,7 +306,6 @@ function init(wsServer, path) {
                             startTimer()
                             update()
                             updateState()
-
                         }
                         if (room.currentPanika === 'tsepnayaReaksia') {
                             Object.Keys(state.playerHand).forEach(slot => {
@@ -350,8 +353,11 @@ function init(wsServer, path) {
                             svidanieVSlepuyuPanika(room.currentPlayer, getRandomObmenCard(room.currentPlayer))
                         } else if (room.currentPanika.id === "ubiraysyaProchPanika") {
                             tsel = shuffleArray(Object.Keys(state.playerHand))
-                            ubiraysyaProchPanika()
+                            ubiraysyaProchPanika(tsel, room.currentPlayer)
+                        } else if (room.currentCardPanika.id === "zabivchivost") {
+                            zabivchevostChekCard(room.currentPlayer)
                         }
+
                     }
                     if (room.phase === 2 && !room.currentPanika) {
                         const card = getRandomObmenCard(room.currentPlayer)
@@ -470,6 +476,7 @@ function init(wsServer, path) {
                         room.karantin[room.currentPlayer]--
                     room.gameLog.push({ action: 'grab-card', actors: [room.playerSlots[room.currentPlayer]] })
                     const card = state.deck.shift();
+                    //TODO: карантинный долбаеб же панику брат ьможет
                     if (card.type == 'panika') {
                         room.currentPanika = card;
                         room.allReadyNedeed = card.allReady;
@@ -696,6 +703,14 @@ function init(wsServer, path) {
                     room.currentPanika = null
                     endRound()
                 },
+                zabivchevostChekCard = (slot) => {
+                    const ruka = [...state.playerHand[slot]]
+                    const newRuka = ruka.filter(it => chekDropCard(slot, it))
+                    if (newRuka.length() > 3) {
+                        const hui = shuffleArray(newRuka)
+                        zabivchivostPanika(slot, hui[1], hui[0], hui[2])
+                    }
+                },
                 zabivchivostPanika = (slot, index1, index2, index3) => {
                     if (slot === room.currentPlayer &&
                         [index1, index2, index3].every((ind) => ind >= 0 && ind <= 4
@@ -824,8 +839,8 @@ function init(wsServer, path) {
                                     logs()
                                     sigrat()
                                 } else if ((chekSosedaNaPidora(target) || target === slot)) {
-                                    if (card.id === 'dveri' && target !== getNextPlayer(true)) {
-                                        dveri.push(target)
+                                    if (card.id === 'zakolchennayDver' && target !== getNextPlayer(true)) {
+                                        room.dveri.push(target)
                                         sigrat()
                                         endRound()
                                     } else if (!room.karantin[target] && card.id === 'karantin') {

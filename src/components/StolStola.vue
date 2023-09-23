@@ -16,11 +16,12 @@
         <div class="knopkee">
             <div v-if="service.selectedCard.value! >= 0 && state.action !== 'soblazn'" class="knopkee">
                 <div v-if="service.selectedCard.value !== null && state.phase == 2 &&
-                    !state.currentPanika && state.userSlot === state.currentPlayer" class="knopka">
+                    !state.currentPanika && state.userSlot === state.currentPlayer && state.chekCards?.length !== 0"
+                    class="knopka">
                     <div @click="playCardClick()"> {{ getKnopkaName('sigratCartu') }} </div>
                 </div>
                 <div v-if="state.phase == 2 && state.currentPlayer == state.userSlot && !state.currentPanika
-                    && service.selectedCard.value !== null" class="knopka">
+                    && service.selectedCard.value !== null && state.chekCards?.length !== 0" class="knopka">
                     <div @click="dropCardClick()"> {{ getKnopkaName('skinutCartu') }} </div>
                 </div>
             </div>
@@ -31,49 +32,59 @@
             <div v-if="(state.phase === 2 && state.target === state.userSlot && state.showAllHand?.length == 0)
                 || (state.target === state.userSlot && state.phase === 2 && state.isObmenReady
                     && (state.action === 'ognemet' || state.action === 'menyaemsyaMestami'
-                        || state.action === 'smaivayUdochki'))"
-                @click="service.resolveAction(service.selectedCard.value)" class="knopka">
+                        || state.action === 'smaivayUdochki'))
+                " @click="service.resolveAction(service.selectedCard.value)" class="knopka">
                 {{ getKnopkaName("sigrat") }}</div>
             <div v-if="(state.action === 'soblazn' && state.currentPlayer === state.userSlot && !state.isObmenReady)"
                 class="knopka" @click="service.resolveAction(service.selectedCard.value!)">
                 {{ getKnopkaName("polojitKartuNaObmen") }}
             </div>
-            <div v-if="(state.action === 'soblazn' && state.target === state.userSlot && state.isObmenReady)" class="knopka"
-                @click="service.soblaznResolve(service.selectedCard.value!)">
+            <div v-if="(state.action === 'soblazn' && state.target === state.userSlot && state.isObmenReady)"
+                class="knopka" @click="service.soblaznResolve(service.selectedCard.value!)">
                 {{ getKnopkaName("polojitKartuNaObmen") }}
             </div>
             <div v-if="state.phase === 2 && state.target === state.userSlot
                 && ((state.action === 'ognemet' || state.action === 'menyaemsyaMestami'
-                    || state.action === 'smaivayUdochki') || state.action === 'viski')"
-                @click="service.resolvePassActin()" class="knopka">
-                {{ getKnopkaName('pass') }}</div>
+                    || state.action === 'smaivayUdochki') || state.action === 'viski')
+                " @click="service.resolvePassActin()" class="knopka">
+                {{ getKnopkaName('pass') }}
+            </div>
             <div v-if="state.phase === 3 && state.currentPlayer === state.userSlot && !state.isObmenReady"
                 @click="service.vilojitCartuNaObmen(service.selectedCard.value)" class="knopka">
-                {{ getKnopkaName('polojitKartuNaObmen') }}</div>
+                {{ getKnopkaName('polojitKartuNaObmen') }}
+            </div>
             <div v-if="state.phase === 3 && state.target === state.userSlot && state.isObmenReady"
                 @click="service.resolveObmen(service.selectedCard.value!)" class="knopka">
-                {{ getKnopkaName('polojitKartuNaObmen') }}</div>
+                {{ getKnopkaName('polojitKartuNaObmen') }}
+            </div>
             <div v-if="state.userSlot === state.currentPlayer && state.chekCards?.length
                 && state.action !== `uporstvo` &&
-                state.phase == 2" class="knopka" @click="service.resolvePassActin()">
-                <div>{{ getKnopkaName('ok') }}</div>
+                state.phase == 2
+                " class="knopka" @click="service.resolvePassActin()">
+                <div>{{ getKnopkaName('ok') }}
+
+                </div>
             </div>
             <div v-if="state.currentPanika && state.userSlot === state.currentPlayer
-                && state.currentPanika.id !== 'zabivchivost'" class="knopka"
-                @click=" service.panicAction(service.selectedCard.value, service.selectedTarget.value!)">{{
-                    getKnopkaName(`goPanika`) }}</div>
+                && state.currentPanika.id !== 'zabivchivost'
+                " class="knopka" @click=" service.panicAction(service.selectedCard.value, service.selectedTarget.value!)">
+                {{
+                    getKnopkaName(`goPanika`) }}
+            </div>
             <div v-if="state.currentPanika && state.userSlot === state.currentPlayer
-                && state.currentPanika.id == 'zabivchivost'" class="knopka" @click="ZabivchivostClick()"> {{
-        getKnopkaName(`goPanika`) }}</div>
+                && state.currentPanika.id == 'zabivchivost'
+                " class="knopka" @click="ZabivchivostClick()"> {{
+        getKnopkaName(`goPanika`) }}
+            </div>
         </div>
         <div>
             <div v-if="state.chekCards?.length" class="uporstvo">
-                <div v-for="card, index in state.chekCards" @click="uporstvoClick(index)">
+                <div v-for=" card, index  in  state.chekCards " @click="uporstvoClick(index)">
                     <Card :card="card" :selected="false" class="jopa" />
                 </div>
             </div>
             <div v-if="state.showAllHand?.length !== 0" class="uporstvo">
-                <div v-for="card, index in state.showAllHand">
+                <div v-for=" card, index  in  state.showAllHand ">
                     <Card :card="card" />
                 </div>
             </div>
@@ -134,15 +145,18 @@ function dropCardClick() {
 }
 
 .knopka {
-    background-color: rgb(103, 228, 105);
-    color: black;
+    background-color: rgba(18, 32, 41, 0.69);
     border: 1px;
+    border-color: rgba(57, 57, 57, 1);
+    border-style: solid;
     width: 140px;
     height: 35px;
     justify-content: center;
     align-items: center;
     display: flex;
     bottom: 0px;
+    border-radius: 11px;
+    margin-top: 2px;
 }
 
 .knopkee {

@@ -1,8 +1,7 @@
 <template>
     <div class="root">
-        <div class="top">
-            <div class="top-left"></div>
-            <div class="top-mid"></div>
+        <div class="top" :style="{ backgroundSize: `${ugolockSize}px auto` }">
+            <div class="top-left" ref="ugolock"></div>
             <div class="top-right"></div>
         </div>
         <div class="mid">
@@ -16,46 +15,54 @@
     </div>
 </template>
 <script lang="ts" setup>
+import { HtmlHTMLAttributes, ref } from 'vue';
+
+const ugolock = ref<HTMLElement>()
+const ugolockSize = ref(ugolock.value?.clientWidth)
 
 </script>
 
 <style scoped>
-.top{
+.top {
     display: flex;
     justify-content: space-between;
-    flex-basis: 100px !important
-}
-.top-left{
-    background-image: url(./img/1.png);
-}
-.top-mid{
-    background-image: url(./img/2.png);
+    flex-basis: 100px !important;
+    background-image: url(http://localhost:5173/nechto/src/components/img/2.png);
     background-repeat: repeat-x !important;
     max-width: 100% !important;
-    background-size: inherit !important;
 }
-.top-right{
+
+.top-left {
+    background-image: url(./img/1.png);
+}
+
+.top-right {
     background-image: url(./img/3.png);
     background-position: right;
     background-position: top;
 }
-.center-left{
+
+.center-left {
     background-image: url(./img/4.png);
 }
-.center-right{
+
+.center-right {
     background-image: url(./img/5.png);
     background-position: right;
 }
-.bottom-left{
+
+.bottom-left {
     background-image: url(./img/6.png);
     background-position: bottom;
     background-position: left;
 }
-.bottom-right{
+
+.bottom-right {
     background-image: url(./img/7.png);
     background-position: bottom;
     background-position: right;
 }
+
 .root {
     position: fixed;
     display: flex;
@@ -77,5 +84,4 @@
     background-size: contain;
     background-repeat: no-repeat;
     max-width: 15%;
-}
-</style>
+}</style>

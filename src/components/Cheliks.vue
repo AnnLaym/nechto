@@ -1,5 +1,5 @@
 <template>
-    <div class="chel" :class="`slot-color-${slot}`">
+    <div class="chel" :class="`slot-color-${state.startSlotColor.value ? state.startSlotColor : slot}`">
         <div v-if="state.currentPlayer === slot" class="backgroundJ" />
         <div class="roditel">
             <div v-if="state.playerSlots[slot] === null &&
@@ -19,6 +19,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div v-if="state.karantin[slot]">
+            {{ state.karantin[slot] }} дней карантина
         </div>
         <div v-if="state.umerSlots!.includes(state.userSlot!)">
             УМЕР
@@ -186,7 +189,7 @@ defineProps<{
 }
 
 .slot-color-1 {
-    background: linear-gradient(180deg, #7A3434 0%, rgba(122, 52, 52, 0) 100%);
+    background: linear-gradient(180deg, #A32A2A 0%, rgba(122, 52, 52, 0) 100%);
 }
 
 .slot-color-2 {
@@ -194,15 +197,15 @@ defineProps<{
 }
 
 .slot-color-3 {
-    background: linear-gradient(180deg, #C48144 0%, rgba(196, 129, 68, 0) 100%);
+    background: linear-gradient(180deg, #C38144 0%, rgba(196, 129, 68, 0) 100%);
 }
 
 .slot-color-4 {
-    background: linear-gradient(180deg, #D5C74A 0%, rgba(132, 126, 79, 0) 100%);
+    background: linear-gradient(180deg, #BDB35B 0%, rgba(132, 126, 79, 0) 100%);
 }
 
 .slot-color-5 {
-    background: linear-gradient(180deg, #769D70 0%, rgba(118, 157, 112, 0) 100%)
+    background: linear-gradient(180deg, #6BB95E 0%, rgba(118, 157, 112, 0) 100%)
 }
 
 .slot-color-6 {
@@ -210,7 +213,7 @@ defineProps<{
 }
 
 .slot-color-7 {
-    background: linear-gradient(180deg, #2D6E72 0%, rgba(45, 110, 114, 0) 100%);
+    background: linear-gradient(180deg, #227A80 0%, rgba(45, 110, 114, 0) 100%);
 }
 
 .slot-color-8 {
@@ -218,18 +221,18 @@ defineProps<{
 }
 
 .slot-color-9 {
-    background: linear-gradient(180deg, #2C3E7C 0%, rgba(44, 62, 124, 0) 100%);
+    background: linear-gradient(180deg, #318FC5 0%, rgba(44, 62, 124, 0) 100%);
 }
 
 .slot-color-10 {
-    background: linear-gradient(180deg, #543B89 0%, rgba(84, 59, 137, 0) 100%);
+    background: linear-gradient(180deg, #2C3E7C 0%, rgba(84, 59, 137, 0) 100%);
 }
 
 .slot-color-11 {
-    background: linear-gradient(180deg, #984B67 0%, rgba(152, 75, 103, 0) 100%);
+    background: linear-gradient(180deg, #543B89 0%, rgba(152, 75, 103, 0) 100%);
 }
 
 .slot-color-0 {
-    background: linear-gradient(180deg, #D58787 0%, rgba(213, 135, 135, 0) 100%);
+    background: linear-gradient(180deg, #B24A7C 0%, rgba(213, 135, 135, 0) 100%);
 }
 </style>
