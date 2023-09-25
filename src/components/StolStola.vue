@@ -14,7 +14,7 @@
             <Card :card="state.currentCardPanik!" class="jopa" />
         </div>
         <div class="knopkee">
-            <div v-if="service.selectedCard.value! >= 0 && state.action !== 'soblazn'" class="knopkee">
+            <div v-if="service.selectedCard.value! >= 0 && state.action !== 'soblazn'" class="knopkee hui">
                 <div v-if="service.selectedCard.value !== null && state.phase == 2 &&
                     !state.currentPanika && state.userSlot === state.currentPlayer && state.chekCards?.length !== 0"
                     class="knopka">
@@ -133,11 +133,19 @@ function dropCardClick() {
     src: url("/src/shrifty/Montserrat-Regular.ttf");
 }
 
+.hui .knopka:nth-child(2) {
+    background-color: #200E0E;
+}
+
+.hui .knopka:nth-child(1) {
+    background-color: #0E1C0C;
+}
+
 .stol {
     width: 750px;
     background-image: url(./img/stol69.png);
     height: 400px;
-    padding: 10px;
+    padding: 10px; 
     border-radius: 100px;
     background-size: cover;
     flex: 1;

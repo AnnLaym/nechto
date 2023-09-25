@@ -330,12 +330,12 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
         title: {
             ru: "И это вы называете вечеринкой?",
             ua: "І це ви звете вечіркою?",
-            en: "",
+            en: "So this is the party?",
         },
         desciption: {
             ru: "Все сыгранные карты 'карантин' и 'заколоченная дверь' сбрасываются. Затем начиная с Вас и по часовой стрелке все игроки парами меянются местами.",
-            ua: "",
-            en: "",
+            ua: "Усі зіграні карти 'карантин' і 'забиті двері' скидаються. Потім, починаючи з Вас і за годинниковою стрілкою, всі гравці парами міяються місцями.",
+            en: "All played 'quarantine' and 'barred door' cards are discarded. Then, starting with you and clockwise, all players switch places in pairs.",
         }
     },
     razDva: {
@@ -347,12 +347,12 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
         title: {
             ru: "Раз, два",
             ua: "Раз, два",
-            en: "",
+            en: "One, two...",
         },
         desciption: {
             ru: "Поменяйтесь с третьим игроком слева или справа (по вашему выбору). Если игрок на карантине - смены мест не происходит.",
-            ua: "",
-            en: "",
+            ua: "Поміняйтеся з третім гравцем ліворуч або праворуч (на ваш вибір). Якщо гравець на карантині – зміни місць не відбувається.",
+            en: "Swap with the third player on the left or right (your choice). If a player is in quarantine, there is no change of seats.",
         }
     },
     ubiraysyaProch: {
@@ -363,13 +363,13 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
         },
         title: {
             ru: "Убирайся прочь",
-            ua: "Геть звідси",
-            en: "",
+            ua: "Забирайся геть",
+            en: "Get out!",
         },
         desciption: {
             ru: "Поменяйтесь местами с любым игроком (по вашему выбору), если он не на карантине",
-            ua: "",
-            en: "",
+            ua: "Поміняйтеся місцями з будь-яким гравцем (на ваш вибір), якщо він не на карантині",
+            en: "Swap places with any player (of your choice) if they are not quarantined",
         }
     },
     starieVerevki: {
@@ -381,12 +381,12 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
         title: {
             ru: "Старые верёвки",
             ua: "Старі мотузки",
-            en: "",
+            en: "Rotten ropes",
         },
         desciption: {
             ru: "Все сыгранные карты 'Карантин' сбрасываются",
-            ua: "",
-            en: "",
+            ua: "Усі зіграні карти 'Карантин' скидаються",
+            en: "All played 'Quarantine' cards are discarded",
         }
     },
     tolkoMejduNami: {
@@ -398,12 +398,12 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
         title: {
             ru: "Только между нами",
             ua: "Тільки між нами",
-            en: "",
+            en: "Just between us...",
         },
         desciption: {
             ru: "Покажите карты на руке соседнему игроку по вашему выбору",
-            ua: "",
-            en: "",
+            ua: "Покажіть карти на руці сусідньому гравцю на ваш вибір",
+            en: "Show the cards in your hand to an adjacent player of your choice",
         }
     },
     davaiDrujit: {
@@ -415,12 +415,12 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
         title: {
             ru: "Давай дружить",
             ua: "Давай дружити",
-            en: "",
+            en: "Can`t we be friends?",
         },
         desciption: {
             ru: "Поменяйтесь 1 картой с любым игроком (по вашему выбору), если он не на карантине",
-            ua: "",
-            en: "",
+            ua: "Поміняйтеся 1 карткою з будь-яким гравцем (на ваш вибір), якщо він не на карантині",
+            en: "Swap 1 card with any player (of your choice) if he is not in quarantine",
         }
     },
     vremyaPriznaniy: {
@@ -432,12 +432,12 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
         title: {
             ru: "Время признаний",
             ua: "Час відвертостей",
-            en: "",
+            en: "Revelations",
         },
         desciption: {
             ru: "хуета не работает, рестартите игру",
-            ua: "",
-            en: "",
+            ua: "хуета не работает, рестартите игру",
+            en: "хуета не работает, рестартите игру",
         }
     },
     tsepnayaReaksia: {
@@ -447,14 +447,14 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "",
         },
         title: {
-            ru: "Цеепная реакция",
-            ua: "Ціпна реакція",
-            en: "",
+            ru: "Цепная реакция",
+            ua: "Ланцюгова реакція",
+            en: "Round and round",
         },
         desciption: {
             ru: "Каждый игрок одновременно с остальными отдает 1 карту следующему по порядку хода игроку, игнорируя все сыгранные карты 'Карантин' и 'Заколоченная дверь'. Нечто может заразить передав 'Заражение'. от обмена отказаться невозможно. Ваш ход заканчивается.",
-            ua: "",
-            en: "",
+            ua: "Кожен гравець одночасно з рештою віддає 1 карту наступному по порядку ходу гравцю, ігноруючи всі зіграні карти 'Карантин' та 'Забиті двері'. Щось може заразити передавши 'Зараження'. від обміну відмовитись неможливо. Ваш хід закінчується.",
+            en: "Each player, at the same time as the others, gives 1 card to the next player in turn order, ignoring all played 'Quarantine' and 'Boarded Door' cards. Something can infect by transmitting 'Infection'. It is impossible to refuse the exchange. Your turn ends.",
         }
     },
     triChetyre: {
@@ -466,12 +466,12 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
         title: {
             ru: "Три, четыре",
             ua: "Три, чотири",
-            en: "",
+            en: "Three, four",
         },
         desciption: {
             ru: "Все карты 'Заколоченная дверь' сбрасываются",
-            ua: "",
-            en: "",
+            ua: "Всі карти 'Забиті двері' скидаються",
+            en: "All 'Barred Door' cards are discarded",
         }
     },
     uups: {
@@ -483,12 +483,12 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
         title: {
             ru: "Уупс",
             ua: "Уупс",
-            en: "",
+            en: "Ooops!",
         },
         desciption: {
             ru: "Покажите все карты на руке другим игрокам",
-            ua: "",
-            en: "",
+            ua: "Покажіть усі карти на руці іншим гравцям",
+            en: "Show all cards in your hand to other players",
         }
     },
     svidanieVSlepuyu: {
@@ -500,12 +500,12 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
         title: {
             ru: "Свидание в слепую",
             ua: "Побачення в сліпу",
-            en: "",
+            en: "Blind date",
         },
         desciption: {
             ru: "Поменяйте одну карту с руки на на карту общей колоды. Ваш ход заканчивается.",
-            ua: "",
-            en: "",
+            ua: "Поміняйте одну картку з руки на карту загальної колоди. Ваш хід закінчується.",
+            en: "Swap one card from your hand to a card from the general deck. Your turn ends.",
         }
     },
     zabivchivost: {
@@ -517,12 +517,12 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
         title: {
             ru: "Забыв- чивость",
             ua: "Забудьку- ватість",
-            en: "",
+            en: "Forgetful",
         },
         desciption: {
             ru: "Сбросьте 3 карты с руки и возьмите 3 новые карты",
-            ua: "",
-            en: "",
+            ua: "Скиньте 3 карти з руки та візьміть 3 нові карти",
+            en: "Discard 3 cards from your hand and draw 3 new cards",
         }
     },
     zarajenie: {
@@ -534,7 +534,7 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
         title: {
             ru: "Заражение",
             ua: "Зараження",
-            en: "",
+            en: "Infected",
         },
         desciption: {
             ru: "",
@@ -679,10 +679,24 @@ const knopki = {
     },
     pass: {
         title: {
-            ru: "пасс",
-            ua: "пасувати",
+            ru: "пас",
+            ua: "пас",
             en: "pass",
         },
+    },
+    phashka: {
+        title: {
+            ru: 'Бета-версия игры Нечто',
+            ua: 'Бета-версія гри "Щось" (Нечто)',
+            en: '"stay away" (Nechto) Beta',
+        }
+    },
+    plahskaTwo: {
+        title: {
+            ru: 'discord: sharji',
+            ua: 'discord: sharji',
+            en: 'discord: sharji',
+        }
     }
 
 } satisfies Record<string, KnopkaMetaData>

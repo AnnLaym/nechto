@@ -1,6 +1,7 @@
 <template>
     <div v-if="state.inited">
         <PhoneXd />
+        <Plashka/>
         <DashMenu :bottom-buttons="bottomButtons" :number-settings="numberSettings" />
         <SPECTATORSI />
         <Stol />
@@ -19,6 +20,7 @@ import Hand from '../components/Hand.vue';
 import Log from '../components/Log.vue';
 import SPECTATORSI from '../components/SPECTATORSI.vue';
 import PhoneXd from '../components/phoneXd.vue';
+import Plashka from '../components/plashka.vue';
 
 defineProps();
 

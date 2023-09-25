@@ -11,7 +11,7 @@ function init(wsServer, path) {
         //utils = require('./utils.cjs'),
         channel = "citadels",
         //testMode = process.argv[2] === "debug";
-        testMode = true
+        testMode = false
 
     app.use("/nechto", wsServer.static(`${__dirname}/dist`));
     registry.handleAppPage(path, `${__dirname}/dist/index.html`, `${__dirname}/dist/manifest.json`, '/nechto/');
@@ -166,7 +166,7 @@ function init(wsServer, path) {
                         room.currentPanika = null;
                         room.currentPlayer = shuffleArray(room.playerSlots.map((it, index) => index).filter(inx => room.playerSlots[inx]))[0]
                         state.zarajennie = [];
-                        room.currentPlayer = 4
+                        //room.currentPlayer = 4
                         room.gameLog = [];
                         state.showCard = {};
                         state.discard = [];
@@ -706,7 +706,7 @@ function init(wsServer, path) {
                 zabivchevostChekCard = (slot) => {
                     const ruka = [...state.playerHand[slot]]
                     const newRuka = ruka.filter(it => chekDropCard(slot, it))
-                    if (newRuka.length() > 3) {
+                    if (newRuka.length > 3) {
                         const hui = shuffleArray(newRuka)
                         zabivchivostPanika(slot, hui[1], hui[0], hui[2])
                     }
