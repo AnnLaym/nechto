@@ -62,7 +62,6 @@
                 state.phase == 2
                 " class="knopka" @click="service.resolvePassActin()">
                 <div>{{ getKnopkaName('ok') }}
-
                 </div>
             </div>
             <div v-if="state.currentPanika && state.userSlot === state.currentPlayer

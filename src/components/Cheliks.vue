@@ -27,23 +27,29 @@
             УМЕР
         </div>
         <div v-if="state.playerSlots[slot] === state.playerSlots[state.currentPlayer!]">
-            Ходит
         </div>
         <div class="mamaMami">
-            <div class="kartinka">
+            <div class="kartinka"
+                :style="{ backgroundImage: reactCommonRoom().getPlayerAvatarURL(state.playerSlots[slot]!) }">
                 <div class="newTimer" v-if="state.waitMoveSlot === slot && state.timed"
-                    :style="{ 'background-position': `${timerWidth}px 124px` }"> </div>
-                <img src="./avatars/avatar2.png" class="otdelnii">
+                    :style="{ 'background-position': `${timerWidth}px 124px` }">
+                    <i className="material-icons">
+                        person
+                    </i>
+                </div>
+                <div v-if="slot === state.userSlot" class="setAvatarButton"> </div>
+                <img :src="state.playerAvatars[state.playerSlots[slot]!] ?
+                    state.playerAvatars[state.playerSlots[slot]!] : ' /nechto/cards/avatar1.png'" class="otdelnii">
             </div>
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { Slot, useNechtoService, useNechtoState } from '../service';
+import { Slot, useNechtoService, useNechtoState, reactCommonRoom } from '../service';
 import { getCardName, getKnopkaName } from '../log';
 import { computed } from '@vue/reactivity';
-import { ref, watch } from 'vue';
+import { reactive, ref, watch } from 'vue';
 
 const service = useNechtoService()
 const state = useNechtoState()
@@ -53,10 +59,9 @@ const timerWidth = computed(() => {
     const tile = (Math.round((869 * time) / state.value.fullTimer)) * 124;
     return tile >= 0 ? tile : 0;
 })
-
 const timePassed = ref(0)
-
 let interval: number
+//const avatar =  reactCommonRoom.getPlayerAvatarURL()
 
 watch(state, () => {
     window.clearInterval(interval);
@@ -68,7 +73,9 @@ watch(state, () => {
     }
 })
 
+function setAvatarClick() {
 
+}
 function slotClick(index: number) {
     if (state.value.phase === 2)
         service.selectedTarget.value = service.selectedTarget.value !== index ? index : null
@@ -164,6 +171,14 @@ defineProps<{
 .roditel:hover .host-cntrols {
     display: block;
     gap: 5px;
+}
+
+.setAvatarButton {
+    display: none;
+    background-color: gray;
+    opacity: 70%;
+    width: 50px;
+    height: 50px;
 }
 
 .chel {

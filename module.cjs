@@ -52,7 +52,8 @@ function init(wsServer, path) {
                 currentCardPanik: null,
                 fullTimer: 0,
                 waitMoveSlot: null,
-                startSlotColor: {}
+                startSlotColor: {},
+                playerAvatars: {}
             };
             if (testMode)
                 [1, 2, 3, 4].forEach((_, ind) => {
@@ -194,7 +195,7 @@ function init(wsServer, path) {
                     }
                 },
                 startRound = () => {
-                    room.phase = 1; // чел фоткает стол и нажимает кнопку взять карту
+                    room.phase = 1; // чел фоткает стол и  взять карту
                     state.uporstvoCards = {};
                     state.showCard = {};
                     state.tsepnayaReaksiaObmenKard = {}
@@ -307,57 +308,58 @@ function init(wsServer, path) {
                             update()
                             updateState()
                         }
-                        if (room.currentPanika === 'tsepnayaReaksia') {
-                            Object.Keys(state.playerHand).forEach(slot => {
-                                if (!room.readyPlayers[slot]) {
-                                    state.tsepnayaReaksiaObmenKard[slot] = getRandomObmenCard(slot)
+                        if (room.currentPanika) {
+                            if (room.currentPanika === 'tsepnayaReaksia') {
+                                Object.Keys(state.playerHand).forEach(slot => {
+                                    if (!room.readyPlayers[slot]) {
+                                        state.tsepnayaReaksiaObmenKard[slot] = getRandomObmenCard(slot)
+                                    }
+                                });
+                                startTsepnayaReaksia()
+                            } else if (room.currentPanika.id === 'tolkoMejduNami') {
+                                const sosedi = [getNextPlayer(true), getNextPlayer(false)]
+                                tolkoMejduNamiPanika(sosedi[shuffleArray([0, 1])], room.currentPlayer)
+                            } else if (room.currentPanika.id === 'razDva') {
+                                if (!room.target) {
+                                    if (room.karantin[getThirdPlayers()[0]])
+                                        room.target = getThirdPlayers()
+                                    else if (room.karantin[getThirdPlayers()[1]])
+                                        room.target = getThirdPlayers()
+                                    else startObmen()
                                 }
-                            });
-                            startTsepnayaReaksia()
-                        } else if (room.currentPanika.id === 'tolkoMejduNami') {
-                            const sosedi = [getNextPlayer(true), getNextPlayer(false)]
-                            tolkoMejduNamiPanika(sosedi[shuffleArray([0, 1])], room.currentPlayer)
-                        } else if (room.currentPanika.id === 'razDva') {
-                            if (!room.target) {
-                                if (room.karantin[getThirdPlayers()[0]])
-                                    room.target = getThirdPlayers()
-                                else if (room.karantin[getThirdPlayers()[1]])
-                                    room.target = getThirdPlayers()
-                                else startObmen()
-                            }
-                            smenaMest(room.target, room.currentPlayer)
-                            room.currentPanika = null
-                            startObmen()
-                        } else if (room.currentPanika.id === 'iViEtoNazivaeteVecherinkoy') {
-                            iViEtoNazivaeteVecherinkoyPanika()
-                            PanikaiViEtoNazivaeteVecherinkoy()
-                            startObmen()
-                        } else if (room.currentPanika.id === 'davaiDrujit') {
-                            if (!state.obmenCardIndex) {
-                                state.obmenCardIndex = getRandomObmenCard(room.currentPlayer)
-                                const canBeTarget = [
-                                    getNextPlayer(room.invertDirection, room.currentPlayer),
-                                    getNextPlayer(!room.invertDirection, room.currentPlayer)
-                                ].filter(el => !room.karantin.includes(el) && !chekSosedaNaPidora(el))
-                                if (canBeTarget) {
-                                    room.target = shuffleArray(canBeTarget)[0]
-                                    update()
+                                smenaMest(room.target, room.currentPlayer)
+                                room.currentPanika = null
+                                startObmen()
+                            } else if (room.currentPanika.id === 'iViEtoNazivaeteVecherinkoy') {
+                                iViEtoNazivaeteVecherinkoyPanika()
+                                PanikaiViEtoNazivaeteVecherinkoy()
+                                startObmen()
+                            } else if (room.currentPanika.id === 'davaiDrujit') {
+                                if (!state.obmenCardIndex) {
+                                    state.obmenCardIndex = getRandomObmenCard(room.currentPlayer)
+                                    const canBeTarget = [
+                                        getNextPlayer(room.invertDirection, room.currentPlayer),
+                                        getNextPlayer(!room.invertDirection, room.currentPlayer)
+                                    ].filter(el => !room.karantin.includes(el) && !chekSosedaNaPidora(el))
+                                    if (canBeTarget) {
+                                        room.target = shuffleArray(canBeTarget)[0]
+                                        update()
+                                    }
+                                    else startObmen()
                                 }
-                                else startObmen()
+                                else if (state.obmenCardIndex) {
+                                    obmenProcces(getRandomObmenCard(room.target))
+                                }
+                            } else if (room.currentPanika.id === 'svidanieVSlepuyu') {
+                                const slot = room.currentPlayer;
+                                svidanieVSlepuyuPanika(room.currentPlayer, getRandomObmenCard(room.currentPlayer))
+                            } else if (room.currentPanika.id === "ubiraysyaProchPanika") {
+                                tsel = shuffleArray(Object.Keys(state.playerHand))
+                                ubiraysyaProchPanika(tsel, room.currentPlayer)
+                            } else if (room.currentCardPanika.id === "zabivchivost") {
+                                zabivchevostChekCard(room.currentPlayer)
                             }
-                            else if (state.obmenCardIndex) {
-                                obmenProcces(getRandomObmenCard(room.target))
-                            }
-                        } else if (room.currentPanika.id === 'svidanieVSlepuyu') {
-                            const slot = room.currentPlayer;
-                            svidanieVSlepuyuPanika(room.currentPlayer, getRandomObmenCard(room.currentPlayer))
-                        } else if (room.currentPanika.id === "ubiraysyaProchPanika") {
-                            tsel = shuffleArray(Object.Keys(state.playerHand))
-                            ubiraysyaProchPanika(tsel, room.currentPlayer)
-                        } else if (room.currentCardPanika.id === "zabivchivost") {
-                            zabivchevostChekCard(room.currentPlayer)
                         }
-
                     }
                     if (room.phase === 2 && !room.currentPanika) {
                         const card = getRandomObmenCard(room.currentPlayer)
@@ -485,8 +487,8 @@ function init(wsServer, path) {
                         room.currentCardPanik = card
                     } else {
                         state.playerHand[room.currentPlayer].push(card)
-                        if (card.type == 'nechto') {
-                            state.nechto == state.playerHand[slot]
+                        if (card.type === 'nechto') {
+                            state.nechto = state.playerHand[slot]
                         }
                     };
                     startTimer()
@@ -1077,6 +1079,10 @@ function init(wsServer, path) {
                         this.emit("host-changed", user, playerId);
                     }
                     update();
+                },
+                "update-avatar": (user, id) => {
+                    room.playerAvatars[user] = id;
+                    update()
                 },
                 "toggle-paused": (user) => {
                     if (user === room.hostId) {

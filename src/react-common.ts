@@ -6,6 +6,10 @@ export interface ReactAppWindow<GameState> extends Window {
     };
     gameState: GameState;
     gameApp: { userId: string };
+    commonRoom: {
+        getPlayerAvatarURL: (playerId: string) => string
+        getPlayerName: (playerId: string) => string
+    }
 }
 
 export interface WrappedSocket {
@@ -13,7 +17,6 @@ export interface WrappedSocket {
     emit: (event: string, ...args: any[]) => void;
     request: (event: string) => Promise<any>;
 }
-
 
 const requests = new Map<string, (result: any) => any>();
 

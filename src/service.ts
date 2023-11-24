@@ -61,10 +61,12 @@ interface NechtoState {
     currentCardPanik: Card | null;
     fullTimer: number;
     waitMoveSlot: Slot | null;
-    startSlotColor: Record<User, Slot>
+    startSlotColor: Record<User, Slot>;
+    playerAvatars: Record<User, string>
 }
 
 declare const window: ReactAppWindow<NechtoState>;
+export const reactCommonRoom = () => window.commonRoom 
 
 export function useNechtoService() {
     if (!nechtoService)
@@ -73,7 +75,6 @@ export function useNechtoService() {
 }
 export type UserLang = 'ua' | 'ru' | 'en'; 
 export const userLang: Ref<UserLang> = ref('ua')
-
 export const hyphenate = ((window as any).createHyphenator as any)((window as any).hyphenationPatternsRu as any) as  (text: string) => string;
 export const hyphenateEn = ((window as any).createHyphenator as any)((window as any).hyphenationPatternsEnUs as any) as  (text: string) => string;
 
