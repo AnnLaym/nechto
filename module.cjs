@@ -11,7 +11,7 @@ function init(wsServer, path) {
         //utils = require('./utils.cjs'),
         channel = "citadels",
         //testMode = process.argv[2] === "debug";
-        testMode = true
+        testMode = false
 
     app.use("/nechto", wsServer.static(`${__dirname}/dist`));
     registry.handleAppPage(path, `${__dirname}/dist/index.html`, `${__dirname}/dist/manifest.json`, '/nechto/');
@@ -167,13 +167,14 @@ function init(wsServer, path) {
                         room.currentPanika = null;
                         room.currentPlayer = shuffleArray(room.playerSlots.map((it, index) => index).filter(inx => room.playerSlots[inx]))[0]
                         state.zarajennie = [];
-                        room.currentPlayer = 4
+                        //room.currentPlayer = 4
                         room.gameLog = [];
                         state.showCard = {};
                         state.discard = [];
                         room.gameLog.push({ action: 'start-game' })
                         state.nechto = null;
                         room.action = null;
+                        state.obmenCardIndex = null
                         room.karantin = {};
                         room.dveri = [];
                         room.currentCardPanik = null
@@ -341,7 +342,7 @@ function init(wsServer, path) {
                                     const canBeTarget = [
                                         getNextPlayer(room.invertDirection, room.currentPlayer),
                                         getNextPlayer(!room.invertDirection, room.currentPlayer)
-                                    ].filter(el => !room.karantin.includes(el) && !chekSosedaNaPidora(el))
+                                    ].filter(el => !room.karantin.includes(el) && !chekSosedaNaPidora(el)) //FIXME:room.karantin.includes is not a function 
                                     if (canBeTarget) {
                                         room.target = shuffleArray(canBeTarget)[0]
                                         update()
@@ -671,10 +672,14 @@ function init(wsServer, path) {
                 davaiDrujitPanika = (target, slot, index) => {
                     //FIXME: dveri add nije
                     if (!room.karantin[target]) {
-                        if (slot === room.currentPlayer) {
+                        if (slot === room.currentPlayer && !room.isObmenReady) {
                             if (obmenChekZarajeniy(slot, index)) {
                                 state.obmenCardIndex = index
-                                room.target = target
+                                room.isObmenReady = true
+                                room.target = target //HELPME: how
+                                startTimer()
+                                updatePlayerState()
+                                update()
                             }
                         } else if (slot === room.target) {
                             if (obmenChekZarajeniy(slot, index)) {
@@ -891,51 +896,47 @@ function init(wsServer, path) {
                         const dieLog = () => {
                             room.gameLog.push({ actors: room.playerSlots[room.target] })
                         }
-                        if (room.action && slot === room.target) {
-                            if (room.action === 'ognemet') {
-                                if (card.id === 'nikakogoShahlika') {
-                                    room.waitMoveSlot = room.currentPlayer
-                                    logsOne()
-                                    sigrat()
-                                    startObmen()
-                                };
-                            } else if (room.action === 'menyaemsyaMestami' || room.action === 'smaivayUdochki') {
-                                if (card.id === 'mneIZdesNePloha') {
-                                    room.waitMoveSlot = room.currentPlayer
-                                    logsOne()
-                                    startObmen()
-                                }
-                            } else if (room.phase === 3 || room.action === 'soblazn') {
-                                if (card.id === 'mimo') {
-                                    logsOne()
-                                    sigrat()
-                                    room.target = getNextPlayer(room.invertDirection, room.target)
-                                    room.waitMoveSlot = target
-                                    startTimer()
-                                    update()
-                                    updateState()
-                                } else if (card.id === 'strah') {
-                                    sigrat()
-                                    logsOne()
-                                    room.waitMoveSlot = room.currentPlayer
-                                    state.showCard[room.target] = [state.playerHand[room.currentPlayer][state.obmenCardIndex]]
-                                    room.action = 'strah'
-                                    room.waitMoveSlot = room.currentPlayer
-                                    update()
-                                    updateState()
-                                } else if (card.id === 'netUjSpasibo') {
-                                    room.waitMoveSlot = room.currentPlayer
-                                    logsOne()
-                                    sigrat()
-                                    endRound()
-                                }
+                        if (room.action === 'ognemet') {
+                            if (card.id === 'nikakogoShahlika') {
+                                room.waitMoveSlot = room.currentPlayer
+                                logsOne()
+                                sigrat()
+                                startObmen()
+                            };
+                        } else if (room.action === 'menyaemsyaMestami' || room.action === 'smaivayUdochki') {
+                            if (card.id === 'mneIZdesNePloha') {
+                                room.waitMoveSlot = room.currentPlayer
+                                logsOne()
+                                startObmen()
+                            }
+                        } else if (room.phase === 3 || room.action === 'soblazn') {
+                            if (card.id === 'mimo') {
+                                logsOne()
+                                sigrat()
+                                room.target = getNextPlayer(room.invertDirection, room.target)
+                                room.waitMoveSlot = room.target
+                                startTimer()
+                                update()
+                                updateState()
+                            } else if (card.id === 'strah') {
+                                sigrat()
+                                logsOne()
+                                room.waitMoveSlot = room.currentPlayer
+                                state.showCard[room.target] = [state.playerHand[room.currentPlayer][state.obmenCardIndex]]
+                                room.action = 'strah'
+                                room.waitMoveSlot = room.currentPlayer
+                                update()
+                                updateState()
+                            } else if (card.id === 'netUjSpasibo') {
+                                room.waitMoveSlot = room.currentPlayer
+                                logsOne()
+                                sigrat()
+                                endRound()
                             }
                         }
                     } else if (slot === room.currentPlayer && room.action === 'soblazn') {
-                        room.target = target
                         state.obmenCardIndex = index;
                         room.isObmenReady = true;
-                        room.waitMoveSlot = target
                         update()
                         updateState()
                     } else if (room.action === 'uporstvo') {
@@ -1014,7 +1015,9 @@ function init(wsServer, path) {
                             if (target !== null)
                                 tolkoMejduNamiPanika(target, slot)
                         } else if (card.id === 'davaiDrujit') {
-                            if (target !== null && index !== null)
+                            if (target !== null && index !== null && slot === room.currentPlayer)
+                                davaiDrujitPanika(target, slot, index)
+                            else if (slot === room.target && index !== null)
                                 davaiDrujitPanika(target, slot, index)
                         } else if (card.id === 'vremyaPriznaniy') {
                             //TODO: НЕ ДЕЛАЮ ХУЙНЮ
