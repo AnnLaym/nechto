@@ -2,7 +2,7 @@
     <div class="card" :class="{ selectedCard: selected && !zoomed, zoomed }" @mousedown="mouseDaun()">
         <div class="kartinka" :style="{
             'background-image': `url(/nechto/cards/${card.type !== 'panika'
-                ? card.id !== 'zarajenie' ? card.id : 'z1' : 'panika'}.png)`
+                ? card.id !== 'zarajenie' ? card.id : `z${card.zNumber!}` : 'panika'}.png)`
         }">
             <div class="name">{{ getCardName(card.id).toUpperCase() }}</div>
             <div v-if="selected || zoomed" class="podkladka">
@@ -134,5 +134,6 @@ defineProps<{
     justify-content: center;
     height: 180px;
     width: 130px;
+    pointer-events: auto;
 }
 </style>

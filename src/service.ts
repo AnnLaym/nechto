@@ -18,6 +18,7 @@ export interface Card {
     endTurn?: boolean;
     allReady?: boolean;
     id: string;
+    zNumber?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18;
     target?: "sosed" | "any" | "selfOrSosed";
 }
 
@@ -66,17 +67,17 @@ interface NechtoState {
 }
 
 declare const window: ReactAppWindow<NechtoState>;
-export const reactCommonRoom = () => window.commonRoom 
+export const reactCommonRoom = () => window.commonRoom
 
 export function useNechtoService() {
     if (!nechtoService)
         nechtoService = createNechtoService()
     return nechtoService
 }
-export type UserLang = 'ua' | 'ru' | 'en'; 
-export const userLang: Ref<UserLang> = ref('ua')
-export const hyphenate = ((window as any).createHyphenator as any)((window as any).hyphenationPatternsRu as any) as  (text: string) => string;
-export const hyphenateEn = ((window as any).createHyphenator as any)((window as any).hyphenationPatternsEnUs as any) as  (text: string) => string;
+export type UserLang = 'ua' | 'ru' | 'en';
+export const userLang: Ref<UserLang> = ref(localStorage.userLang || 'ua')
+export const hyphenate = ((window as any).createHyphenator as any)((window as any).hyphenationPatternsRu as any) as (text: string) => string;
+export const hyphenateEn = ((window as any).createHyphenator as any)((window as any).hyphenationPatternsEnUs as any) as (text: string) => string;
 
 
 export function toggleLanguage1() {
@@ -93,6 +94,7 @@ export function toggleLanguage1() {
         default:
             break;
     }
+    localStorage.userLang = userLang.value
 }
 
 

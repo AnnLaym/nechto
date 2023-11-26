@@ -65,34 +65,7 @@ function cardClick(index: number) {
     left: 0px;
     margin-bottom: 30px;
     z-index: 1;
-}
+    pointer-events: none;
 
-.dveKnopki {
-    display: flex;
-    flex-flow: row;
-    gap: 10px;
-    top: -80px;
-    position: relative;
-    font-size: 16px;
-    justify-content: center;
-    height: 50px;
-}
-
-.dveKnopki div:nth-child(2) {
-    background: red;
-}
-
-.knopki {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    background-color: green;
-    border: 1;
-    color: black;
-    top: 60px
-}
-
-.selected {
-    height: 1px;
 }
 </style>

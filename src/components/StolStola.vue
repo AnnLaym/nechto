@@ -29,18 +29,22 @@
                 class="knopka">
                 {{ getKnopkaName('vzyatKartu') }}
             </div>
-            <div v-if="(state.phase === 2 && state.target === state.userSlot && state.showAllHand?.length == 0)
+            <div v-if="(state.phase === 2 && state.target === state.userSlot && state.showAllHand?.length == 0
+                && state.chekCards?.length == null && state.action !== 'podozrenie')
                 || (state.target === state.userSlot && state.phase === 2 && state.isObmenReady
                     && (state.action === 'ognemet' || state.action === 'menyaemsyaMestami'
                         || state.action === 'smaivayUdochki'))
                 " @click="service.resolveAction(service.selectedCard.value)" class="knopka">
                 {{ getKnopkaName("sigrat") }}</div>
+            <div v-if="state.target === state.userSlot && state.phase === 3 && state.isObmenReady"
+                @click="service.resolveAction(service.selectedCard.value)" class="knopka"> {{ getKnopkaName("sigrat") }}
+            </div>
             <div v-if="(state.action === 'soblazn' && state.currentPlayer === state.userSlot && !state.isObmenReady)"
                 class="knopka" @click="service.resolveAction(service.selectedCard.value!)">
                 {{ getKnopkaName("polojitKartuNaObmen") }}
             </div>
-            <div v-if="(state.action === 'soblazn' && state.target === state.userSlot && state.isObmenReady)"
-                class="knopka" @click="service.soblaznResolve(service.selectedCard.value!)">
+            <div v-if="(state.action === 'soblazn' && state.target === state.userSlot && state.isObmenReady)" class="knopka"
+                @click="service.soblaznResolve(service.selectedCard.value!)">
                 {{ getKnopkaName("polojitKartuNaObmen") }}
             </div>
             <div v-if="state.phase === 2 && state.target === state.userSlot
@@ -66,7 +70,8 @@
             </div>
             <div v-if="state.currentPanika && state.userSlot === state.currentPlayer
                 && state.currentPanika.id !== 'zabivchivost'
-                " class="knopka" @click=" service.panicAction(service.selectedCard.value, service.selectedTarget.value!)">
+                " class="knopka"
+                @click=" service.panicAction(service.selectedCard.value, service.selectedTarget.value!)">
                 {{
                     getKnopkaName(`goPanika`) }}
             </div>
@@ -144,7 +149,7 @@ function dropCardClick() {
     width: 750px;
     background-image: url(./img/stol69.png);
     height: 400px;
-    padding: 10px; 
+    padding: 10px;
     border-radius: 100px;
     background-size: cover;
     flex: 1;

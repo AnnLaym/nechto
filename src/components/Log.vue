@@ -1,8 +1,11 @@
 <template>
     <div class="button" @click="clickLog()">X</div>
     <div v-if="isClossed">
-        <div class="bodyLog">
-            <div v-for="message in state.gameLog.reverse()">
+        <div class="bodyLog" ref="bodyLog" @scroll="handleScroll()">
+            <div class="startScroll" v-if="trogal" @click="startScroll()">
+                лог на паузе
+            </div>
+            <div v-for="message in state.gameLog">
                 <div v-if="message.action && !message.panika" class="messageCard">
                     <span v-if="message.actors?.[0]" :style="{
                         'color':
@@ -38,13 +41,36 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { computed, nextTick, ref, watch } from 'vue';
 import { getCardName, getCardLog, getActionLog, getKnopkaName } from '../log';
 import { useNechtoService, useNechtoState } from '../service';
 
-const state = useNechtoState()
+const bodyLog = ref<HTMLElement>()
 var isClossed = ref(true);
 
+const trogal = ref(false)
+const neTrogal = computed(() => !trogal.value)
+let lastScroll = 0
+const state = useNechtoState()
+const startScroll = () => {
+    scrollBottom()
+    trogal.value = false
+}
+const handleScroll = () => {
+    if (bodyLog.value!.scrollTop < lastScroll && bodyLog.value!.scrollTop > 0) {
+        trogal.value = true
+    }
+    lastScroll = bodyLog.value!.scrollTop
+}
+const scrollBottom = () => {
+    bodyLog.value!.scrollTop = bodyLog.value!.scrollHeight
+}
+watch(state, async () => {
+    if (neTrogal.value && bodyLog.value) {
+        await nextTick()
+        scrollBottom()
+    }
+})
 const clickLog = () => {
     isClossed.value = !isClossed.value
 }
@@ -72,6 +98,7 @@ const colors = [
     /* Название вашего кастомного шрифта */
     src: url("/src/shrifty/Montserrat-Regular.ttf");
 }
+
 .bodyLog {
     position: fixed;
     right: 0px;
@@ -103,6 +130,14 @@ const colors = [
     flex-flow: row;
     justify-content: left;
     gap: 3px;
+}
+
+.startScroll {
+    position: fixed;
+    bottom: 50px;
+    right: 100px;
+    background-color: aliceblue;
+    z-index: 1;
 }
 
 .podskazkaLoga {

@@ -1,11 +1,12 @@
 <template>
-    <div class="chel" :class="`slot-color-${state.startSlotColor.value ? state.startSlotColor : slot}`">
+    <div class="chel" :class="`slot-color-${state.startSlotColor.value ? state.startSlotColor : slot}`"
+        @click="slotClick(slot)">
         <div v-if="state.currentPlayer === slot" class="backgroundJ" />
         <div class="roditel">
             <div v-if="state.playerSlots[slot] === null &&
                 (state.phase === 0 || !state.teamsLocked)" @click="service.playersJoin(slot)" class="mini-roditel">
                 {{ getKnopkaName('sest') }}</div>
-            <div v-else @click="slotClick(slot)">
+            <div v-else>
                 <div class="suka">
                     <span v-if="service.selectedTarget.value === slot && state.phase === 2">на него:</span>
                     {{ state.playerSlots[slot] ? state.playerNames[state.playerSlots[slot]!] : "" }}
@@ -29,8 +30,7 @@
         <div v-if="state.playerSlots[slot] === state.playerSlots[state.currentPlayer!]">
         </div>
         <div class="mamaMami">
-            <div class="kartinka"
-                :style="{ backgroundImage: reactCommonRoom().getPlayerAvatarURL(state.playerSlots[slot]!) }">
+            <div class="kartinka">
                 <div class="newTimer" v-if="state.waitMoveSlot === slot && state.timed"
                     :style="{ 'background-position': `${timerWidth}px 124px` }">
                     <i className="material-icons">
@@ -38,8 +38,8 @@
                     </i>
                 </div>
                 <div v-if="slot === state.userSlot" class="setAvatarButton"> </div>
-                <img :src="state.playerAvatars[state.playerSlots[slot]!] ?
-                    state.playerAvatars[state.playerSlots[slot]!] : ' /nechto/cards/avatar1.png'" class="otdelnii">
+                <img :src="reactCommonRoom().getPlayerAvatarURL(state.playerSlots[slot]!) || ' /nechto/cards/avatar1.png'"
+                    class="otdelnii">
             </div>
         </div>
     </div>
@@ -61,7 +61,6 @@ const timerWidth = computed(() => {
 })
 const timePassed = ref(0)
 let interval: number
-//const avatar =  reactCommonRoom.getPlayerAvatarURL()
 
 watch(state, () => {
     window.clearInterval(interval);

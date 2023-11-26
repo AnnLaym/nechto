@@ -141,14 +141,20 @@ const createDeck = (players, startWithNechto) => {
         });
     };
     let realdeck = [];
+    let zCount = shuffleArray(new Array(19).fill().map((it, ind) => ind))
     deck.forEach(el => {
         for (let i = 0; i < el.count; i++) {
-            realdeck.push(el.cardFull)
+            let cardFull = el.cardFull
+            if (cardFull.id === 'zarajenie') {
+                cardFull = { ...cardFull }
+                cardFull.zNumber = zCount.pop()
+            }
+            realdeck.push(cardFull)
         }
     });
     let newDeck = realdeck.filter(card => card.id !== "zarajenie" && card.type == "card" && card.id !== "nechto");
-    let panikDeck = realdeck.filter(card => card.type == "panika" && card.id !== 'tsepnayaReaksia');
-    //let panikDeck = realdeck.filter(card => card.type == "p")
+    //let panikDeck = realdeck.filter(card => card.type == "panika" && card.id !== 'tsepnayaReaksia');
+    let panikDeck = realdeck.filter(card => card.type == "p")
     let zarajenieDeck = realdeck.filter(card => card.id == "zarajenie");
     let nechtoDeck = realdeck.filter(card => card.id == "nechto");
     let shuffledDeck = shuffleArray([...newDeck]);
@@ -164,7 +170,8 @@ const createDeck = (players, startWithNechto) => {
         let shufledFirsDeck = shuffleArray(firstdeckgo)
         let ostatokDeck = shuffledDeck.splice(playersCardWillbe + 2, shuffledDeck.length - 1);
         ostatokDeck.push(...nechtoDeck);
-        let shuffleDeki = shuffleArray([...ostatokDeck, ...panikDeck])
+        let shuffleDeki = shuffleArray([...ostatokDeck, ...panikDeck, ...zarajenieDeck])
+        shuffleDeki.unshift({ ...cardsDeck.tolkoMejduNami, id: 'tolkoMejduNami' })
         res = [...shufledFirsDeck, ...shuffleDeki]
     };
     return res
