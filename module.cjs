@@ -53,7 +53,9 @@ function init(wsServer, path) {
                 fullTimer: 0,
                 waitMoveSlot: null,
                 startSlotColor: {},
-                playerAvatars: {}
+                playerAvatars: {},
+                normSosed: null,
+                normPlayer: null
             };
             if (testMode)
                 [1, 2, 3, 4].forEach((_, ind) => {
@@ -203,10 +205,15 @@ function init(wsServer, path) {
                     room.currentCardPanik = null
                     room.waitMoveSlot = room.currentPlayer
                     room.gameLog.push({ action: 'start-round', actors: [room.playerSlots[room.currentPlayer]] })
+                    //findNormPlayers()
                     startTimer();
                     update();
                     updateState();
                 },
+                // findNormPlayers = () => {
+                //     room.normSosed = [] //TODO: norm soseda bi sdelat
+                //     room.normPlayer[room.currentPlayer] = [] //TODO: norm playera bi sdelat
+                // },
                 startTimer = () => {
                     if (room.timed) {
                         clearInterval(interval);
@@ -419,6 +426,13 @@ function init(wsServer, path) {
                 playerKill = (target) => {
                     state.discard.push(room.playerHand[target]);
                     delete state.playerHand[target]
+                    if (room.dveri.includes(target)) {
+                        room.dveri.splice(room.dveri.indexOf(target), 1)
+                        const prevPLayer = getNextPlayer(true, target)
+                        if (!room.dveri.includes(prevPLayer)) {
+                            room.dveri.push(prevPLayer)
+                        }
+                    }
                     if (target === state.nechto) {
                         isGameEnd(target)
                     }
@@ -624,7 +638,7 @@ function init(wsServer, path) {
                     isDead(room.target)
                     endRound()
                 },
-                chekSosedaNaPidora = (target) => {
+                chekSosedaNaPidora = (target) => { // true kodga NE pidor (pidor bez dveri)
                     const nextPlayer = getNextPlayer(room.invertDirection), prevPLayer = getNextPlayer(!room.invertDirection);
                     return (!room.dveri.includes(prevPLayer) && prevPLayer === target) || (!room.dveri.includes(nextPlayer) && nextPlayer === target)
                 },
@@ -835,24 +849,28 @@ function init(wsServer, path) {
                                     }
                                 }
                             } else if (card.target === 'selfOrSosed' && (prevPLayer === target || nextPlayer === target || target === slot)) {
+                                if (target > slot) target = slot // TOCHNO TAK NADA????
                                 if (card.id === 'topor') {
-                                    if (chekSosedaNaPidora(target)) {
+                                    if (!chekSosedaNaPidora(target)) {
                                         room.dveri.splice(room.dveri.indexOf(target), 1)
                                         logs()
                                         sigrat()
                                     }
                                     else if (room.karantin[target])
                                         delete room.karantin[target]
+                                    else if (target === slot && room.karantin[getNextPlayer(true, target)])
+                                        delete room.karantin[getNextPlayer(true, target)]
                                     logs()
                                     sigrat()
-                                } else if ((chekSosedaNaPidora(target) || target === slot)) {
+                                } else if ((!chekSosedaNaPidora(target) || target === slot)) {
                                     if (card.id === 'zakolchennayDver' && target !== getNextPlayer(room.invertDirection)) {
                                         room.dveri.push(target)
                                         sigrat()
                                         endRound()
-                                    } else if (!room.karantin[target] && card.id === 'karantin') {
+                                    } else if (card.id === 'karantin' && !room.karantin[target]) {
                                         room.karantin[target] = 2 // 2 turns lol
                                         sigrat()
+                                        //next what to do
                                     }
                                 }
                             } else {
@@ -996,7 +1014,6 @@ function init(wsServer, path) {
                 },
                 "panic-action": (slot, target, index, index1, index2, index3) => {
                     const card = room.currentPanika
-                    room.target = target
                     if (room.phase == 2 && card.type === 'panika') {
                         if (card.id === 'iViEtoNazivaeteVecherinkoy') {
                             iViEtoNazivaeteVecherinkoyPanika()
@@ -1022,8 +1039,8 @@ function init(wsServer, path) {
                         } else if (card.id === 'vremyaPriznaniy') {
                             //TODO: НЕ ДЕЛАЮ ХУЙНЮ
                         } else if (card.id === 'tsepnayaReaksia') {
-                            if (target !== null) //FIXME: bug ist hier
-                                tsepnayaReaksiaPanika(slot, target)
+                            //FIXME: bug ist hier
+                            tsepnayaReaksiaPanika(slot, getNextPlayer(room.invertDirection, slot))
                         } else if (card.id === 'triChetyre') {
                             triChetyrePanika()
                         } else if (card.id === 'uups') {
