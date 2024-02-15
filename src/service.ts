@@ -63,7 +63,11 @@ interface NechtoState {
     fullTimer: number;
     waitMoveSlot: Slot | null;
     startSlotColor: Record<User, Slot>;
-    playerAvatars: Record<User, string>
+    playerAvatars: Record<User, string>;
+    winner: string | null;
+    normSosed: Slot[];
+    normPlayer: Slot[];
+    normThirdPlayers: Slot[];
 }
 
 declare const window: ReactAppWindow<NechtoState>;

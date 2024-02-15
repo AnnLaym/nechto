@@ -11,7 +11,7 @@ function init(wsServer, path) {
         //utils = require('./utils.cjs'),
         channel = "citadels",
         //testMode = process.argv[2] === "debug";
-        testMode = false
+        testMode = true
 
     app.use("/nechto", wsServer.static(`${__dirname}/dist`));
     registry.handleAppPage(path, `${__dirname}/dist/index.html`, `${__dirname}/dist/manifest.json`, '/nechto/');
@@ -45,8 +45,8 @@ function init(wsServer, path) {
                 showAllHand: null,
                 allReadyNedeed: false,
                 gameLog: [],
-                smallTimer: 20,
-                bigTimer: 60,
+                smallTimer: 10,
+                bigTimer: 20,
                 isObmenReady: false,
                 voting: false,
                 currentCardPanik: null,
@@ -55,7 +55,9 @@ function init(wsServer, path) {
                 startSlotColor: {},
                 playerAvatars: {},
                 normSosed: null,
-                normPlayer: null
+                normPlayer: null,
+                normThirdPlayers: null,
+                winner: null
             };
             if (testMode)
                 [1, 2, 3, 4].forEach((_, ind) => {
@@ -80,7 +82,9 @@ function init(wsServer, path) {
                 send = (target, event, data) => userRegistry.send(target, event, data),
                 update = () => send(room.onlinePlayers, "state", {
                     ...room, discardSize: state.discard.length, deckSize: state.deck.length,
-                    umerSlots: Object.keys(room.playerSlots).filter(i => !state.playerHand[i] && room.playerSlots[i] !== null)
+                    umerSlots: Object.keys(room.playerSlots)
+                        .filter(i => !state.playerHand[i] && room.playerSlots[i] !== null)
+                        .map((slot) => parseInt(slot))
                 }),
                 updatePlayerState = (user) => {
                     const slot = room.playerSlots.indexOf(user);
@@ -115,7 +119,7 @@ function init(wsServer, path) {
                 updateState = () => [...room.onlinePlayers].forEach(updatePlayerState),
                 getNextPlayer = (invert, slot) => {
                     slot = slot ?? room.currentPlayer;
-                    if (!invert) {
+                    if (invert === false) { // NU I HUINYA JE TUT NAPISANA UDP: wrode fix no eshe ne testil
                         slot++;
                         while (!state.playerHand[slot]) {
                             if (slot > 11)
@@ -158,13 +162,15 @@ function init(wsServer, path) {
                         } while (!state.playerHand[slotA]);
                         o++;
                     }
-
                     return [slot, slotA]
                 },
                 startGame = () => {
                     state.playersCount = room.playerSlots.filter((user) => user !== null).length;
                     if (state.playersCount > 3) {
                         room.playerHand = {};
+                        room.normSosed = null
+                        room.normPlayer = null
+                        room.normThirdPlayers = null
                         room.teamsLocked = true;
                         room.currentPanika = null;
                         room.currentPlayer = shuffleArray(room.playerSlots.map((it, index) => index).filter(inx => room.playerSlots[inx]))[0]
@@ -173,6 +179,7 @@ function init(wsServer, path) {
                         room.gameLog = [];
                         state.showCard = {};
                         state.discard = [];
+                        room.winner = null
                         room.gameLog.push({ action: 'start-game' })
                         state.nechto = null;
                         room.action = null;
@@ -182,8 +189,6 @@ function init(wsServer, path) {
                         room.currentCardPanik = null
                         room.showAllHand = null
                         state.deck = utils.createDeck(state.playersCount, room.startWithNechto);
-                        if (room.winnerPlayer != null)
-                            utils.shuffle(room.playerSlots);
                         room.playerSlots.forEach((player, slot) => {
                             if (player !== null) {
                                 state.playerHand[slot] = state.deck.splice(0, 4);
@@ -205,15 +210,31 @@ function init(wsServer, path) {
                     room.currentCardPanik = null
                     room.waitMoveSlot = room.currentPlayer
                     room.gameLog.push({ action: 'start-round', actors: [room.playerSlots[room.currentPlayer]] })
-                    //findNormPlayers()
+                    findNormPlayers()
                     startTimer();
                     update();
                     updateState();
                 },
-                // findNormPlayers = () => {
-                //     room.normSosed = [] //TODO: norm soseda bi sdelat
-                //     room.normPlayer[room.currentPlayer] = [] //TODO: norm playera bi sdelat
-                // },
+                findNormPlayers = () => {
+                    room.normSosed = []
+                    room.normPlayer = []
+                    room.normThirdPlayers = []
+                    Object.keys(state.playerHand).forEach(player => {
+                        if ((player == getNextPlayer(room.invertDirection, room.currentPlayer) ||
+                            player == getNextPlayer(!room.invertDirection, room.currentPlayer)) && !room.karantin[player]) {
+                            room.normSosed.push(player);
+                        }
+                        if (player == getThirdPlayers()[1] || player == getThirdPlayers()[0]) {
+                            room.normThirdPlayers.push(player);
+                        }
+                        if (!room.karantin[player]) {
+                            room.normPlayer.push(player);
+                        }
+                    })
+                    if (room.normSosed.length == 0) room.normSosed = null
+                    if (room.normPlayer.length == 0) room.normPlayer = null
+                    if (room.normThirdPlayers.length == 0) room.normThirdPlayers = null
+                },  
                 startTimer = () => {
                     if (room.timed) {
                         clearInterval(interval);
@@ -325,7 +346,7 @@ function init(wsServer, path) {
                                 });
                                 startTsepnayaReaksia()
                             } else if (room.currentPanika.id === 'tolkoMejduNami') {
-                                const sosedi = [getNextPlayer(true), getNextPlayer(false)]
+                                const sosedi = [getNextPlayer(room.invertDirection), getNextPlayer(!room.invertDirection)]
                                 tolkoMejduNamiPanika(sosedi[shuffleArray([0, 1])], room.currentPlayer)
                             } else if (room.currentPanika.id === 'razDva') {
                                 if (!room.target) {
@@ -349,7 +370,7 @@ function init(wsServer, path) {
                                     const canBeTarget = [
                                         getNextPlayer(room.invertDirection, room.currentPlayer),
                                         getNextPlayer(!room.invertDirection, room.currentPlayer)
-                                    ].filter(el => !room.karantin.includes(el) && !chekSosedaNaPidora(el)) //FIXME:room.karantin.includes is not a function 
+                                    ].filter(el => !room.karantin.includes(el) && !chekSosedaNaPidora(el)) //FIXME:room.karantin.includes is not a function  UPD: includes is cringe
                                     if (canBeTarget) {
                                         room.target = shuffleArray(canBeTarget)[0]
                                         update()
@@ -424,7 +445,10 @@ function init(wsServer, path) {
                         playerKill(player)
                 },
                 playerKill = (target) => {
-                    state.discard.push(room.playerHand[target]);
+                    state.discard.push(state.playerHand[target][0]);
+                    state.discard.push(state.playerHand[target][1]);
+                    state.discard.push(state.playerHand[target][2]);
+                    state.discard.push(state.playerHand[target][3]);
                     delete state.playerHand[target]
                     if (room.dveri.includes(target)) {
                         room.dveri.splice(room.dveri.indexOf(target), 1)
@@ -441,7 +465,7 @@ function init(wsServer, path) {
                     if (state.zarajennie.length + 1 === Object.keys(state.playerHand).length) {
                         endGame()
                     } else if (k == state.nechto)
-                        endGame()
+                        endGame('nechtoZdohlo')
                 },
                 reshuffle = () => {
                     if (state.deck.length === 0) {
@@ -521,6 +545,7 @@ function init(wsServer, path) {
                 startObmen = () => {
                     room.phase = 3; // фаза обмена
                     room.target = getNextPlayer(room.invertDirection)
+                    room.action = null
                     startTimer()
                     update()
                     updateState()
@@ -536,11 +561,14 @@ function init(wsServer, path) {
                     room.target = null;
                     state.obmenCardIndex = null
                     room.isObmenReady = false;
+                    room.normSosed = null
+                    room.normPlayer = null
+                    room.normThirdPlayers = null
                     updatePlayerState()
                     update()
                     startRound();
                 },
-                endGame = () => {
+                endGame = (nechtoZdohlo) => {
                     room.currentPlayer = null;
                     room.phase = 0;
                     room.teamsLocked = false;
@@ -551,6 +579,11 @@ function init(wsServer, path) {
                     state.nechto = null;
                     state.zarajennie = [];
                     state.uporstvoCards = {};
+                    if (nechtoZdohlo) {
+                        room.winner = 'ebanati'
+                    } else if (state.zarajennie.length - 2 === Object.keys(state.playerHand).length) {
+                        room.winner = 'nechto and team'
+                    }
                     room.gameLog.push({ action: 'end-game' })
                     update();
                     updateState();
@@ -676,8 +709,8 @@ function init(wsServer, path) {
                     }
                 },
                 tolkoMejduNamiPanika = (target, slot) => {
-                    if (target === getNextPlayer(true)
-                        | target === getNextPlayer(false)) {
+                    if (target === getNextPlayer(room.invertDirection)
+                        | target === getNextPlayer(!room.invertDirection)) {
                         state.showCard[target] = state.playerHand[slot]
                         room.currentPanika = null
                         startObmen()

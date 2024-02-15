@@ -16,6 +16,9 @@ export function getCardLog(cardId: CardId) {
 export function getActionLog(action: keyof typeof actionsData) {
     return actionsData[action]?.log[userLang.value] ?? action
 }
+export function getPodskazkaName(podskazka: keyof typeof podskazkaData) {
+    return podskazkaData[podskazka]?.log[userLang.value] ?? podskazka
+}
 
 type PartialRecord<K extends keyof any, T> = {
     [P in K]?: T;
@@ -697,6 +700,43 @@ const knopki = {
             ua: 'discord: sharji',
             en: 'discord: sharji',
         }
-    }
+    },
+    win: {
+        title: {
+            ru: 'Победа Нечто!',
+            ua: 'Перемоло Щось!',
+            en: 'Nechto win',
+        }
+    },
 
 } satisfies Record<string, KnopkaMetaData>
+const podskazkaData: Record<string, ActionMetaData> = {
+    'Выбирает карту для обмена': {
+        log: {
+            ru: "выбирает карту для обмена",
+            ua: "вибирає карту для обміну",
+            en: "chooses card for exchanging",
+        },
+    },
+    'взять карту': {
+        log: {
+            ru: "должен взять карту",
+            ua: "повинен взяти карту",
+            en: "must grab card",
+        },
+    },
+    'выбрать чела': {
+        log: {
+            ru: "должен выбрать игрока для обмена",
+            ua: "повинен вибрати гравця для обміну",
+            en: "must choose player for exchanging",
+        },
+    },
+    'играть': {
+        log: {
+            ru: "должен сыграть или сбросить карту",
+            ua: "повинен зіграти або скинути карту",
+            en: "must play or drop card",
+        },
+    },
+}

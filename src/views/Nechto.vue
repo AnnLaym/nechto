@@ -1,7 +1,8 @@
 <template>
     <div v-if="state.inited">
         <PhoneXd />
-        <Plashka/>
+        <Plashka />
+        <PodskazkiXD />
         <DashMenu :bottom-buttons="bottomButtons" :number-settings="numberSettings" />
         <SPECTATORSI />
         <Stol />
@@ -21,6 +22,7 @@ import Log from '../components/Log.vue';
 import SPECTATORSI from '../components/SPECTATORSI.vue';
 import PhoneXd from '../components/phoneXd.vue';
 import Plashka from '../components/plashka.vue';
+import PodskazkiXD from '../components/podskazkiXD.vue';
 
 defineProps();
 

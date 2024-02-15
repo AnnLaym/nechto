@@ -14,6 +14,8 @@
             <Card :card="state.currentCardPanik!" class="jopa" />
         </div>
         <div class="knopkee">
+            <div v-if="state.winner == 'ebanati'" class="win"> {{ getKnopkaName('win') }} </div>
+            <div v-if="state.winner == 'nechto and team'" class="win"> {{ getKnopkaName('win') }} </div>
             <div v-if="service.selectedCard.value! >= 0 && state.action !== 'soblazn'" class="knopkee hui">
                 <div v-if="service.selectedCard.value !== null && state.phase == 2 &&
                     !state.currentPanika && state.userSlot === state.currentPlayer && state.chekCards?.length !== 0"
@@ -151,6 +153,11 @@ function dropCardClick() {
 
 .hui .knopka:nth-child(1) {
     background-color: #0E1C0C;
+}
+
+.win {
+    font-size: 20px;
+    font-family: matToni1234;
 }
 
 .stol {

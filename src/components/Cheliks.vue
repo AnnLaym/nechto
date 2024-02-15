@@ -24,7 +24,7 @@
         <div v-if="state.karantin[slot]">
             {{ state.karantin[slot] }} дней карантина
         </div>
-        <div v-if="state.umerSlots!.includes(state.userSlot!)">
+        <div v-if="state.umerSlots!.includes(slot)" class="umer">
             УМЕР
         </div>
         <div v-if="state.playerSlots[slot] === state.playerSlots[state.currentPlayer!]">
@@ -167,6 +167,9 @@ defineProps<{
     font-family: matToni1234;
 }
 
+.umer {
+    z-index: 4;
+}
 .roditel:hover .host-cntrols {
     display: block;
     gap: 5px;
