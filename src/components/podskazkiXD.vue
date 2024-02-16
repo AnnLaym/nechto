@@ -1,33 +1,58 @@
 <template>
   <div class="main">
     <div class="avatar">
-      <img :src="reactCommonRoom().getPlayerAvatarURL(state.playerSlots[state.currentPlayer!]!) || ' /nechto/cards/avatar1.png'"
-        class="otdelnii" v-if="(!state.isObmenReady && state.phase == 3)
-          || state.phase == 1
-          || (state.phase == 2 && state.action == null)">
+      <img
+        :src="reactCommonRoom().getPlayerAvatarURL(state.playerSlots[state.currentPlayer!]!) || ' /nechto/cards/avatar1.png'"
+        class="otdelnii" v-if="(state.phase == 1) 
+          || (!state.isObmenReady && state.phase == 3)
+          || (state.phase == 2 && state.action == null)
+          || (state.phase == 2 && state.action === 'uporstvo')
+          || (state.phase == 2 && state.currentPanika)
+          || (state.phase == 2 && (state.action === 'analiz' || state.action === 'viski'))">
       <img :src="reactCommonRoom().getPlayerAvatarURL(state.playerSlots[state.target!]!) || ' /nechto/cards/avatar1.png'"
-        class="otdelnii" v-if="state.isObmenReady && state.phase == 3">
+        class="otdelnii" v-if="(state.isObmenReady && state.phase == 3)
+          || (state.phase == 2 && (state.action === 'menyaemsyaMestami' || state.action === 'smaivayUdochki'))">
     </div>
     <div class="text">
       <div class="obmen" v-if="state.phase == 3">
-        <div class="current player" v-if="!state.isObmenReady"> {{
-          state.playerNames[state.playerSlots[state.currentPlayer!]!] }} </div>
-        <div class="target player" v-if="state.isObmenReady"> {{ state.playerNames[state.playerSlots[state.target!]!] }}
+        <div class="current hueer" v-if="!state.isObmenReady"> {{
+          state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
+        </div>
+        <div class="target hueer" v-if="state.isObmenReady">
+          {{ state.playerNames[state.playerSlots[state.target!]!] }}
         </div>
         {{ getPodskazkaName('Выбирает карту для обмена') }}
       </div>
       <div class="kartu" v-if="state.phase == 1">
-        <div class="current player"> {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }} </div>
+        <div class="current hueer"> {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
+        </div>
         {{ getPodskazkaName('взять карту') }}
       </div>
       <div class="kartu" v-if="state.phase == 2 && state.action == null">
-        <div class="current player"> {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }} </div>
+        <div class="current hueer"> {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
+        </div>
         {{ getPodskazkaName('играть') }}
       </div>
       <div class="swap"
         v-if="state.phase == 2 && (state.action === 'menyaemsyaMestami' || state.action === 'smaivayUdochki')">
-        <div class="current player"> {{ state.currentPlayer }} </div>
-        {{ getPodskazkaName('выбрать чела') }}
+        <div class="current hueer"> {{ state.playerNames[state.playerSlots[state.target!]!] }}
+        </div>
+        {{ getPodskazkaName('свап местом') }}
+      </div>
+      <div class="uporstvo" v-if="state.phase == 2 && state.action === 'uporstvo'">
+        <div class="current hueer"> {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
+        </div>
+        {{ getPodskazkaName('упорство') }}
+      </div>
+      <div class="uporstvo" v-if="state.phase == 2 && (state.action === 'analiz' || state.action === 'viski' || state.action === 'podozrenie')">
+        <div class="current hueer"> {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
+        </div>
+        {{ getPodskazkaName('просмотр карты') }}
+      </div>
+      <div class="uporstvo" v-if="state.phase == 2 && (state.currentPanika)">
+        <div class="current hueer"> {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
+        </div>
+        {{ getPodskazkaName('панику') }}
       </div>
     </div>
   </div>
@@ -48,11 +73,9 @@ const state = useNechtoState()
 }
 
 .main {
-  position: fixed;
   right: 0px;
   height: 100px;
   width: 300px;
-  top: 0px;
   background-color: black;
   opacity: 70%;
   padding: 10px;
@@ -65,7 +88,7 @@ const state = useNechtoState()
 }
 
 .otdelnii {
-  height: 50px;
-  width: 50px;
+  height: 65px;
+  width: 65px;
 }
 </style>

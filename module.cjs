@@ -45,8 +45,8 @@ function init(wsServer, path) {
                 showAllHand: null,
                 allReadyNedeed: false,
                 gameLog: [],
-                smallTimer: 10,
-                bigTimer: 20,
+                smallTimer: 60,
+                bigTimer: 80,
                 isObmenReady: false,
                 voting: false,
                 currentCardPanik: null,
@@ -383,7 +383,7 @@ function init(wsServer, path) {
                             } else if (room.currentPanika.id === 'svidanieVSlepuyu') {
                                 svidanieVSlepuyuPanika(room.currentPlayer, getRandomObmenCard(room.currentPlayer))
                             } else if (room.currentPanika.id === "ubiraysyaProchPanika") {
-                                tsel = shuffleArray(Object.Keys(state.playerHand))
+                                tsel = shuffleArray(Object.Keys(state.playerHand))[0]
                                 ubiraysyaProchPanika(tsel, room.currentPlayer)
                             } else if (room.currentCardPanika.id === "zabivchivost") {
                                 zabivchevostChekCard(room.currentPlayer)
@@ -546,6 +546,7 @@ function init(wsServer, path) {
                     room.phase = 3; // фаза обмена
                     room.target = getNextPlayer(room.invertDirection)
                     room.action = null
+                    room.currentPanika = null
                     startTimer()
                     update()
                     updateState()
@@ -575,6 +576,7 @@ function init(wsServer, path) {
                     room.currentPanika = null;
                     room.action = null;
                     room.target = null;
+                    room.invertDirection = false
                     room.isObmenReady = false;
                     state.nechto = null;
                     state.zarajennie = [];

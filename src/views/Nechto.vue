@@ -2,11 +2,10 @@
     <div v-if="state.inited">
         <PhoneXd />
         <Plashka />
-        <PodskazkiXD />
+        <Pravii_corner />
         <DashMenu :bottom-buttons="bottomButtons" :number-settings="numberSettings" />
         <SPECTATORSI />
         <Stol />
-        <Log />
         <Hand />
     </div>
 </template>
@@ -23,6 +22,7 @@ import SPECTATORSI from '../components/SPECTATORSI.vue';
 import PhoneXd from '../components/phoneXd.vue';
 import Plashka from '../components/plashka.vue';
 import PodskazkiXD from '../components/podskazkiXD.vue';
+import Pravii_corner from '../components/pravii_corner.vue';
 
 defineProps();
 

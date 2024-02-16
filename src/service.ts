@@ -72,7 +72,6 @@ interface NechtoState {
 
 declare const window: ReactAppWindow<NechtoState>;
 export const reactCommonRoom = () => window.commonRoom
-
 export function useNechtoService() {
     if (!nechtoService)
         nechtoService = createNechtoService()
@@ -82,8 +81,6 @@ export type UserLang = 'ua' | 'ru' | 'en';
 export const userLang: Ref<UserLang> = ref(localStorage.userLang || 'ua')
 export const hyphenate = ((window as any).createHyphenator as any)((window as any).hyphenationPatternsRu as any) as (text: string) => string;
 export const hyphenateEn = ((window as any).createHyphenator as any)((window as any).hyphenationPatternsEnUs as any) as (text: string) => string;
-
-
 export function toggleLanguage1() {
     switch (userLang.value) {
         case 'ua':
@@ -100,7 +97,6 @@ export function toggleLanguage1() {
     }
     localStorage.userLang = userLang.value
 }
-
 
 export function createNechtoService() {
     const socket = window.socket.of(GAME_CHANNEL);
@@ -137,8 +133,6 @@ let nechtoState = ref(window.gameState || { inited: false });
 let stateMaintained = false;
 let nechtoService: ReturnType<typeof createNechtoService> | undefined
 
-
-
 function maintainState() {
     if (!stateMaintained) {
         stateMaintained = true;
@@ -167,6 +161,9 @@ function maintainState() {
                 if (prevState.currentPlayer === prevState.userSlot && state.currentPlayer !== state.userSlot) {
                     nechtoService.selectedCard.value = null
                 }
+                if (prevState.phase === 2 && state.phase === 3) {
+                    nechtoService.selectedCard.value = null
+                }
             }
             if (nechtoService?.selectedTarget.value !== null) {
                 if (prevState.target === prevState.userSlot && state.target !== state.userSlot) {
@@ -179,8 +176,6 @@ function maintainState() {
         })
     }
 }
-
-
 
 function getUserSLot(state: NechtoState) {
     const slot = state.playerSlots.indexOf(window.gameApp.userId)

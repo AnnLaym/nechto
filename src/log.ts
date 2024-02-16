@@ -725,11 +725,18 @@ const podskazkaData: Record<string, ActionMetaData> = {
             en: "must grab card",
         },
     },
-    'выбрать чела': {
+    'свап местом': {
         log: {
-            ru: "должен выбрать игрока для обмена",
-            ua: "повинен вибрати гравця для обміну",
-            en: "must choose player for exchanging",
+            ru: "отказывается или соглашается на смену мест",
+            ua: "відхиляє або погоджується на зміну місць",
+            en: "declining or accepting place swap",
+        },
+    },
+    'свап картой': {
+        log: {
+            ru: "отказывается или соглашается на обмен картой",
+            ua: "відхиляє або походжуєтсья на обмін картою",
+            en: "declining or accepting card exchange",
         },
     },
     'играть': {
@@ -737,6 +744,27 @@ const podskazkaData: Record<string, ActionMetaData> = {
             ru: "должен сыграть или сбросить карту",
             ua: "повинен зіграти або скинути карту",
             en: "must play or drop card",
+        },
+    },
+    'упорство': {
+        log: {
+            ru: "выбирает карту",
+            ua: "вибирає карту",
+            en: "chooses card",
+        },
+    },
+    'просмотр карты': {
+        log: {
+            ru: "смотрит карты",
+            ua: "дивиться карти",
+            en: "checks cards",
+        },
+    },
+    'панику': {
+        log: {
+            ru: "должен  сыграть панику",
+            ua: "повинен зіграти паніку",
+            en: "must play panic card",
         },
     },
 }

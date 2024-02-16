@@ -101,7 +101,6 @@ const colors = [
 
 .bodyLog {
     position: fixed;
-    right: 0px;
     height: 300px;
     width: 300px;
     bottom: 0px;

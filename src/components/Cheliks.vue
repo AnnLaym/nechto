@@ -9,7 +9,8 @@
             <div v-else>
                 <div class="suka">
                     <span v-if="service.selectedTarget.value === slot && state.phase === 2">на него:</span>
-                    {{ state.playerSlots[slot] ? state.playerNames[state.playerSlots[slot]!] : "" }}
+                    {{ reactCommonRoom().getPlayerAvatarURL(state.playerSlots[slot]!) || state.playerSlots[slot] ?
+                        state.playerNames[state.playerSlots[slot]!] : "" }}
                     <div class="host-cntrols">
                         <span @click="service.removePLayer(state.playerSlots[slot])">
                             <i className="material-icons host-button " title="Remove"> delete_forever</i>
@@ -24,7 +25,7 @@
         <div v-if="state.karantin[slot]">
             {{ state.karantin[slot] }} дней карантина
         </div>
-        <div v-if="state.umerSlots!.includes(slot)" class="umer">
+        <div v-if="state.umerSlots!.includes(slot) && state.phase !== 0" class="umer">
             УМЕР
         </div>
         <div v-if="state.playerSlots[slot] === state.playerSlots[state.currentPlayer!]">
@@ -170,6 +171,7 @@ defineProps<{
 .umer {
     z-index: 4;
 }
+
 .roditel:hover .host-cntrols {
     display: block;
     gap: 5px;
