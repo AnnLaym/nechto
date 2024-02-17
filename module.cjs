@@ -57,7 +57,7 @@ function init(wsServer, path) {
                 normSosed: null,
                 normPlayer: null,
                 normThirdPlayers: null,
-                winner: null
+                winner: null,
             };
             if (testMode)
                 [1, 2, 3, 4].forEach((_, ind) => {
@@ -84,7 +84,9 @@ function init(wsServer, path) {
                     ...room, discardSize: state.discard.length, deckSize: state.deck.length,
                     umerSlots: Object.keys(room.playerSlots)
                         .filter(i => !state.playerHand[i] && room.playerSlots[i] !== null)
-                        .map((slot) => parseInt(slot))
+                        .map((slot) => parseInt(slot)),
+                    dveriClient: calcDveriClient()
+
                 }),
                 updatePlayerState = (user) => {
                     const slot = room.playerSlots.indexOf(user);
@@ -138,6 +140,16 @@ function init(wsServer, path) {
                         }
                         return slot;
                     }
+                },
+                calcDveriClient = () => {
+                    const res = {}
+                    for (let slot of Object.keys(state.playerHand)) {
+                        res[slot] = {
+                            prev: !chekSosedaNaPidora(getNextPlayer(true, slot), slot),
+                            next: room.dveri.includes(parseInt(slot))
+                        }
+                    }
+                    return res
                 },
                 getThirdPlayers = (ind) => {
                     let slot = room.currentPlayer;
@@ -292,6 +304,7 @@ function init(wsServer, path) {
                         if (!state.obmenCardIndex) {
                             state.obmenCardIndex = getRandomObmenCard(room.currentPlayer)
                             room.isObmenReady = true
+                            room.waitMoveSlot = room.target
                             startTimer()
                         }
                         else if (state.obmenCardIndex) {
@@ -375,7 +388,7 @@ function init(wsServer, path) {
                                 PanikaiViEtoNazivaeteVecherinkoy()
                                 room.currentPanika = null
                                 startObmen()
-                            } else if (room.currentPanika.id === 'davaiDrujit') {
+                            } else if (room.currentPanika.id === 'davaiDrujit') { //POCHINI MENYA
                                 if (!state.obmenCardIndex) {
                                     state.obmenCardIndex = getRandomObmenCard(room.currentPlayer)
                                     const canBeTarget = [
@@ -532,6 +545,8 @@ function init(wsServer, path) {
                         room.action = card.id;
                         room.gameLog.push({ card: card, panika: true })
                         room.currentCardPanik = card
+                        state.discard.push(card)
+                        state.deck.splice(0, 1)
                     } else {
                         state.playerHand[room.currentPlayer].push(card)
                         if (card.type === 'nechto') {
@@ -560,9 +575,11 @@ function init(wsServer, path) {
                     room.target = getNextPlayer(room.invertDirection)
                     room.action = null
                     room.currentPanika = null
-                    startTimer()
-                    update()
-                    updateState()
+                    if (chekSosedaNaPidora(room.target) && !room.karantin[room.currentPlayer] && !room.karantin[room.target]) {
+                        startTimer()
+                        update()
+                        updateState()
+                    } else endRound()
                 },
                 endRound = () => {
                     const players = Object.keys(state.playerHand)
@@ -686,9 +703,12 @@ function init(wsServer, path) {
                     isDead(room.target)
                     endRound()
                 },
-                chekSosedaNaPidora = (target) => { // true kodga NE pidor (pidor bez dveri)
-                    const nextPlayer = getNextPlayer(room.invertDirection), prevPLayer = getNextPlayer(!room.invertDirection);
-                    return (!room.dveri.includes(prevPLayer) && prevPLayer === target) || (!room.dveri.includes(nextPlayer) && nextPlayer === target)
+                chekSosedaNaPidora = (target, slot) => { // true kodga NE pidor (pidor bez dveri)
+                    slot = slot ?? room.currentPlayer
+                    const nextPlayer = slot, prevPLayer = getNextPlayer(true, slot);
+                    // return (!room.dveri.includes(prevPLayer) && prevPLayer === target) 
+                    //     || (!room.dveri.includes(nextPlayer))
+                    return prevPLayer === target ? !room.dveri.includes(prevPLayer) : !room.dveri.includes(nextPlayer)
                 },
                 starieVerevkiPanika = () => {
                     delete room.karantin[room.target]
@@ -897,29 +917,33 @@ function init(wsServer, path) {
                                         updateState()
                                     }
                                 }
-                            } else if (card.target === 'selfOrSosed' && (prevPLayer === target || nextPlayer === target || target === slot)) {
-                                if (target > slot) target = slot // TOCHNO TAK NADA????
+                            } else if (card.target === 'selfOrSosed' && (prevPLayer === target ||
+                                nextPlayer === target || target === slot)) {
                                 if (card.id === 'topor') {
                                     if (!chekSosedaNaPidora(target)) {
-                                        room.dveri.splice(room.dveri.indexOf(target), 1)
+                                        room.dveri.splice(room.dveri.indexOf(getNextPlayer(true, slot) == target ? target : slot), 1)
                                         logs()
                                         sigrat()
-                                    }
-                                    else if (room.karantin[target])
+                                        startObmen()
+                                    } else if (room.karantin[target]) {
                                         delete room.karantin[target]
-                                    else if (target === slot && room.karantin[getNextPlayer(true, target)])
-                                        delete room.karantin[getNextPlayer(true, target)]
-                                    logs()
-                                    sigrat()
-                                } else if ((!chekSosedaNaPidora(target) || target === slot)) {
-                                    if (card.id === 'zakolchennayDver' && target !== getNextPlayer(room.invertDirection)) {
-                                        room.dveri.push(target)
+                                        logs()
                                         sigrat()
-                                        endRound()
-                                    } else if (card.id === 'karantin' && !room.karantin[target]) {
-                                        room.karantin[target] = 2 // 2 turns lol
+                                        startObmen()
+                                    }
+                                } else if (card.id === 'zakolchennayDver') {
+                                    if (chekSosedaNaPidora(target)) {
+                                        room.dveri.push(getNextPlayer(true, slot) == target ? target : slot)
+                                        logs()
                                         sigrat()
-                                        //next what to do
+                                        startObmen()
+                                    }
+                                } else if (card.id === 'karantin') {
+                                    if (chekSosedaNaPidora(target) || slot === target) {
+                                        room.karantin[target] = 2 //2 turns lol
+                                        sigrat()
+                                        logs()
+                                        startObmen()
                                     }
                                 }
                             } else {
@@ -988,7 +1012,6 @@ function init(wsServer, path) {
                             } else if (card.id === 'strah') {
                                 sigrat()
                                 logsOne()
-                                room.waitMoveSlot = room.currentPlayer
                                 state.showCard[room.target] = [state.playerHand[room.currentPlayer][state.obmenCardIndex]]
                                 room.action = 'strah'
                                 room.waitMoveSlot = room.currentPlayer

@@ -68,6 +68,7 @@ interface NechtoState {
     normSosed: Slot[];
     normPlayer: Slot[];
     normThirdPlayers: Slot[];
+    dveriClient: Record<Slot, { prev: boolean, next: boolean }>
 }
 
 declare const window: ReactAppWindow<NechtoState>;

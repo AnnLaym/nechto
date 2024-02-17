@@ -1,18 +1,18 @@
 <template>
     <div class="topovie" :class="{ 'full': activeSlots.top.length > 3 }">
-        <Cheliks :slot="slot" v-for="slot in activeSlots.top" />
+        <Cheliks :slot="slot" v-for="slot in activeSlots.top" position="top" />
     </div>
     <div class="flex">
         <div v-for="slot in activeSlots.left" class="seredina">
-            <Cheliks :slot="slot" />
+            <Cheliks :slot="slot" position="left" />
         </div>
-        <StolStola class="stol"/>
+        <StolStola class="stol" />
         <div v-for="slot in activeSlots.right" class="seredina">
-            <Cheliks :slot="slot" />
+            <Cheliks :slot="slot" position="right" />
         </div>
     </div>
     <div class="nijnie" :class="{ 'full': activeSlots.bottom.length > 3 }">
-        <Cheliks :slot="slot" v-for="slot in activeSlots.bottom" />
+        <Cheliks :slot="slot" v-for="slot in activeSlots.bottom" position="bottom" />
     </div>
 </template>
 
@@ -121,18 +121,19 @@ const activeSlots = computed(() => {
     justify-content: space-between;
 }
 
-.topovie.full > div:first-child,
-.topovie.full > div:last-child {
+.topovie.full>div:first-child,
+.topovie.full>div:last-child {
     position: relative;
     top: 50px;
 }
 
-.nijnie.full > div:first-child,
-.nijnie.full > div:last-child {
+.nijnie.full>div:first-child,
+.nijnie.full>div:last-child {
     position: relative;
     bottom: 50px;
 }
-.stol{
+
+.stol {
     margin: 20px 40px;
 }
 </style>

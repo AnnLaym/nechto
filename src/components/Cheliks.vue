@@ -28,8 +28,6 @@
         <div v-if="state.umerSlots!.includes(slot) && state.phase !== 0" class="umer">
             УМЕР
         </div>
-        <div v-if="state.playerSlots[slot] === state.playerSlots[state.currentPlayer!]">
-        </div>
         <div class="mamaMami">
             <div class="kartinka">
                 <div class="newTimer" v-if="state.waitMoveSlot === slot && state.timed"
@@ -43,6 +41,8 @@
                     class="otdelnii">
             </div>
         </div>
+        <div v-if="state.dveriClient[slot]?.next || true" :class="position" class="dver svoya" />
+        <div v-if="state.dveriClient[slot]?.prev || true" :class="position" class="dver chujaya" />
     </div>
 </template>
 
@@ -93,6 +93,7 @@ function handleClickChangeName() {
 
 defineProps<{
     slot: Slot
+    position: 'left' | 'right' | 'top' | 'bottom'
 }>()
 
 </script>
@@ -109,6 +110,54 @@ defineProps<{
     /* Название вашего кастомного шрифта */
     src: url("/src/shrifty/Montserrat-Light.ttf");
 }
+
+.dver {
+    position: absolute;
+    z-index: 0;
+    background-color: brown;
+    height: 61px;
+    width: 50px;
+}
+
+.dver.top,
+.dver.bottom {
+    top: 40px
+}
+
+.dver.top.svoya,
+.dver.bottom.chujaya,
+.dver.right {
+    left: -20px
+}
+
+.dver.top.chujaya,
+.dver.bottom.svoya,
+.dver.left {
+    right: -20px
+}
+
+.dver.right.chujaya,
+.dver.left.svoya {
+    top: -20px
+}
+
+.dver.right.svoya,
+.dver.left.chujaya {
+    bottom: -20px
+}
+
+.chel:first-child .dver.top.svoya,
+.chel:last-child .dver.top.chujaya {
+    bottom: -40px;
+    top: initial
+}
+
+.chel:first-child .dver.bottom.chujaya,
+.chel:last-child .dver.bottom.svoya {
+    top: -40px;
+    bottom: initial;
+}
+
 
 .kartinka {
     width: 124px;
