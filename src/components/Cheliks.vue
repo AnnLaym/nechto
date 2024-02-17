@@ -41,8 +41,8 @@
                     class="otdelnii">
             </div>
         </div>
-        <div v-if="state.dveriClient[slot]?.next || true" :class="position" class="dver svoya" />
-        <div v-if="state.dveriClient[slot]?.prev || true" :class="position" class="dver chujaya" />
+        <div v-if="state.dveriClient[slot]?.next" :class="position" class="dver svoya" />
+        <div v-if="state.dveriClient[slot]?.prev" :class="position" class="dver chujaya" />
     </div>
 </template>
 
