@@ -45,8 +45,8 @@ function init(wsServer, path) {
                 showAllHand: null,
                 allReadyNedeed: false,
                 gameLog: [],
-                smallTimer: 60,
-                bigTimer: 80,
+                smallTimer: 15,
+                bigTimer: 15,
                 isObmenReady: false,
                 voting: false,
                 currentCardPanik: null,
@@ -164,6 +164,10 @@ function init(wsServer, path) {
                     }
                     return [slot, slotA]
                 },
+                getRandomPlayer = (slot) => {
+                    const chel = getNextPlayer(room.invertDirection, Math.floor(Math.random() * 12))
+                    return chel == slot ? getNextPlayer(chel) : chel
+                },
                 startGame = () => {
                     state.playersCount = room.playerSlots.filter((user) => user !== null).length;
                     if (state.playersCount > 3) {
@@ -234,7 +238,7 @@ function init(wsServer, path) {
                     if (room.normSosed.length == 0) room.normSosed = null
                     if (room.normPlayer.length == 0) room.normPlayer = null
                     if (room.normThirdPlayers.length == 0) room.normThirdPlayers = null
-                },  
+                },
                 startTimer = () => {
                     if (room.timed) {
                         clearInterval(interval);
@@ -301,8 +305,15 @@ function init(wsServer, path) {
                             logi(room.currentPlayer)
                             startObmen()
                         } else if (room.action === 'soblazn') {
-                            obmenProcces(getRandomObmenCard(room.target))
-                            endRound()
+                            if (room.isObmenReady) {
+                                room.target = getRandomPlayer(room.currentPlayer)
+                                obmenProcces(getRandomObmenCard(room.target))
+                                endRound()
+                            } else {
+                                room.isObmenReady = true
+                                state.obmenCardIndex = getRandomObmenCard(room.currentPlayer)
+                                startTimer()
+                            }
                         } else if (room.action === 'analiz') {
                             state.showCard = {}
                             startObmen()
@@ -382,11 +393,13 @@ function init(wsServer, path) {
                                 }
                             } else if (room.currentPanika.id === 'svidanieVSlepuyu') {
                                 svidanieVSlepuyuPanika(room.currentPlayer, getRandomObmenCard(room.currentPlayer))
-                            } else if (room.currentPanika.id === "ubiraysyaProchPanika") {
-                                tsel = shuffleArray(Object.Keys(state.playerHand))[0]
-                                ubiraysyaProchPanika(tsel, room.currentPlayer)
-                            } else if (room.currentCardPanika.id === "zabivchivost") {
+                            } else if (room.currentPanika.id === "ubiraysyaProch") {
+                                room.target = getRandomPlayer(room.currentPlayer)
+                                ubiraysyaProchPanika(room.target, room.currentPlayer)
+                            } else if (room.currentPanika.id === "zabivchivost") {
                                 zabivchevostChekCard(room.currentPlayer)
+                            } else if (room.currentPanika.id === 'triChetyre') {
+                                triChetyrePanika()
                             }
                         }
                     }
@@ -639,7 +652,7 @@ function init(wsServer, path) {
                 chekDropCard = (slot, index) => {
                     const card = state.playerHand[slot][index];
                     const zarajenieRuki = state.playerHand[slot].filter(card => card.id === 'zarajenie').length
-                    if (card.id === 'nechto') return false
+                    if (card.id == 'nechto') return false
                     else if (!state.zarajennie.includes(slot) || zarajenieRuki >= 2) return true
                 },
                 obmenChekZarajeniy = (slot, index) => {
@@ -662,9 +675,9 @@ function init(wsServer, path) {
                         room.gameLog.push({ action: 'obmen', actors: [room.playerSlots[room.currentPlayer], room.playerSlots[room.target]] })
                     let karta1 = state.playerHand[room.currentPlayer][state.obmenCardIndex];
                     let karta2 = state.playerHand[room.target][i];
-                    if (karta1.id === 'zarajenie' && room.currentPlayer !== state.nechto && !state.zarajennie.has(room.currentPlayer)) {
+                    if (karta1.id == 'zarajenie' && room.currentPlayer !== state.nechto && !state.zarajennie.has(room.currentPlayer)) { // TODO: bug
                         state.zarajennie.push(room.currentPlayer)
-                    } else if (karta2.id === 'zarajenie' && room.target !== state.nechto && !state.zarajennie.has(room.target)) {
+                    } else if (karta2.id == 'zarajenie' && room.target !== state.nechto && !state.zarajennie.has(room.target)) {
                         state.zarajennie.push(room.target)
                     }
                     state.playerHand[room.currentPlayer][state.obmenCardIndex] = karta2;
@@ -707,6 +720,7 @@ function init(wsServer, path) {
                     if (!room.karantin[target] && room.target !== null) {
                         smenaMest(slot, target);
                         room.currentPanika = null
+                        room.target = null
                         startObmen()
                     }
                 },
@@ -825,7 +839,7 @@ function init(wsServer, path) {
                         const nextPlayer = getNextPlayer(room.invertDirection)
                         const prevPLayer = getNextPlayer(!room.invertDirection)
                         if (!room.karantin[slot]) {
-                            if (card.target === 'any') {
+                            if (card.target === 'any' && target !== null) {
                                 if (!room.karantin[target]) {
                                     if (card.id === 'smaivayUdochki') {
                                         room.action = 'smaivayUdochki'

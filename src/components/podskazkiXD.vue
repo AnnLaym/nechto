@@ -3,24 +3,34 @@
     <div class="avatar">
       <img
         :src="reactCommonRoom().getPlayerAvatarURL(state.playerSlots[state.currentPlayer!]!) || ' /nechto/cards/avatar1.png'"
-        class="otdelnii" v-if="(state.phase == 1) 
+        class="otdelnii" v-if="(state.phase == 1)
           || (!state.isObmenReady && state.phase == 3)
           || (state.phase == 2 && state.action == null)
           || (state.phase == 2 && state.action === 'uporstvo')
           || (state.phase == 2 && state.currentPanika)
+          || (state.phase == 2 && state.action == 'soblazn' && !state.isObmenReady)
           || (state.phase == 2 && (state.action === 'analiz' || state.action === 'viski'))">
       <img :src="reactCommonRoom().getPlayerAvatarURL(state.playerSlots[state.target!]!) || ' /nechto/cards/avatar1.png'"
         class="otdelnii" v-if="(state.isObmenReady && state.phase == 3)
-          || (state.phase == 2 && (state.action === 'menyaemsyaMestami' || state.action === 'smaivayUdochki'))">
+          || (state.phase == 2 && (state.action === 'menyaemsyaMestami' || state.action === 'smaivayUdochki'))
+          || (state.phase == 2 && state.action == 'soblazn' && state.isObmenReady)">
     </div>
     <div class="text">
       <div class="obmen" v-if="state.phase == 3">
-        <div class="current hueer" v-if="!state.isObmenReady"> {{
-          state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
+        <div class="current hueer" v-if="!state.isObmenReady">
+          {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
         </div>
         <div class="target hueer" v-if="state.isObmenReady">
           {{ state.playerNames[state.playerSlots[state.target!]!] }}
         </div>
+        {{ getPodskazkaName('Выбирает карту для обмена') }}
+      </div>
+      <div class="obmen" v-if="(state.phase == 2 && state.action == 'soblazn' && !state.isObmenReady)">
+        {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
+        {{ getPodskazkaName('Выбирает карту для обмена') }}
+      </div>
+      <div class="obmen" v-if="(state.phase == 2 && state.action == 'soblazn' && state.isObmenReady)">
+        {{ state.playerNames[state.playerSlots[state.target!]!] }}
         {{ getPodskazkaName('Выбирает карту для обмена') }}
       </div>
       <div class="kartu" v-if="state.phase == 1">
@@ -44,7 +54,8 @@
         </div>
         {{ getPodskazkaName('упорство') }}
       </div>
-      <div class="uporstvo" v-if="state.phase == 2 && (state.action === 'analiz' || state.action === 'viski' || state.action === 'podozrenie')">
+      <div class="uporstvo"
+        v-if="state.phase == 2 && (state.action === 'analiz' || state.action === 'viski' || state.action === 'podozrenie')">
         <div class="current hueer"> {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
         </div>
         {{ getPodskazkaName('просмотр карты') }}
@@ -84,6 +95,12 @@ const state = useNechtoState()
   z-index: 1;
   overflow-y: auto;
   -webkit-mask-image: none;
+  display: flex;
+}
+
+.text {
+  justify-content: center;
+  align-items: center;
   display: flex;
 }
 
