@@ -178,7 +178,7 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "swaps with",
         },
         title: {
-            ru: "Сматый удочки!",
+            ru: "Сматывай удочки!",
             ua: "Краще біжи!",
             en: "You'd better run!",
         },
@@ -607,7 +607,15 @@ const actionsData: Record<string, ActionMetaData> = {
             ua: 'ходить',
             en: '`s turn'
         }
-    }
+    },
+    'smertKring': {
+        log: {
+            ru: 'умирает от кринжа',
+            ua: 'умирает от кринжа',
+            en: 'умирает от кринжа'
+        }
+    },
+
 }
 const knopki = {
     sigrat: {
@@ -765,6 +773,13 @@ const podskazkaData: Record<string, ActionMetaData> = {
             ru: "должен  сыграть панику",
             ua: "повинен зіграти паніку",
             en: "must play panic card",
+        },
+    },
+    'с': {
+        log: {
+            ru: "с",
+            ua: "з",
+            en: "with",
         },
     },
 }

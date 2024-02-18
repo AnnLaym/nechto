@@ -2,7 +2,8 @@
     <div class="stol">
         <div class="top">
             <div class="deki">
-                <div :style="{ 'background-image': `url(/nechto/cards/1.png)` }" class="deka">
+                <div :style="{ 'background-image': state.isNextCardPanika ? `url(/nechto/cards/4.png)` : `url(/nechto/cards/1.png)` }"
+                    class="deka">
                     <div class="deka-count">{{ state.deckSize }}</div>
                 </div>
                 <div :style="{ 'background-image': `url(/nechto/cards/4.png)` }" class="deka">
@@ -33,9 +34,8 @@
             </div>
             <div v-if="(state.phase === 2 && state.target === state.userSlot && state.showAllHand?.length == 0
                 && state.chekCards?.length == null && state.action !== 'podozrenie')
-                || (state.target === state.userSlot && state.phase === 2 && state.isObmenReady
-                    && (state.action === 'ognemet' || state.action === 'menyaemsyaMestami'
-                        || state.action === 'smaivayUdochki'))
+                || (state.target === state.userSlot && state.phase === 2 && !state.isObmenReady && (state.action === 'ognemet' || state.action === 'menyaemsyaMestami'
+                    || state.action === 'smaivayUdochki'))
                 " @click="service.resolveAction(service.selectedCard.value)" class="knopka">
                 {{ getKnopkaName("sigrat") }}</div>
             <div v-if="state.target === state.userSlot && state.phase === 3 && state.isObmenReady"
@@ -75,6 +75,7 @@
                 <div>{{ getKnopkaName('ok') }}
                 </div>
             </div>
+            {{ state.isNextCardPanika }}
             <div v-if="state.currentPanika && state.userSlot === state.currentPlayer
                 && state.currentPanika.id !== 'zabivchivost' && state.currentPanika.id !== 'davaiDrujit'"
                 class="knopka" @click=" 

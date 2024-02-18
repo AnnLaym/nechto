@@ -45,8 +45,8 @@ function init(wsServer, path) {
                 showAllHand: null,
                 allReadyNedeed: false,
                 gameLog: [],
-                smallTimer: 60,
-                bigTimer: 60,
+                smallTimer: 15,
+                bigTimer: 15,
                 isObmenReady: false,
                 voting: false,
                 currentCardPanik: null,
@@ -57,7 +57,7 @@ function init(wsServer, path) {
                 normSosed: null,
                 normPlayer: null,
                 normThirdPlayers: null,
-                winner: null,
+                winner: null
             };
             if (testMode)
                 [1, 2, 3, 4].forEach((_, ind) => {
@@ -85,8 +85,8 @@ function init(wsServer, path) {
                     umerSlots: Object.keys(room.playerSlots)
                         .filter(i => !state.playerHand[i] && room.playerSlots[i] !== null)
                         .map((slot) => parseInt(slot)),
-                    dveriClient: calcDveriClient()
-
+                    dveriClient: calcDveriClient(),
+                    isNextCardPanika: CalcNextCardPanika()
                 }),
                 updatePlayerState = (user) => {
                     const slot = room.playerSlots.indexOf(user);
@@ -191,7 +191,8 @@ function init(wsServer, path) {
                         room.currentPanika = null;
                         room.currentPlayer = shuffleArray(room.playerSlots.map((it, index) => index).filter(inx => room.playerSlots[inx]))[0]
                         state.zarajennie = [];
-                        //room.currentPlayer = 4
+                        room.isNextCardPanika = null
+                        room.currentPlayer = 4
                         room.gameLog = [];
                         state.showCard = {};
                         state.discard = [];
@@ -215,6 +216,15 @@ function init(wsServer, path) {
                         room.playerSlots.forEach((player, slot) => {
                             room.startSlotColor[player] = slot
                         });
+                        if (room.startWithNechto) {
+                            for (let slot of Object.keys(state.playerHand)) {
+                                for (let card of Object.keys(state.playerHand[slot])) {
+                                    if (state.playerHand[slot][card].id === 'nechto') {
+                                        state.nechto = slot
+                                    }
+                                }
+                            }
+                        }
                         startRound();
                     }
                 },
@@ -301,13 +311,14 @@ function init(wsServer, path) {
                         grabCard()
                     }
                     if (room.phase === 3) {
-                        if (!state.obmenCardIndex) {
+                        if (!room.isObmenReady) {
                             state.obmenCardIndex = getRandomObmenCard(room.currentPlayer)
                             room.isObmenReady = true
                             room.waitMoveSlot = room.target
                             startTimer()
                         }
-                        else if (state.obmenCardIndex) {
+                        else if (room.isObmenReady) {
+                            startTimer()
                             obmenProcces(getRandomObmenCard(room.target))
                         }
                     };
@@ -316,10 +327,10 @@ function init(wsServer, path) {
                         if (room.action === 'ognemet') {
                             playerKill(room.target)
                             logi(room.currentPlayer)
+                            room.waitMoveSlot = room.currentPlayer
                             startObmen()
                         } else if (room.action === 'soblazn') {
                             if (room.isObmenReady) {
-                                room.target = getRandomPlayer(room.currentPlayer)
                                 obmenProcces(getRandomObmenCard(room.target))
                                 endRound()
                             } else {
@@ -388,16 +399,18 @@ function init(wsServer, path) {
                                 PanikaiViEtoNazivaeteVecherinkoy()
                                 room.currentPanika = null
                                 startObmen()
-                            } else if (room.currentPanika.id === 'davaiDrujit') { //POCHINI MENYA
+                            } else if (room.currentPanika.id === 'davaiDrujit') {
                                 if (!state.obmenCardIndex) {
                                     state.obmenCardIndex = getRandomObmenCard(room.currentPlayer)
                                     const canBeTarget = [
                                         getNextPlayer(room.invertDirection, room.currentPlayer),
                                         getNextPlayer(!room.invertDirection, room.currentPlayer)
-                                    ].filter(el => !room.karantin.includes(el) && !chekSosedaNaPidora(el)) //FIXME:room.karantin.includes is not a function  UPD: includes is cringe
+                                    ].filter(el => !room.karantin[el] && !chekSosedaNaPidora(el))
                                     if (canBeTarget) {
                                         room.target = shuffleArray(canBeTarget)[0]
                                         update()
+                                        updatePlayerState()
+                                        endRound() //ili start obmen?
                                     }
                                     else startObmen()
                                 }
@@ -467,8 +480,11 @@ function init(wsServer, path) {
                         if (el.id === 'zarajenie')
                             zarCount++
                     });
-                    if (zarCount >= 3)
+                    if (zarCount >= 3) {
+                        room.gameLog.push({ smetKrinj: 'smetKrinj', actors: [player] })
                         playerKill(player)
+                        startRound()
+                    }
                 },
                 playerKill = (target) => {
                     state.discard.push(state.playerHand[target][0]);
@@ -550,12 +566,15 @@ function init(wsServer, path) {
                     } else {
                         state.playerHand[room.currentPlayer].push(card)
                         if (card.type === 'nechto') {
-                            state.nechto = state.playerHand[slot]
+                            state.nechto = room.currentPlayer
                         }
                     };
                     startTimer()
                     update()
                     updateState()
+                },
+                CalcNextCardPanika = () => {
+                    return !state.deck ? state.deck[0].type == 'panika' : null
                 },
                 grabNewCard = (player) => {
                     state.playerHand[player].push(dealNewCard())
@@ -672,12 +691,16 @@ function init(wsServer, path) {
                     if (card.id == 'nechto') return false
                     else if (!state.zarajennie.includes(slot) || zarajenieRuki >= 2) return true
                 },
+                chekDropCardCard = (slot, index) => {
+                    const card = index;
+                    const zarajenieRuki = state.playerHand[slot].filter(card => card.id === 'zarajenie').length
+                    if (card.id == 'nechto') return false
+                    else if (!state.zarajennie.includes(slot) || zarajenieRuki >= 2) return true
+                },
                 obmenChekZarajeniy = (slot, index) => {
-                    if (getHandCard(slot, index).id !== 'zarajenie' && getHandCard(slot, index).id !== 'nechto') {
+                    if (getHandCard(slot, index).id == 'zarajenie' && slot == state.nechto) {
                         return true
-                    } else if (getHandCard(slot, index).id == 'zarajenie' && slot === state.nechto) {
-                        return true
-                    } else if (getHandCard(slot, index).id == 'zarajenie' && getNextPlayer(!room.invertDirection) === state.nechto) {
+                    } else if (getHandCard(slot, index).id == 'zarajenie' && getNextPlayer(room.invertDirection) === state.nechto) {
                         return true
                     }
                 },
@@ -692,16 +715,18 @@ function init(wsServer, path) {
                         room.gameLog.push({ action: 'obmen', actors: [room.playerSlots[room.currentPlayer], room.playerSlots[room.target]] })
                     let karta1 = state.playerHand[room.currentPlayer][state.obmenCardIndex];
                     let karta2 = state.playerHand[room.target][i];
-                    if (karta1.id == 'zarajenie' && room.currentPlayer !== state.nechto && !state.zarajennie.has(room.currentPlayer)) { // TODO: bug
-                        state.zarajennie.push(room.currentPlayer)
-                    } else if (karta2.id == 'zarajenie' && room.target !== state.nechto && !state.zarajennie.has(room.target)) {
-                        state.zarajennie.push(room.target)
+                    if (karta1.id !== 'nechto' || karta2.id !== 'nechto') {
+                        if (karta1.id == 'zarajenie' && room.currentPlayer !== state.nechto && !state.zarajennie.includes(room.currentPlayer)) { // TODO: bug
+                            state.zarajennie.push(room.currentPlayer)
+                        } else if (karta2.id == 'zarajenie' && room.target !== state.nechto && !state.zarajennie.includes(room.target)) {
+                            state.zarajennie.push(room.target)
+                        }
+                        state.playerHand[room.currentPlayer][state.obmenCardIndex] = karta2;
+                        state.playerHand[room.target][i] = karta1;
+                        isDead(room.currentPlayer)
+                        isDead(room.target)
+                        endRound()
                     }
-                    state.playerHand[room.currentPlayer][state.obmenCardIndex] = karta2;
-                    state.playerHand[room.target][i] = karta1;
-                    isDead(room.currentPlayer)
-                    isDead(room.target)
-                    endRound()
                 },
                 chekSosedaNaPidora = (target, slot) => { // true kodga NE pidor (pidor bez dveri)
                     slot = slot ?? room.currentPlayer
@@ -793,11 +818,12 @@ function init(wsServer, path) {
                 },
                 zabivchevostChekCard = (slot) => {
                     const ruka = [...state.playerHand[slot]]
-                    const newRuka = ruka.filter(it => chekDropCard(slot, it))
+                    const newRuka = ruka.filter(it => chekDropCardCard(slot, it))
                     if (newRuka.length > 3) {
                         const hui = shuffleArray(newRuka)
                         zabivchivostPanika(slot, hui[1], hui[0], hui[2])
                     }
+                    endRound()
                 },
                 zabivchivostPanika = (slot, index1, index2, index3) => {
                     if (slot === room.currentPlayer &&
@@ -858,14 +884,19 @@ function init(wsServer, path) {
                         }
                         const nextPlayer = getNextPlayer(room.invertDirection)
                         const prevPLayer = getNextPlayer(!room.invertDirection)
-                        if (!room.karantin[slot]) {
-                            if (card.target === 'any' && target !== null) {
+                        const gagaga = !Object.keys(room.playerSlots)
+                            .filter(i => !state.playerHand[i] && room.playerSlots[i] !== null)
+                            .map((slot) => parseInt(slot)).includes(room.target)
+                        if (!room.karantin[slot] && Object.keys(state.playerHand[slot]).length === 5) {
+                            if (card.target === 'any' && target !== null && gagaga) {
                                 if (!room.karantin[target]) {
                                     if (card.id === 'smaivayUdochki') {
                                         room.action = 'smaivayUdochki'
                                         room.target = target
                                         sigrat()
                                         logs()
+                                        updateState()
+                                        update()
                                     } else if (card.id === 'soblazn') {
                                         room.action = 'soblazn'
                                         room.target = target
@@ -876,7 +907,7 @@ function init(wsServer, path) {
                                     }
                                 }
                             } else if (card.target === 'sosed' &&
-                                (prevPLayer === target || nextPlayer === target)) {
+                                (prevPLayer === target || nextPlayer === target) && gagaga) {
                                 if (!room.karantin[target] && chekSosedaNaPidora(target)) {
                                     if (card.id === 'ognemet') {
                                         room.action = 'ognemet'
@@ -918,7 +949,7 @@ function init(wsServer, path) {
                                     }
                                 }
                             } else if (card.target === 'selfOrSosed' && (prevPLayer === target ||
-                                nextPlayer === target || target === slot)) {
+                                nextPlayer === target || target === slot) && gagaga) {
                                 if (card.id === 'topor') {
                                     if (!chekSosedaNaPidora(target)) {
                                         room.dveri.splice(room.dveri.indexOf(getNextPlayer(true, slot) == target ? target : slot), 1)
@@ -975,7 +1006,10 @@ function init(wsServer, path) {
                 "resolve-action": (slot, index) => {
                     //FIXME: soblazn target sloman 
                     const card = state.playerHand[slot][index];
-                    if (index >= 0 && index < 4 && slot === room.target) {
+                    const gagaga = Object.keys(room.playerSlots)
+                        .filter(i => !state.playerHand[i] && room.playerSlots[i] !== null)
+                        .map((slot) => parseInt(slot)).includes(room.target)
+                    if (index >= 0 && index < 4 && slot === room.target && gagaga) {
                         const sigrat = () => {
                             state.discard.push(card);
                             state.playerHand[slot].splice(index, 1);
@@ -1015,6 +1049,7 @@ function init(wsServer, path) {
                                 state.showCard[room.target] = [state.playerHand[room.currentPlayer][state.obmenCardIndex]]
                                 room.action = 'strah'
                                 room.waitMoveSlot = room.currentPlayer
+                                startTimer()
                                 update()
                                 updateState()
                             } else if (card.id === 'netUjSpasibo') {
@@ -1025,10 +1060,13 @@ function init(wsServer, path) {
                             }
                         }
                     } else if (slot === room.currentPlayer && room.action === 'soblazn') {
-                        state.obmenCardIndex = index;
-                        room.isObmenReady = true;
-                        update()
-                        updateState()
+                        if (obmenChekZarajeniy(index)) {
+                            state.obmenCardIndex = index;
+                            room.isObmenReady = true;
+                            startTimer()
+                            update()
+                            updateState()
+                        }
                     } else if (room.action === 'uporstvo') {
                         if (slot == room.currentPlayer && index >= 0 && index < 3) {
                             let nechtoIndex = state.uporstvoCards.findIndex(c => c.id === 'nechto')
@@ -1072,6 +1110,7 @@ function init(wsServer, path) {
                         room.isObmenReady = true;
                         state.obmenCardIndex = index;
                         room.showAllHand = null
+                        room.waitMoveSlot = room.target
                         startTimer()
                         update()
                     }
@@ -1093,8 +1132,9 @@ function init(wsServer, path) {
                             room.currentPanika = null
                             startObmen()
                         } else if (card.id === 'razDva') {
-                            if (target !== null)
+                            if (target !== null) {
                                 razDvaPanika(target)
+                            }
                         } else if (card.id === 'ubiraysyaProch') {
                             if (target !== null)
                                 ubiraysyaProchPanika(target, slot)

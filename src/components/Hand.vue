@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="ruka">
-            <div v-for="(card, index) in state.cards" @click="cardClick(index)">
+            <div v-for="(card, index) in state.cards" @click="cardClick(index)" v-if="!state.umerSlots?.includes(state.userSlot!)">
                 <Card :card="card" :selected="service.selectedCard.value == index ||
                     service.selectedZabivchivost1.value == index ||
                     service.selectedZabivchivost2.value == index ||

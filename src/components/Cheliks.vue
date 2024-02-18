@@ -126,14 +126,14 @@ defineProps<{
 
 .dver.top.svoya,
 .dver.bottom.chujaya,
-.dver.right {
-    left: -20px
+.dver.left {
+    right: -20px
 }
 
 .dver.top.chujaya,
 .dver.bottom.svoya,
-.dver.left {
-    right: -20px
+.dver.right {
+    left: -20px
 }
 
 .dver.right.chujaya,
@@ -146,10 +146,9 @@ defineProps<{
     bottom: -20px
 }
 
-.chel:first-child .dver.top.svoya,
-.chel:last-child .dver.top.chujaya {
-    bottom: -40px;
-    top: initial
+.chel:first-child .dver.top.svoya{
+bottom: -40px;
+top: initial
 }
 
 .chel:first-child .dver.bottom.chujaya,
