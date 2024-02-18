@@ -23,19 +23,27 @@
           {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
         </span>
         <span class="obmen" v-if="state.isObmenReady">
-          <span> {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }} </span>
-          <span> {{ getPodskazkaName('Выбирает карту для обмена') }} </span>
+          <span> {{ state.playerNames[state.playerSlots[state.target!]!] }} </span>
+        </span>
+        <span>
           <span>
-            <span> {{ getPodskazkaName('c') }} </span>
-            <span> {{ state.playerNames[state.playerSlots[state.target!]!] }} </span>
-          </span>
+            {{ getPodskazkaName('Выбирает карту для обмена') }} </span>
+          <span> {{ getPodskazkaName('c') }} </span>
+        </span>
+        <span class="current hueer" v-if="state.isObmenReady">
+          {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
+        </span>
+        <span class="obmen" v-if="!state.isObmenReady">
+          <span> {{ state.playerNames[state.playerSlots[state.target!]!] }} </span>
+        </span>
+        <span>
         </span>
       </span>
       <div class="obmen" v-if="(state.phase == 2 && state.action == 'soblazn' && !state.isObmenReady)
         || (state.phase == 2 && state.currentPanika?.id == 'davaiDrujit' && !state.isObmenReady)">
         <span> {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }} </span>
         <span> {{ getPodskazkaName('Выбирает карту для обмена') }} </span>
-        <span class="obmen1"> 
+        <span class="obmen1">
           <span> {{ getPodskazkaName('c') }} </span>
           <span> {{ state.playerNames[state.playerSlots[state.target!]!] }} </span>
         </span>

@@ -702,7 +702,8 @@ function init(wsServer, path) {
                         return true
                     } else if (getHandCard(slot, index).id == 'zarajenie' && getNextPlayer(room.invertDirection) === state.nechto) {
                         return true
-                    }
+                    } else if (getHandCard(slot, index).id !== 'zarajenie')
+                        return true
                 },
                 getHandCard = (slot, index) => {
                     return state.playerHand[slot][index];
@@ -715,7 +716,7 @@ function init(wsServer, path) {
                         room.gameLog.push({ action: 'obmen', actors: [room.playerSlots[room.currentPlayer], room.playerSlots[room.target]] })
                     let karta1 = state.playerHand[room.currentPlayer][state.obmenCardIndex];
                     let karta2 = state.playerHand[room.target][i];
-                    if (karta1.id !== 'nechto' || karta2.id !== 'nechto') {
+                    if (karta1.id !== 'nechto' && karta2.id !== 'nechto') {
                         if (karta1.id == 'zarajenie' && room.currentPlayer !== state.nechto && !state.zarajennie.includes(room.currentPlayer)) { // TODO: bug
                             state.zarajennie.push(room.currentPlayer)
                         } else if (karta2.id == 'zarajenie' && room.target !== state.nechto && !state.zarajennie.includes(room.target)) {

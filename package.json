@@ -8,7 +8,7 @@
     "dev": "vite",
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
-    "postinstall": "npm run build"
+    "postinstall": "yarn run build"
   },
   "dependencies": {
     "vue": "^3.2.47",
