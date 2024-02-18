@@ -45,8 +45,8 @@ function init(wsServer, path) {
                 showAllHand: null,
                 allReadyNedeed: false,
                 gameLog: [],
-                smallTimer: 15,
-                bigTimer: 15,
+                smallTimer: 40,
+                bigTimer: 40,
                 isObmenReady: false,
                 voting: false,
                 currentCardPanik: null,
@@ -192,7 +192,7 @@ function init(wsServer, path) {
                         room.currentPlayer = shuffleArray(room.playerSlots.map((it, index) => index).filter(inx => room.playerSlots[inx]))[0]
                         state.zarajennie = [];
                         room.isNextCardPanika = null
-                        room.currentPlayer = 4
+                        //room.currentPlayer = 4
                         room.gameLog = [];
                         state.showCard = {};
                         state.discard = [];
