@@ -11,7 +11,7 @@ export type CardId = string;
 
 export interface Card {
     type: "card" | "panika";
-    count: Record<number, number>;
+    count?: Record<number, number>;
     isAttacking?: boolean;
     isDefending?: boolean;
     action?: boolean;
@@ -70,6 +70,7 @@ interface NechtoState {
     normThirdPlayers: Slot[];
     dveriClient: Record<Slot, { prev: boolean, next: boolean }>;
     isNextCardPanika: boolean | null;
+    actionCard: Card | null
 }
 
 declare const window: ReactAppWindow<NechtoState>;

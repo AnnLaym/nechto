@@ -1,8 +1,8 @@
 <template>
-    <div class="stol">
+    <div class="stol" :style="!state.invertDirection ? 'background-image: url(/nechto/img/stolTrue.png)' : 'background-image: url(/nechto/img/stolFalse.png)'">
         <div class="top">
             <div class="deki">
-                <div :style="{ 'background-image': state.isNextCardPanika ? `url(/nechto/cards/4.png)` : `url(/nechto/cards/1.png)` }"
+                <div :style="{ 'background-image': state.isNextCardPanika ? `url(/nechto/img/panica.png)` : `url(/nechto/cards/4.png)` }"
                     class="deka">
                     <div class="deka-count">{{ state.deckSize }}</div>
                 </div>
@@ -75,7 +75,6 @@
                 <div>{{ getKnopkaName('ok') }}
                 </div>
             </div>
-            {{ state.isNextCardPanika }}
             <div v-if="state.currentPanika && state.userSlot === state.currentPlayer
                 && state.currentPanika.id !== 'zabivchivost' && state.currentPanika.id !== 'davaiDrujit'"
                 class="knopka" @click=" 
@@ -163,7 +162,6 @@ function dropCardClick() {
 
 .stol {
     width: 750px;
-    background-image: url(./img/stol69.png);
     height: 400px;
     padding: 10px;
     border-radius: 100px;

@@ -129,6 +129,16 @@ for (let card in cardsDeck) {
     cardsDeck[card].id = card
 };
 
+// const getActionCard = (action) => {
+//         if (action !== null) {
+//         return {
+//             action: {
+//                 id: action,
+//                 type: cardsDeck[action].type
+//             }
+//         }
+//     }
+// }
 const createDeck = (players, startWithNechto) => {
     let deck = [], playersCardWillbe = players * 4 - 1, res = [];
     for (let card in cardsDeck) {
@@ -171,7 +181,7 @@ const createDeck = (players, startWithNechto) => {
         let ostatokDeck = shuffledDeck.splice(playersCardWillbe + 2, shuffledDeck.length - 1);
         ostatokDeck.push(...nechtoDeck);
         let shuffleDeki = shuffleArray([...ostatokDeck, ...panikDeck, ...zarajenieDeck])
-        //shuffleDeki.unshift({ ...cardsDeck.zabivchivost, id: 'zabivchivost' })
+        //shuffleDeki.unshift({ ...cardsDeck.iViEtoNazivaeteVecherinkoy, id: 'iViEtoNazivaeteVecherinkoy' })
         res = [...shufledFirsDeck, ...shuffleDeki]
     };
     return res
@@ -212,5 +222,6 @@ const getUniqueDistricts = () => {
 module.exports = {
     cardsDeck,
     createDeck,
-    getUniqueDistricts
+    getUniqueDistricts,
+    //getActionCard
 };

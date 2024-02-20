@@ -502,11 +502,11 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
         },
         title: {
             ru: "Свидание в слепую",
-            ua: "Побачення в сліпу",
+            ua: "побачення на осліп",
             en: "Blind date",
         },
         desciption: {
-            ru: "Поменяйте одну карту с руки на на карту общей колоды. Ваш ход заканчивается.",
+            ru: "Поменяйте одну карту с руки на карту общей колоды. Ваш ход заканчивается.",
             ua: "Поміняйте одну картку з руки на карту загальної колоди. Ваш хід закінчується.",
             en: "Swap one card from your hand to a card from the general deck. Your turn ends.",
         }
