@@ -530,9 +530,9 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
     },
     zarajenie: {
         log: {
-            ru: "",
-            ua: "",
-            en: "",
+            ru: "Получив эту карту от другого игрока, вы становитесь зараженным и обязаны держать ее на руке до конца игры",
+            ua: "Отримавши цю карту від іншого гравця, ви стаєте зараженим та зобов'язані тримати її в руці до кінця гри",
+            en: "When you receive this card from another player, you become infected and must keep it in your hand for the rest of the game.",
         },
         title: {
             ru: "Заражение",
@@ -547,14 +547,14 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
     },
     nechto: {
         log: {
-            ru: "",
-            ua: "",
-            en: "",
+            ru: "Теперь Вы Нечто",
+            ua: "Тепер Ви Щось",
+            en: "Now you are Thing",
         },
         title: {
             ru: "Нечто",
             ua: "Щось",
-            en: "Something",
+            en: "Thing",
         },
         desciption: {
             ru: "",
@@ -713,17 +713,23 @@ const knopki = {
         title: {
             ru: 'Победа Нечто!',
             ua: 'Перемогло Щось!',
-            en: 'Nechto win',
+            en: 'Thing won!',
         }
     },
     'win-ebanati': {
         title: {
             ru: 'Нечто проиграло!',
             ua: 'Щось програло!',
-            en: 'Nechto loose',
+            en: 'Thing lost!',
         }
     },
-
+    'карты': {
+        title: {
+            ru: 'Карты',
+            ua: 'Карти',
+            en: 'Cards',
+        }
+    },
 } satisfies Record<string, KnopkaMetaData>
 const podskazkaData: Record<string, ActionMetaData> = {
     'Выбирает карту для обмена': {

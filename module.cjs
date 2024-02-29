@@ -45,8 +45,8 @@ function init(wsServer, path) {
                 showAllHand: null,
                 allReadyNedeed: false,
                 gameLog: [],
-                smallTimer: 15,
-                bigTimer: 15,
+                smallTimer: 30,
+                bigTimer: 50,
                 isObmenReady: false,
                 voting: false,
                 currentCardPanik: null,
@@ -193,7 +193,8 @@ function init(wsServer, path) {
                         room.currentPlayer = shuffleArray(room.playerSlots.map((it, index) => index).filter(inx => room.playerSlots[inx]))[0]
                         state.zarajennie = [];
                         room.isNextCardPanika = null
-                        room.currentPlayer = 4
+                        //room.currentPlayer = 4
+                        const x = Math.floor(Math.random())
                         room.gameLog = [];
                         state.showCard = {};
                         room.isObmenReady = false;
@@ -574,7 +575,7 @@ function init(wsServer, path) {
                     const card = state.deck.shift();
                     //TODO: карантинный долбаеб же панику брат ьможет
                     reshuffle()
-                    if (type == 'panika') {
+                    if (card.type == 'panika') {
                         room.currentPanika = card;
                         room.allReadyNedeed = card.allReady;
                         room.action = card.id;

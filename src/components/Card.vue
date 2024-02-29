@@ -1,5 +1,5 @@
 <template>
-    <div class="card" :class="{ selectedCard: selected && !zoomed, zoomed }" @mousedown="mouseDaun()">
+    <div class="card" :class="{ selectedCard: selected && !zoomed, zoomed, stolCard }" @mousedown="mouseDaun()">
         <div class="kartinka" :style="{
             'background-image': `url(/nechto/cards/${card.type !== 'panika'
                 ? card.id !== 'zarajenie' ? card.id : `z${card.zNumber!}` : 'panika'}.png)`
@@ -36,6 +36,7 @@ function mouseDaun() {
 defineProps<{
     card: Card
     selected?: boolean
+    stolCard?: boolean
 }>()
 </script>
  
@@ -83,6 +84,7 @@ defineProps<{
     transform: translate(-50%, -50%) scale(3);
     z-index: 2;
 }
+
 
 .zoomed .podkladka {
     border-radius: 0px;
@@ -135,5 +137,16 @@ defineProps<{
     height: 180px;
     width: 130px;
     pointer-events: auto;
+}
+
+.stolCard {
+    width: 88px;
+    height: 115px;
+    padding: 3px;
+    margin: 4px;
+}
+
+.stolCard .name{
+    font-size: 18px;
 }
 </style>

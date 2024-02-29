@@ -5,8 +5,8 @@
             <div class="startScroll" v-if="trogal" @click="startScroll()">
                 лог на паузе
             </div>
-            <div class="papaPlusika">
-                <div v-for="message in state.gameLog" class="message">
+            <div v-for="message in state.gameLog" class="message">
+                <div class="papaPlusika">
                     <span class="plusik">
                         +
                     </span>
@@ -115,6 +115,7 @@ const colors = [
 .plusik {
     display: flex;
     max-width: 10px;
+    flex-direction: row;
 }
 
 .bodyLog {

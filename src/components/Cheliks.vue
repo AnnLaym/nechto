@@ -7,8 +7,8 @@
                 (state.phase === 0 || !state.teamsLocked)" @click="service.playersJoin(slot)" class="mini-roditel">
                 {{ getKnopkaName('sest') }}</div>
             <div v-else>
-                <div class="suka">
-                    <span v-if="service.selectedTarget.value === slot && state.phase === 2">на него:</span>
+                <div class="suka" @click="slotClick(slot)">
+                    <span v-if="service.selectedTarget.value === slot && state.phase === 2" >на него:</span>
                     {{ reactCommonRoom().getPlayerAvatarURL(state.playerSlots[slot]!) || state.playerSlots[slot] ?
                         state.playerNames[state.playerSlots[slot]!] : "" }}
                     <div class="host-cntrols">
@@ -205,6 +205,10 @@ top: initial
     justify-content: center;
     gap: 10px;
     font-family: matToni123;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100px;
+    display: inline-block;
 }
 
 .host-cntrols {

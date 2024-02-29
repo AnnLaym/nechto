@@ -94,12 +94,20 @@
         <div>
             <div v-if="state.chekCards?.length" class="uporstvo">
                 <div v-for=" card, index  in  state.chekCards " @click="uporstvoClick(index)">
-                    <Card :card="card" :selected="false" class="jopa" />
+                    <Card :card="card" :selected="false" :stolCard="true" />
                 </div>
             </div>
-            <div v-if="state.showAllHand?.length !== 0" class="uporstvo">
-                <div v-for=" card, index  in  state.showAllHand ">
-                    <Card :card="card" />
+            <div v-if="state.showAllHand?.length !== undefined" class="uporstvo">
+                <div class="uporstvo1">
+                    <span v-if="state.showAllHand?.length !== undefined">
+                        {{ getKnopkaName('карты') }}</span>
+                    <span v-if="state.showAllHand?.length !== undefined">
+                        {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}</span>
+                </div>
+                <div class="uporstvo1">
+                    <div v-for=" card, index  in  state.showAllHand ">
+                        <Card :card="card" :stolCard="true" />
+                    </div>
                 </div>
             </div>
         </div>
@@ -190,7 +198,7 @@ function dropCardClick() {
     display: flex;
     position: relative;
     gap: 10px;
-    height: 24%;
+    height: 20%;
 }
 
 .action {
@@ -201,8 +209,8 @@ function dropCardClick() {
 }
 
 .jopa {
-    max-height: 150px;
-    max-width: 110px;
+    max-height: 60px;
+    max-width: 60px;
 }
 
 .deki {
@@ -213,6 +221,13 @@ function dropCardClick() {
 }
 
 .uporstvo {
+    display: flex;
+    justify-content: center;
+    flex-flow: column;
+    gap: 8px
+}
+
+.uporstvo1 {
     display: flex;
     justify-content: center;
     flex-flow: row;
