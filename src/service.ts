@@ -70,7 +70,8 @@ interface NechtoState {
     normThirdPlayers: Slot[];
     dveriClient: Record<Slot, { prev: boolean, next: boolean }>;
     isNextCardPanika: boolean | null;
-    actionCard: Card | null
+    actionCard: Card | null;
+    bot: boolean | null
 }
 
 declare const window: ReactAppWindow<NechtoState>;

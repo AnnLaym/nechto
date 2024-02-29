@@ -5,44 +5,49 @@
             <div class="startScroll" v-if="trogal" @click="startScroll()">
                 лог на паузе
             </div>
-            <div v-for="message in state.gameLog">
-                <span v-if="message.action && !message.panika" class="messageCard">
-                    <span v-if="message.actors?.[0]" :style="{
-                        'color':
-                            colors[state.playerSlots.indexOf(message.actors?.[0])]
-                    }">
-                        {{ state.playerNames[message.actors[0]] }}
+            <div class="papaPlusika">
+                <div v-for="message in state.gameLog" class="message">
+                    <span class="plusik">
+                        +
                     </span>
-                    <span> {{ getActionLog(message.action) }}</span>
-                    <span v-if="message.actors?.[1]" :style="{
-                        'color':
-                            colors[state.playerSlots.indexOf(message.actors?.[1])]
-                    }">
-                        {{ state.playerNames[message.actors[1]] }} </span>
-                </span>
-                <span v-else-if="message.card && !message.panika" class="messageCard">
-                    <span v-if="message.actors?.[0]" :style="{
-                        'color':
-                            colors[state.playerSlots.indexOf(message.actors?.[0])]
-                    }"> {{ state.playerNames[message.actors[0]] }} </span>
-                    <span> {{ getCardLog(message.card.id) }} </span>
-                    <span v-if="message.actors?.[1]" :style="{
-                        'color':
-                            colors[state.playerSlots.indexOf(message.actors?.[1])]
-                    }">
-                        {{ state.playerNames[message.actors[1]] }}</span>
-                    <span v-if="message.card" class="podskazkaLoga"> ({{ getCardName(message.card.id) }})</span>
-                </span>
-                <span v-if="message.card && message.panika" class="messageCard" :style="{ color: '#C71585' }">
-                    {{ getKnopkaName('panika') }} {{ getCardName(message.card.id) }}</span>
-                <span v-if="message.smetKrinj">
-                    <span v-if="message.actors?.[0]" :style="{
-                        'color':
-                            colors[state.playerSlots.indexOf(message.actors?.[0])]
-                    }">
-                        {{ state.playerNames[message.actors[0]] }}</span>
-                    {{ getActionLog('smertKring') }}
-                </span>
+                    <span v-if="message.action && !message.panika" class="messageCard">
+                        <span v-if="message.actors?.[0]" :style="{
+                            'color':
+                                colors[state.playerSlots.indexOf(message.actors?.[0])]
+                        }" class="actor">
+                            {{ state.playerNames[message.actors[0]] }}
+                        </span>
+                        <span> {{ getActionLog(message.action) }}</span>
+                        <span v-if="message.actors?.[1]" :style="{
+                            'color':
+                                colors[state.playerSlots.indexOf(message.actors?.[1])]
+                        }" class="actor">
+                            {{ state.playerNames[message.actors[1]] }} </span>
+                    </span>
+                    <span v-else-if="message.card && !message.panika" class="messageCard">
+                        <span v-if="message.actors?.[0]" :style="{
+                            'color':
+                                colors[state.playerSlots.indexOf(message.actors?.[0])]
+                        }" class="actor"> {{ state.playerNames[message.actors[0]] }} </span>
+                        <span> {{ getCardLog(message.card.id) }} </span>
+                        <span v-if="message.actors?.[1]" :style="{
+                            'color':
+                                colors[state.playerSlots.indexOf(message.actors?.[1])]
+                        }" class="actor">
+                            {{ state.playerNames[message.actors[1]] }}</span>
+                        <span v-if="message.card" class="podskazkaLoga"> ({{ getCardName(message.card.id) }})</span>
+                    </span>
+                    <span v-if="message.card && message.panika" class="messageCard" :style="{ color: '#C71585' }">
+                        {{ getKnopkaName('panika') }} {{ getCardName(message.card.id) }}</span>
+                    <span v-if="message.smetKrinj">
+                        <span v-if="message.actors?.[0]" :style="{
+                            'color':
+                                colors[state.playerSlots.indexOf(message.actors?.[0])]
+                        }" class="actor">
+                            {{ state.playerNames[message.actors[0]] }}</span>
+                        {{ getActionLog('smertKring') }}
+                    </span>
+                </div>
             </div>
         </div>
     </div>
@@ -107,10 +112,15 @@ const colors = [
     src: url("/src/shrifty/Montserrat-Regular.ttf");
 }
 
+.plusik {
+    display: flex;
+    max-width: 10px;
+}
+
 .bodyLog {
     position: fixed;
     height: 300px;
-    width: 300px;
+    width: 320px;
     bottom: 0px;
     background-color: black;
     opacity: 70%;
@@ -137,6 +147,19 @@ const colors = [
     flex-flow: row;
     justify-content: left;
     gap: 3px;
+    display: flex;
+    flex-wrap: wrap;
+    overflow-x: hidden;
+}
+
+.actor {
+    text-overflow: ellipsis;
+    max-width: 90px;
+    overflow: hidden;
+    display: flex;
+    max-height: 19px;
+    display: inline-block;
+    align-items: flex-start;
 }
 
 .startScroll {

@@ -65,7 +65,7 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
         },
         desciption: {
             ru: "Посмотрите карты на руке сосденего игрока",
-            ua: "Подивіться карти в руках сусіднього гравця",
+            ua: "Подивіться карти в руці сусіднього гравця",
             en: "Look at the cards in the next player's hand",
         }
     },
@@ -81,7 +81,7 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "Axe",
         },
         desciption: {
-            ru: "Сбросьте сыграную на вас или на соседнего игрока карту 'Карантин' или выложенную между вами карту 'Заколоченная дверь'",
+            ru: "Сбросьте сыграную на вас или на соседнего игрока карту 'Карантин', или выложенную между вами карту 'Заколоченная дверь'",
             ua: "Скиньте зіграну на вас або на сусіднього гравця карту 'Карантин' або викладену між вами карту 'Забиті двері'",
             en: "Discard a 'Quarantine' card played on you or an adjacent player, or a 'Boarded Door' card placed between you",
         }
@@ -99,7 +99,7 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
         },
         desciption: {
             ru: "Посмотрите одну случайную карту на руке соседнего игрока",
-            ua: "Подивіться одну випадкову картку на руці сусіднього гравця",
+            ua: "Подивіться одну випадкову картку в руці сусіднього гравця",
             en: "Look at one random card in an adjacent player's hand",
         }
     },
@@ -132,9 +132,9 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "Resolute",
         },
         desciption: {
-            ru: "Возьмите 3 карты событий, оставьте на руке 1 и сбросьте остальные 2. Затем сыграйте или сбросьте карту",
-            ua: "Візьміть 3 карти подій, залиште на руці 1 і скиньте решту 2. Потім зіграйте або скиньте картку",
-            en: "Draw 3 event cards, keep 1 in hand and discard the remaining 2. Then play or discard a card",
+            ru: "Возьмите 3 карты событий, оставьте на руке 1 и сбросьте остальные. Затем сыграйте или сбросьте карту",
+            ua: "Візьміть 3 карти подій, залиште в руці 1 і скиньте решту. Потім зіграйте або скиньте картку",
+            en: "Draw 3 event cards, keep 1 in hand and discard the 2 remaining. Then play or discard a card",
         }
     },
     glyadiPoStoronam: {
@@ -150,7 +150,7 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
         },
         desciption: {
             ru: "Очередность хода передается в обратную сторону. Меняется порядок хода игроков и направление обмена картой с соседом",
-            ua: "Черговість ходу передається у зворотний бік. Змінюється порядок ходу гравців та напрямок обміну карткою із сусідом",
+            ua: "Черговість ходу передається у зворотній бік. Змінюється порядок ходу гравців та напрямок обміну картою з сусідом",
             en: "The turn order is reversed. The order of the players' turn and the direction of the exchange of a card with a neighbor are changed",
         }
     },
@@ -167,7 +167,7 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
         },
         desciption: {
             ru: "Поменяйтесь местами с соседним игроком, если он не на карантине и не за заколоченной дверью",
-            ua: "Поміняйтеся місцями з сусіднім гравцем, якщо він не на карантині і не за забитими дверима",
+            ua: "Поміняйтеся місцями з сусіднім гравцем, якщо він не на карантині та не за забитими дверима",
             en: "Swap places with a nearby player if they are not in quarantine or behind a boarded up door",
         }
     },
@@ -183,15 +183,15 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "You'd better run!",
         },
         desciption: {
-            ru: "Поменяйтесь местами с любым игроком  по вашему выбору, если он не на карантине. Все заколоченные двери игнорируйте.",
-            ua: "Поміняйтеся з місцями з будь-яким гравцем на ваш вибір, якщо він не на карантині. Усі забиті двері ігноруйте.",
+            ru: "Поменяйтесь местами с любым игроком по вашему выбору, если он не на карантине. Все заколоченные двери игнорируйте.",
+            ua: "Поміняйтеся місцями з будь-яким гравцем на ваш вибір, якщо він не на карантині. Усі забиті двері ігноруйте.",
             en: "Swap places with any player of your choice, as long as they are not in quarantine. Ignore all boarded up doors.",
         }
     },
     soblazn: {
         log: {
             ru: "обменивается картой с",
-            ua: "обмінюється карткою з",
+            ua: "обмінюється картою з",
             en: "exchange card with",
         },
         title: {
@@ -200,8 +200,8 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "Seduction",
         },
         desciption: {
-            ru: "Поменяйтесь одной картой с любым игроком по вашему выбору, если он не на карантине. Ваш ход заканчивается. ",
-            ua: "Поміняйтеся однією карткою з будь-яким гравцем на ваш вибір, якщо він не на карантині. Ваш хід закінчується.",
+            ru: "Поменяйтесь одной картой с любым игроком по вашему выбору, если он не на карантине. Ваш ход заканчивается.",
+            ua: "Поміняйтеся однією картою з будь-яким гравцем на ваш вибір, якщо він не на карантині. Ваш хід закінчується.",
             en: "Trade one card with any player of your choice, unless they are in quarantine. Your turn ends.",
         }
     },
@@ -218,24 +218,24 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
         },
         desciption: {
             ru: "Откажитесь от обмена и осмотрите карту, от которой отказались. Возьмите 1 карту событий.",
-            ua: "Відмовтеся від обміну та огляньте карту, від якої відмовилися. Візьміть 1 картку подій.",
+            ua: "Відмовтеся від обміну та огляньте карту, від якої відмовилися. Візьміть 1 карту подій.",
             en: "Refuse the exchange and inspect the card that was refused. Draw 1 card.",
         }
     },
     mneIZdesNePloha: {
         log: {
-            ru: "не меняет место",
-            ua: "не змінює місце",
+            ru: "не меняется местами",
+            ua: "не міняється місцями",
             en: "does not change place",
         },
         title: {
-            ru: "Мне и здесь не плохо",
+            ru: "Мне и здесь неплохо",
             ua: "Мені і тут непогано",
             en: "I'm comfortable",
         },
         desciption: {
-            ru: "Отмените эффект карты 'меняемся местами!' или 'Сматывай удочки', если стали ее целью. Возьмите 1 карту события",
-            ua: "Скасуйте ефект карти 'Міняємось місцями!' або 'Краще біжи!', якщо стали її метою. Візьміть 1 картку події",
+            ru: "Отмените эффект карты 'Меняемся местами!' или 'Сматывай удочки', если стали ее целью. Возьмите 1 карту события",
+            ua: "Скасуйте ефект карти 'Міняємось місцями!' або 'Краще біжи!', якщо стали її метою. Візьміть 1 карту події",
             en: "Cancel the 'Change places!' card effect or 'You'd better run!' if that's her target. Draw 1 event card",
         }
     },
@@ -268,8 +268,8 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "Missed!",
         },
         desciption: {
-            ru: "Откажитесь от обмена картами. Вместо вас картами меняется следующий за ваи игрок. Возьмите 1 карту события.",
-            ua: "Відмовтеся від обміну картами. Замість вас картами змінюється наступний за ваш гравець. Візьміть 1 картку події.",
+            ru: "Откажитесь от обмена картами. Вместо вас картами меняется следующий за вами игрок. Возьмите 1 карту события.",
+            ua: "Відмовтеся від обміну картами. Замість вас картами обмінюється наступний за вами гравець. Візьміть 1 карту події.",
             en: "Stop exchanging cards. Instead of you, the next player behind you changes cards. Draw 1 card.",
         }
     },
@@ -286,7 +286,7 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
         },
         desciption: {
             ru: "Отмените эффект карты 'Огнемет', если вы стали ее целью. Возьмите 1 карту события. ",
-            ua: "Скасуйте ефект карти 'Вогнемет', якщо ви стали її метою. Візьміть 1 картку події",
+            ua: "Скасуйте ефект карти 'Вогнемет', якщо ви стали її метою. Візьміть 1 карту події",
             en: "Cancel the effect of 'Flamethrower' if you are targeted by it. Draw 1 card",
         }
     },
@@ -303,7 +303,7 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
         },
         desciption: {
             ru: "Сыграйте эту карту на себя или соседнего игрока. Следующие 2 своих хода игрок на карантине не может меняться картами, играть карты событий или становится целью таких карт.",
-            ua: "Зіграйте цю карту на себе або сусіднього гравця. Наступні 2 своїх ходи гравець на карантині не може змінюватися картами, грати карти подій або стає метою таких карт.",
+            ua: "Зіграйте цю карту на себе або сусіднього гравця. Наступні 2 своїх ходи гравець на карантині не може обмінюватися картами, грати карти подій або стає цілью таких карт.",
             en: "Play this card on yourself or an adjacent player. For the next 2 of their turns, the quarantined player cannot swap cards, play event cards, or become the target of such cards.",
         }
     },
@@ -336,8 +336,8 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "So this is the party?",
         },
         desciption: {
-            ru: "Все сыгранные карты 'карантин' и 'заколоченная дверь' сбрасываются. Затем начиная с Вас и по часовой стрелке все игроки парами меянются местами.",
-            ua: "Усі зіграні карти 'карантин' і 'забиті двері' скидаються. Потім, починаючи з Вас і за годинниковою стрілкою, всі гравці парами міяються місцями.",
+            ru: "Все сыгранные карты 'Карантин' и 'Заколоченная дверь' сбрасываются. Затем начиная с Вас и по часовой стрелке все игроки парами меянются местами.",
+            ua: "Усі зіграні карти 'Карантин' і 'Забиті двері' скидаються. Потім, починаючи з Вас і за годинниковою стрілкою, всі гравці парами міняються місцями.",
             en: "All played 'quarantine' and 'barred door' cards are discarded. Then, starting with you and clockwise, all players switch places in pairs.",
         }
     },
@@ -353,8 +353,8 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "One, two...",
         },
         desciption: {
-            ru: "Поменяйтесь с третьим игроком слева или справа (по вашему выбору). Если игрок на карантине - смены мест не происходит.",
-            ua: "Поміняйтеся з третім гравцем ліворуч або праворуч (на ваш вибір). Якщо гравець на карантині – зміни місць не відбувається.",
+            ru: "Поменяйтесь с третьим игроком слева или справа (по вашему выбору). Если игрок на карантине - смена мест не происходит.",
+            ua: "Поміняйтеся з третім гравцем ліворуч або праворуч (на ваш вибір). Якщо гравець на карантині – зміна місць не відбувається.",
             en: "Swap with the third player on the left or right (your choice). If a player is in quarantine, there is no change of seats.",
         }
     },
@@ -405,7 +405,7 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
         },
         desciption: {
             ru: "Покажите карты на руке соседнему игроку по вашему выбору",
-            ua: "Покажіть карти на руці сусідньому гравцю на ваш вибір",
+            ua: "Покажіть карти в руці сусідньому гравцю на ваш вибір",
             en: "Show the cards in your hand to an adjacent player of your choice",
         }
     },
@@ -417,7 +417,7 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
         },
         title: {
             ru: "Давай дружить",
-            ua: "Давай дружити",
+            ua: "Нумо дружити",
             en: "Can`t we be friends?",
         },
         desciption: {
@@ -439,7 +439,7 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
         },
         desciption: {
             ru: "хуета не работает, рестартите игру",
-            ua: "хуета не работает, рестартите игру",
+            ua: "хуїта не працює, рестартіть гру",
             en: "хуета не работает, рестартите игру",
         }
     },
@@ -455,8 +455,8 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "Round and round",
         },
         desciption: {
-            ru: "Каждый игрок одновременно с остальными отдает 1 карту следующему по порядку хода игроку, игнорируя все сыгранные карты 'Карантин' и 'Заколоченная дверь'. Нечто может заразить передав 'Заражение'. от обмена отказаться невозможно. Ваш ход заканчивается.",
-            ua: "Кожен гравець одночасно з рештою віддає 1 карту наступному по порядку ходу гравцю, ігноруючи всі зіграні карти 'Карантин' та 'Забиті двері'. Щось може заразити передавши 'Зараження'. від обміну відмовитись неможливо. Ваш хід закінчується.",
+            ru: "Каждый игрок одновременно с остальными отдает 1 карту следующему по порядку хода игроку, игнорируя все сыгранные карты 'Карантин' и 'Заколоченная дверь'. Нечто может заразить передав 'Заражение'. От обмена отказаться невозможно. Ваш ход заканчивается.",
+            ua: "Кожен гравець одночасно з рештою віддає 1 карту наступному по порядку гравцю, ігноруючи всі зіграні карти 'Карантин' та 'Забиті двері'. Щось може заразити передавши 'Зараження'. Від обміну відмовитись неможливо. Ваш хід закінчується.",
             en: "Each player, at the same time as the others, gives 1 card to the next player in turn order, ignoring all played 'Quarantine' and 'Boarded Door' cards. Something can infect by transmitting 'Infection'. It is impossible to refuse the exchange. Your turn ends.",
         }
     },
@@ -490,7 +490,7 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
         },
         desciption: {
             ru: "Покажите все карты на руке другим игрокам",
-            ua: "Покажіть усі карти на руці іншим гравцям",
+            ua: "Покажіть усі карти в руці іншим гравцям",
             en: "Show all cards in your hand to other players",
         }
     },
@@ -502,12 +502,12 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
         },
         title: {
             ru: "Свидание в слепую",
-            ua: "побачення на осліп",
+            ua: "Побачення на осліп",
             en: "Blind date",
         },
         desciption: {
-            ru: "Поменяйте одну карту с руки на карту общей колоды. Ваш ход заканчивается.",
-            ua: "Поміняйте одну картку з руки на карту загальної колоди. Ваш хід закінчується.",
+            ru: "Поменяйте одну карту из руки на карту из общей колоды. Ваш ход заканчивается.",
+            ua: "Поміняйте одну карту з руки на карту з загальної колоди. Ваш хід закінчується.",
             en: "Swap one card from your hand to a card from the general deck. Your turn ends.",
         }
     },
@@ -523,7 +523,7 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "Forgetful",
         },
         desciption: {
-            ru: "Сбросьте 3 карты с руки и возьмите 3 новые карты",
+            ru: "Сбросьте 3 карты из руки и возьмите 3 новые карты",
             ua: "Скиньте 3 карти з руки та візьміть 3 нові карти",
             en: "Discard 3 cards from your hand and draw 3 new cards",
         }
@@ -611,7 +611,7 @@ const actionsData: Record<string, ActionMetaData> = {
     'smertKring': {
         log: {
             ru: 'умирает от кринжа',
-            ua: 'умирает от кринжа',
+            ua: 'вмер від крінжі',
             en: 'умирает от кринжа'
         }
     },
@@ -656,7 +656,7 @@ const knopki = {
     goPanika: {
         title: {
             ru: "сыграть панику",
-            ua: "грати паніку",
+            ua: "зіграти паніку",
             en: "play panic",
         }
     },
@@ -712,8 +712,15 @@ const knopki = {
     win: {
         title: {
             ru: 'Победа Нечто!',
-            ua: 'Перемоло Щось!',
+            ua: 'Перемогло Щось!',
             en: 'Nechto win',
+        }
+    },
+    'win-ebanati': {
+        title: {
+            ru: 'Нечто проиграло!',
+            ua: 'Щось програло!',
+            en: 'Nechto loose',
         }
     },
 
@@ -770,7 +777,7 @@ const podskazkaData: Record<string, ActionMetaData> = {
     },
     'панику': {
         log: {
-            ru: "должен  сыграть панику",
+            ru: "должен сыграть панику",
             ua: "повинен зіграти паніку",
             en: "must play panic card",
         },
@@ -782,4 +789,11 @@ const podskazkaData: Record<string, ActionMetaData> = {
             en: "with",
         },
     },
+    'смотрит карту': {
+        log: {
+            ru: "смотрит карту",
+            ua: "дивиться карту",
+            en: "checks card",
+        },
+    }
 }

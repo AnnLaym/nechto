@@ -1,5 +1,6 @@
 <template>
-    <div class="stol" :style="!state.invertDirection ? 'background-image: url(/nechto/img/stolTrue.png)' : 'background-image: url(/nechto/img/stolFalse.png)'">
+    <div class="stol"
+        :style="!state.invertDirection ? 'background-image: url(/nechto/img/stolTrue.png)' : 'background-image: url(/nechto/img/stolFalse.png)'">
         <div class="top">
             <div class="deki">
                 <div :style="{ 'background-image': state.isNextCardPanika ? `url(/nechto/img/panica.png)` : `url(/nechto/cards/4.png)` }"
@@ -15,7 +16,7 @@
             <Card :card="state.currentCardPanik!" class="jopa" />
         </div>
         <div class="knopkee">
-            <div v-if="state.winner == 'ebanati'" class="win"> {{ getKnopkaName('win') }} </div>
+            <div v-if="state.winner == 'ebanati'" class="win"> {{ getKnopkaName('win-ebanati') }} </div>
             <div v-if="state.winner == 'nechto and team'" class="win"> {{ getKnopkaName('win') }} </div>
             <div v-if="service.selectedCard.value! >= 0 && state.action !== 'soblazn'" class="knopkee hui">
                 <div v-if="service.selectedCard.value !== null && state.phase == 2 &&
@@ -33,16 +34,15 @@
                 {{ getKnopkaName('vzyatKartu') }}
             </div>
             <div v-if="(state.phase === 2 && state.target === state.userSlot && state.showAllHand?.length == 0
-                && state.chekCards?.length == null && state.action !== 'podozrenie')
-                || (state.target === state.userSlot && state.phase === 2 && !state.isObmenReady && (state.action === 'ognemet' || state.action === 'menyaemsyaMestami'
+                && state.chekCards?.length == null && state.action !== 'podozrenie' && state.action !== 'strah')
+                || (state.target === state.userSlot && state.phase === 2 && !state.isObmenReady && state.action !== 'strah' && (state.action === 'ognemet' || state.action === 'menyaemsyaMestami'
                     || state.action === 'smaivayUdochki'))
                 " @click="service.resolveAction(service.selectedCard.value)" class="knopka">
                 {{ getKnopkaName("sigrat") }}</div>
-            <div v-if="state.target === state.userSlot && state.phase === 3 && state.isObmenReady"
+            <div v-if="state.target === state.userSlot && state.phase === 3 && state.isObmenReady && state.action !== 'strah'"
                 @click="service.resolveAction(service.selectedCard.value)" class="knopka"> {{ getKnopkaName("sigrat") }}
             </div>
-            <div v-if="(state.action === 'soblazn' && state.currentPlayer === state.userSlot && !state.isObmenReady) ||
-                (state.currentPanika?.id === 'soblazn' && state.target === state.userSlot && state.isObmenReady)"
+            <div v-if="(state.action === 'soblazn' && state.currentPlayer === state.userSlot && !state.isObmenReady)"
                 class="knopka" @click="service.resolveAction(service.selectedCard.value!)">
                 {{ getKnopkaName("polojitKartuNaObmen") }}
             </div>
@@ -60,7 +60,7 @@
                 @click="service.vilojitCartuNaObmen(service.selectedCard.value)" class="knopka">
                 {{ getKnopkaName('polojitKartuNaObmen') }}
             </div>
-            <div v-if="state.phase === 3 && state.target === state.userSlot && state.isObmenReady"
+            <div v-if="state.phase === 3 && state.target === state.userSlot && state.isObmenReady && state.action !== 'strah'"
                 @click="service.resolveObmen(service.selectedCard.value!)" class="knopka">
                 {{ getKnopkaName('polojitKartuNaObmen') }}
             </div>
@@ -68,10 +68,10 @@
                 && state.currentPanika?.id === 'davaiDrujit' && state.isObmenReady" class="knopka"
                 @click="service.panicAction(service.selectedCard.value, service.selectedTarget.value!)">
                 {{ getKnopkaName('polojitKartuNaObmen') }} </div>
-            <div v-if="state.userSlot === state.currentPlayer && state.chekCards?.length
+            <div v-if="(state.userSlot === state.currentPlayer && state.chekCards?.length
                 && state.action !== `uporstvo` &&
-                state.phase == 2
-                " class="knopka" @click="service.resolvePassActin()">
+                state.phase == 2) || state.action === 'strah' && state.userSlot === state.target" class="knopka"
+                @click="service.resolvePassActin()">
                 <div>{{ getKnopkaName('ok') }}
                 </div>
             </div>
