@@ -207,6 +207,7 @@ function dropCardClick() {
     bottom: 0px;
     border-radius: 11px;
     margin-top: 2px;
+    cursor: pointer;
 }
 
 .knopkee {
