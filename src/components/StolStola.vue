@@ -12,9 +12,6 @@
                 </div>
             </div>
         </div>
-        <div v-if="state.currentPanika" class="action">
-            <Card :card="state.currentCardPanik!" class="jopa" />
-        </div>
         <div class="knopkee">
             <div v-if="state.winner == 'ebanati'" class="win"> {{ getKnopkaName('win-ebanati') }} </div>
             <div v-if="state.winner == 'nechto and team'" class="win"> {{ getKnopkaName('win') }} </div>
@@ -33,12 +30,18 @@
                 class="knopka">
                 {{ getKnopkaName('vzyatKartu') }}
             </div>
-            <div v-if="(state.phase === 2 && state.target === state.userSlot && state.showAllHand?.length == 0
+            <div v-if="((state.phase === 2 && state.target === state.userSlot && state.showAllHand?.length == 0
                 && state.chekCards?.length == null && state.action !== 'podozrenie' && state.action !== 'strah')
                 || (state.target === state.userSlot && state.phase === 2 && !state.isObmenReady && state.action !== 'strah' && (state.action === 'ognemet' || state.action === 'menyaemsyaMestami'
-                    || state.action === 'smaivayUdochki'))
+                    || state.action === 'smaivayUdochki')))
                 " @click="service.resolveAction(service.selectedCard.value)" class="knopka">
-                {{ getKnopkaName("sigrat") }}</div>
+                {{ getKnopkaName("sigrat") }}
+            </div>
+            <div v-if="state.phase === 2 && state.target === state.userSlot
+                && state.action == 'soblazn' && state.isObmenReady"
+                @click="service.resolveAction(service.selectedCard.value)" class="knopka">
+                {{ getKnopkaName("sigrat") }}
+            </div>
             <div v-if="state.target === state.userSlot && state.phase === 3 && state.isObmenReady && state.action !== 'strah'"
                 @click="service.resolveAction(service.selectedCard.value)" class="knopka"> {{ getKnopkaName("sigrat") }}
             </div>
@@ -91,10 +94,23 @@
                     getKnopkaName(`goPanika`) }}
             </div>
         </div>
+        <div v-if="state.currentPanika" class="action">
+            <Card :card="state.currentCardPanik!" class="uporstvo1" :stolCard="true" />
+        </div>
         <div>
-            <div v-if="state.chekCards?.length" class="uporstvo">
-                <div v-for=" card, index  in  state.chekCards " @click="uporstvoClick(index)">
-                    <Card :card="card" :selected="false" :stolCard="true" />
+            <div class="uporstvo" v-if="state.chekCards?.length">
+                <div class="uporstvo1">
+                    <span>
+                        {{ getKnopkaName('карты') }}
+                    </span>
+                    <span>
+                        {{ state.playerNames[state.playerSlots[state.target!]!] }}
+                    </span>
+                </div>
+                <div v-if="state.chekCards?.length" class="uporstvo1">
+                    <div v-for=" card, index  in  state.chekCards " @click="uporstvoClick(index)">
+                        <Card :card="card" :selected="false" :stolCard="true" />
+                    </div>
                 </div>
             </div>
             <div v-if="state.showAllHand?.length !== undefined" class="uporstvo">

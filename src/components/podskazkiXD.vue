@@ -10,7 +10,8 @@
           || (state.phase == 2 && state.currentPanika)
           || (state.phase == 2 && state.action == 'soblazn' && !state.isObmenReady)
           || (state.phase == 2 && (state.action === 'analiz' || state.action === 'viski'))
-          || (state.phase == 2 && state.currentPanika?.id == 'davaiDrujit' && !state.isObmenReady)">
+          || (state.phase == 2 && state.currentPanika?.id == 'davaiDrujit' && !state.isObmenReady)
+          || (state.phase == 2 && state.action === 'ognemet')">
       <img :src="reactCommonRoom().getPlayerAvatarURL(state.playerSlots[state.target!]!) || ' /nechto/cards/avatar1.png'"
         class="otdelnii" v-if="(state.isObmenReady && state.phase == 3)
           || (state.phase == 2 && (state.action === 'menyaemsyaMestami' || state.action === 'smaivayUdochki'))
@@ -88,6 +89,11 @@
         </div>
         {{ getPodskazkaName('просмотр карты') }}
       </div>
+      <div class="popitka" v-if="state.phase == 2 && state.action === 'ognemet'">
+        <div class="current hueer"> {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
+        </div>
+        {{ getPodskazkaName('сгореть') }}
+      </div>
       <div class="popitka" v-if="state.phase == 2 && (state.currentPanika)">
         <div class="current hueer"> {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
         </div>
@@ -148,6 +154,7 @@ const state = useNechtoState()
   gap: 5px;
   flex-flow: row
 }
+
 .text {
   display: flex;
 }

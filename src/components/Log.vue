@@ -6,48 +6,43 @@
                 лог на паузе
             </div>
             <div v-for="message in state.gameLog" class="message">
-                <div class="papaPlusika">
-                    <span class="plusik">
-                        +
+                <span v-if="message.action && !message.panika" class="messageCard">
+                    <span v-if="message.actors?.[0]" :style="{
+                        'color':
+                            colors[state.playerSlots.indexOf(message.actors?.[0])]
+                    }" class="actor">
+                        {{ state.playerNames[message.actors[0]] }}
                     </span>
-                    <span v-if="message.action && !message.panika" class="messageCard">
-                        <span v-if="message.actors?.[0]" :style="{
-                            'color':
-                                colors[state.playerSlots.indexOf(message.actors?.[0])]
-                        }" class="actor">
-                            {{ state.playerNames[message.actors[0]] }}
-                        </span>
-                        <span> {{ getActionLog(message.action) }}</span>
-                        <span v-if="message.actors?.[1]" :style="{
-                            'color':
-                                colors[state.playerSlots.indexOf(message.actors?.[1])]
-                        }" class="actor">
-                            {{ state.playerNames[message.actors[1]] }} </span>
-                    </span>
-                    <span v-else-if="message.card && !message.panika" class="messageCard">
-                        <span v-if="message.actors?.[0]" :style="{
-                            'color':
-                                colors[state.playerSlots.indexOf(message.actors?.[0])]
-                        }" class="actor"> {{ state.playerNames[message.actors[0]] }} </span>
-                        <span> {{ getCardLog(message.card.id) }} </span>
-                        <span v-if="message.actors?.[1]" :style="{
-                            'color':
-                                colors[state.playerSlots.indexOf(message.actors?.[1])]
-                        }" class="actor">
-                            {{ state.playerNames[message.actors[1]] }}</span>
-                        <span v-if="message.card" class="podskazkaLoga"> ({{ getCardName(message.card.id) }})</span>
-                    </span>
-                    <span v-if="message.card && message.panika" class="messageCard" :style="{ color: '#C71585' }">
-                        {{ getKnopkaName('panika') }} {{ getCardName(message.card.id) }}</span>
-                    <span v-if="message.smetKrinj">
-                        <span v-if="message.actors?.[0]" :style="{
-                            'color':
-                                colors[state.playerSlots.indexOf(message.actors?.[0])]
-                        }" class="actor">
-                            {{ state.playerNames[message.actors[0]] }}</span>
-                        {{ getActionLog('smertKring') }}
-                    </span>
-                </div>
+                    <span> {{ getActionLog(message.action) }}</span>
+                    <span v-if="message.actors?.[1]" :style="{
+                        'color':
+                            colors[state.playerSlots.indexOf(message.actors?.[1])]
+                    }" class="actor">
+                        {{ state.playerNames[message.actors[1]] }} </span>
+                </span>
+                <span v-else-if="message.card && !message.panika" class="messageCard">
+                    <span v-if="message.actors?.[0]" :style="{
+                        'color':
+                            colors[state.playerSlots.indexOf(message.actors?.[0])]
+                    }" class="actor"> {{ state.playerNames[message.actors[0]] }} </span>
+                    <span> {{ getCardLog(message.card.id) }} </span>
+                    <span v-if="message.actors?.[1]" :style="{
+                        'color':
+                            colors[state.playerSlots.indexOf(message.actors?.[1])]
+                    }" class="actor">
+                        {{ state.playerNames[message.actors[1]] }}</span>
+                    <span v-if="message.card" class="podskazkaLoga"> ({{ getCardName(message.card.id) }})</span>
+                </span>
+                <span v-if="message.card && message.panika" class="messageCard" :style="{ color: '#C71585' }">
+                    {{ getKnopkaName('panika') }} {{ getCardName(message.card.id) }}</span>
+                <span v-if="message.smetKrinj">
+                    <span v-if="message.actors?.[0]" :style="{
+                        'color':
+                            colors[state.playerSlots.indexOf(message.actors?.[0])]
+                    }" class="actor">
+                        {{ state.playerNames[message.actors[0]] }}</span>
+                    {{ getActionLog('smertKring') }}
+                </span>
             </div>
         </div>
     </div>

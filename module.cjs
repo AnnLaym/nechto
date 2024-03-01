@@ -45,7 +45,7 @@ function init(wsServer, path) {
                 showAllHand: null,
                 allReadyNedeed: false,
                 gameLog: [],
-                smallTimer: 30,
+                smallTimer: 20,
                 bigTimer: 50,
                 isObmenReady: false,
                 voting: false,
@@ -194,7 +194,7 @@ function init(wsServer, path) {
                         state.zarajennie = [];
                         room.isNextCardPanika = null
                         //room.currentPlayer = 4
-                        const x = Math.floor(Math.random())
+                        room.invertDirection = (Math.floor(Math.random() * 10) + 1) % 2 !== 0
                         room.gameLog = [];
                         state.showCard = {};
                         room.isObmenReady = false;
@@ -237,6 +237,7 @@ function init(wsServer, path) {
                     room.phase = 1; // чел фоткает стол и  взять карту
                     state.uporstvoCards = {};
                     state.showCard = {};
+                    room.target = null
                     state.tsepnayaReaksiaObmenKard = {}
                     room.currentCardPanik = null
                     room.waitMoveSlot = room.currentPlayer
@@ -276,7 +277,7 @@ function init(wsServer, path) {
                         else if (room.phase === 2) {
                             if (!room.voting) {
                                 //TODO: all piniks nije
-                                if ([].includes(room.currentPanika) || room.action === 'strah') {
+                                if ([].includes(room.currentPanika) || room.action === 'strah' || room.action === 'viski') {
                                     room.time = room.smallTimer * 1000;
                                 } else
                                     room.time = room.bigTimer * 1000;
@@ -360,7 +361,11 @@ function init(wsServer, path) {
                             startObmen();
                         } else if (room.action == 'strah') {
                             state.showCard = {}
-                            endRound()
+                            room.currentPlayer = getNextPlayer(room.invertDirection);
+                            startRound()
+                        } else if (room.action == 'viski') {
+                            room.showAllHand = null
+                            startObmen()
                         } else if (room.action == 'uporstvo') {
                             let nechtoIndex = state.uporstvoCards.findIndex(c => c.id === 'nechto')
                             if (nechtoIndex == -1) {
@@ -1019,9 +1024,11 @@ function init(wsServer, path) {
                                     startObmen()
                                 } if (card.id === 'viski') {
                                     room.showAllHand = state.playerHand[room.currentPlayer]
+                                    room.action = 'viski'
                                     logs()
                                     sigrat()
-                                    startObmen()
+                                    update()
+                                    updateState()
                                 }
                             }
                         }
@@ -1180,7 +1187,7 @@ function init(wsServer, path) {
                             //TODO: НЕ ДЕЛАЮ ХУЙНЮ
                         } else if (card.id === 'tsepnayaReaksia') {
                             //FIXME: bug ist hier
-                            tsepnayaReaksiaPanika(slot, getNextPlayer(room.invertDirection, slot))
+                            tsepnayaReaksiaPanika()
                         } else if (card.id === 'triChetyre') {
                             triChetyrePanika()
                         } else if (card.id === 'uups') {

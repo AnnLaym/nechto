@@ -529,7 +529,7 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
         }
     },
     zarajenie: {
-        log: {
+        desciption: {
             ru: "Получив эту карту от другого игрока, вы становитесь зараженным и обязаны держать ее на руке до конца игры",
             ua: "Отримавши цю карту від іншого гравця, ви стаєте зараженим та зобов'язані тримати її в руці до кінця гри",
             en: "When you receive this card from another player, you become infected and must keep it in your hand for the rest of the game.",
@@ -539,14 +539,14 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             ua: "Зараження",
             en: "Infected",
         },
-        desciption: {
+        log: {
             ru: "",
             ua: "",
             en: "",
         }
     },
     nechto: {
-        log: {
+        desciption: {
             ru: "Теперь Вы Нечто",
             ua: "Тепер Ви Щось",
             en: "Now you are Thing",
@@ -556,7 +556,7 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             ua: "Щось",
             en: "Thing",
         },
-        desciption: {
+        log: {
             ru: "",
             ua: "",
             en: "",
@@ -800,6 +800,13 @@ const podskazkaData: Record<string, ActionMetaData> = {
             ru: "смотрит карту",
             ua: "дивиться карту",
             en: "checks card",
+        },
+    },
+    'сгореть': {
+        log: {
+            ru: "отказывается или соглашается на смерть",
+            ua: "відмовляється чи погоджується на смерть",
+            en: "refuses or agrees to die",
         },
     }
 }
