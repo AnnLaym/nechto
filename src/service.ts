@@ -45,7 +45,8 @@ interface NechtoState {
     dveri: Slot[];
     showAllHand?: Card[];
     allReadyNedeed: boolean;
-    gameLog: { action?: string; card?: Card; actors?: User[]; panika?: boolean; smetKrinj?: string }[]; result?: string;
+    gameLog: { action?: string; card?: Card; actors?: User[]; panika?: boolean; smetKrinj?: string; nechto?: boolean; }[];
+    result?: string;
     smallTimer: number;
     bigTimer: number;
     isObmenReady: boolean;
@@ -71,7 +72,7 @@ interface NechtoState {
     dveriClient: Record<Slot, { prev: boolean, next: boolean }>;
     isNextCardPanika: boolean | null;
     actionCard: Card | null;
-    bot: boolean | null
+    bot: boolean | null;
 }
 
 declare const window: ReactAppWindow<NechtoState>;

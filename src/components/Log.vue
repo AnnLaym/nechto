@@ -14,6 +14,7 @@
                         {{ state.playerNames[message.actors[0]] }}
                     </span>
                     <span> {{ getActionLog(message.action) }}</span>
+                    <span v-if="!message.nechto && message.action === 'start-game'"> {{ getActionLog("bez-nechto") }}</span>
                     <span v-if="message.actors?.[1]" :style="{
                         'color':
                             colors[state.playerSlots.indexOf(message.actors?.[1])]

@@ -8,7 +8,7 @@
                 {{ getKnopkaName('sest') }}</div>
             <div v-else>
                 <div class="suka" @click="slotClick(slot)">
-                    <span v-if="service.selectedTarget.value === slot && state.phase === 2" >на него:</span>
+                    <span v-if="service.selectedTarget.value === slot && state.phase === 2">на него:</span>
                     {{ reactCommonRoom().getPlayerAvatarURL(state.playerSlots[slot]!) || state.playerSlots[slot] ?
                         state.playerNames[state.playerSlots[slot]!] : "" }}
                     <div class="host-cntrols">
@@ -22,14 +22,16 @@
                 </div>
             </div>
         </div>
-        <div v-if="state.karantin[slot]">
-            {{ state.karantin[slot] }} дней карантина
-        </div>
         <div v-if="state.umerSlots!.includes(slot) && state.phase !== 0" class="umer">
             УМЕР
         </div>
         <div class="mamaMami">
             <div class="kartinka">
+                <div v-if="state.karantin[slot]" class="karantin">
+                    <div class="skokaSidet">
+                        {{ state.karantin[slot] }}
+                    </div>
+                </div>
                 <div class="newTimer" v-if="state.waitMoveSlot === slot && state.timed"
                     :style="{ 'background-position': `${timerWidth}px 124px` }">
                     <i className="material-icons">
@@ -114,9 +116,16 @@ defineProps<{
 .dver {
     position: absolute;
     z-index: 0;
-    background-color: brown;
     height: 61px;
     width: 50px;
+    background-image: url(./img/dver1.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 5;
+}
+
+.dver.svoya {
+    background-image: url(./img/dver2.png);
 }
 
 .dver.top,
@@ -127,7 +136,7 @@ defineProps<{
 .dver.top.svoya,
 .dver.bottom.chujaya,
 .dver.left {
-    right: -20px
+    right: -30px
 }
 
 .dver.top.chujaya,
@@ -138,7 +147,7 @@ defineProps<{
 
 .dver.right.chujaya,
 .dver.left.svoya {
-    top: -20px
+    top: 20px
 }
 
 .dver.right.svoya,
@@ -146,17 +155,25 @@ defineProps<{
     bottom: -20px
 }
 
-.chel:first-child .dver.top.svoya{
-bottom: -40px;
-top: initial
+.chel:first-child .dver.top.chujaya,
+.chel:last-child .dver.top.svoya {
+    bottom: -20px;
+    top: initial
 }
 
-.chel:first-child .dver.bottom.chujaya,
-.chel:last-child .dver.bottom.svoya {
-    top: -40px;
+.chel:first-child .dver.bottom.svoya,
+.chel:last-child .dver.bottom.chujaya {
+    top: 20px;
     bottom: initial;
 }
 
+.karantin {
+    background-image: url(./img/sep.png);
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-size: contain;
+}
 
 .kartinka {
     width: 124px;
@@ -189,6 +206,18 @@ top: initial
     background-color: #ceb5b57a;
     transition: all 0.2s;
     top: 4px;
+}
+
+.skokaSidet {
+    position: absolute;
+    background-color: #6c6c6c;
+    color: white;
+    left: 68px;
+    bottom: 4px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 20;
+    border: 2px solid white;
 }
 
 .newTimer {

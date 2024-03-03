@@ -615,6 +615,20 @@ const actionsData: Record<string, ActionMetaData> = {
             en: 'умирает от кринжа'
         }
     },
+    'bez-nechto': {
+        log: {
+            ru: 'с Нечто в колоде',
+            ua: 'з Щось у колоді',
+            en: 'with Thing in deck'
+        }
+    },
+    'reshuffle': {
+        log: {
+            ru: 'Колода перетасована',
+            ua: 'Колода замішана',
+            en: 'Deck reshuffled'
+        }
+    },
 
 }
 const knopki = {
