@@ -48,7 +48,6 @@ function cardClick(index: number) {
         }
     }
 }
-
 </script>
 
 <style scoped>

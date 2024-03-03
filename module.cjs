@@ -45,8 +45,8 @@ function init(wsServer, path) {
                 showAllHand: null,
                 allReadyNedeed: false,
                 gameLog: [],
-                smallTimer: 20,
-                bigTimer: 50,
+                smallTimer: 15,
+                bigTimer: 25,
                 isObmenReady: false,
                 voting: false,
                 currentCardPanik: null,
@@ -193,8 +193,8 @@ function init(wsServer, path) {
                         room.currentPlayer = shuffleArray(room.playerSlots.map((it, index) => index).filter(inx => room.playerSlots[inx]))[0]
                         state.zarajennie = [];
                         room.isNextCardPanika = null
-                        //room.currentPlayer = 4
-                        room.invertDirection = (Math.floor(Math.random() * 10) + 1) % 2 !== 0
+                        room.currentPlayer = 4
+                        //room.invertDirection = (Math.floor(Math.random() * 10) + 1) % 2 !== 0
                         room.gameLog = [];
                         state.showCard = {};
                         room.isObmenReady = false;
@@ -304,6 +304,7 @@ function init(wsServer, path) {
                     }
                 },
                 resolvePassAction = () => {
+                    let biloUporstvo = false
                     const getRandomObmenCard = (slot) => {
                         if (slot === state.nechto) {
                             const cards = state.playerHand[slot].filter(i => i.id !== 'nechto')
@@ -380,6 +381,7 @@ function init(wsServer, path) {
                             } else {
                                 return false
                             }
+                            biloUporstvo = true
                             room.action = null;
                             state.showCard = {}
                             room.action = null
@@ -446,7 +448,7 @@ function init(wsServer, path) {
                             }
                         }
                     }
-                    if (room.phase === 2 && !room.currentPanika) {
+                    if (room.phase === 2 && !room.currentPanika && !biloUporstvo) {
                         const card = getRandomObmenCard(room.currentPlayer)
                         const cardInd = state.playerHand[room.currentPlayer].indexOf(card)
                         state.discard.push(state.playerHand[room.currentPlayer].splice(cardInd, 1));
@@ -541,12 +543,13 @@ function init(wsServer, path) {
                     } else if (slot2 == state.nechto) {
                         state.nechto = slot1
                     }
+                    let nigerPidorZarajen = state.zarajennie.includes(slot2)
                     if (state.zarajennie.includes(slot1)) {
-                        state.zarajennie.splice(indexOf(slot1), 1)
+                        state.zarajennie.splice(state.zarajennie.indexOf(slot1), 1)
                         state.zarajennie.push(slot2)
                     }
-                    if (state.zarajennie.includes(slot2)) {
-                        state.zarajennie.splice(indexOf(slot2), 1)
+                    if (nigerPidorZarajen) {
+                        state.zarajennie.splice(state.zarajennie.indexOf(slot2), 1)
                         state.zarajennie.push(slot1)
                     }
                     let chel1 = room.playerSlots[slot1];

@@ -30,7 +30,7 @@ window.addEventListener('mouseup', () => {
 function mouseDaun() {
     cardTimer = window.setTimeout(() => {
         zoomed.value = true
-    }, 500)
+    }, 250)
 }
 
 defineProps<{
@@ -76,7 +76,6 @@ defineProps<{
     flex: 1;
     user-select: none;
 }
-
 .zoomed {
     position: fixed;
     top: 50%;
@@ -139,7 +138,7 @@ defineProps<{
     pointer-events: auto;
 }
 
-.stolCard {
+.stolCard:not(.zoomed){
     width: 88px;
     height: 115px;
     padding: 3px;
