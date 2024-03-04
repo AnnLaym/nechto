@@ -492,7 +492,7 @@ function init(wsServer, path) {
                             zarCount++
                     });
                     if (zarCount >= 3 && state.nechto !== player) {
-                        room.gameLog.push({ smetKrinj: 'smetKrinj', actors: [room.playerSlots[player]]  })
+                        room.gameLog.push({ smetKrinj: 'smetKrinj', actors: [room.playerSlots[player]] })
                         playerKill(player)
                         room.currentPlayer = getNextPlayer(room.currentPlayer)
                     }
@@ -602,13 +602,13 @@ function init(wsServer, path) {
                     return state.deck.length > 0 ? state.deck[0].type == 'panika' : null
                 },
                 grabNewCard = (player) => {
-                    const newCard = dealNewCard()
+                    const newCard = dealNewCard(player)
                     if (newCard.id === 'nechto') {
                         state.nechto === player
                     }
                     state.playerHand[player].push(newCard)
                 },
-                dealNewCard = () => {
+                dealNewCard = (player) => {
                     let card = state.deck.shift();
                     reshuffle()
                     while (card.type === 'panika') {
@@ -616,6 +616,8 @@ function init(wsServer, path) {
                         card = state.deck.shift();
                         reshuffle()
                     }
+                    if (card.id === 'necho')
+                        state.nechto = player
                     return card
                 },
                 startObmen = () => {
@@ -1048,7 +1050,7 @@ function init(wsServer, path) {
                     let gagaga
                     const card = state.playerHand[slot][index];
                     if (room.action !== 'uporstvo')
-                        gagaga = !!state.playerHand[target]
+                        gagaga = !!state.playerHand[room.target]
                     if (index >= 0 && index < 4 && slot === room.target && (gagaga || room.action == 'uporstvo')) {
                         const sigrat = () => {
                             state.discard.push(card);
