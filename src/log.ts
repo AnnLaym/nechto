@@ -690,9 +690,9 @@ const knopki = {
     },
     spektators: {
         title: {
-            ru: "зрители",
-            ua: "глядачі",
-            en: "spectators",
+            ru: "зрители:",
+            ua: "глядачі:",
+            en: "spectators:",
         },
     },
     panika: {

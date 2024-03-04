@@ -733,9 +733,9 @@ function init(wsServer, path) {
                 },
                 obmenChekZarajeniy = (slot, index) => {
                     let zarC = 0
-                    state.playerHand[player].forEach(el => {
+                    state.playerHand[slot].forEach(el => {
                         if (el.id === 'zarajenie')
-                            zarCount++
+                            zarC++
                     });
                     if (getHandCard(slot, index).id == 'nechto')
                         return false
@@ -1049,9 +1049,11 @@ function init(wsServer, path) {
                 },
                 "resolve-action": (slot, index) => {
                     //FIXME: soblazn target sloman 
+                    let gagaga
                     const card = state.playerHand[slot][index];
-                    const gagaga = !!state.playerHand[target]
-                    if (index >= 0 && index < 4 && slot === room.target && gagaga) {
+                    if (room.action !== 'uporstvo')
+                        gagaga = !!state.playerHand[target]
+                    if (index >= 0 && index < 4 && slot === room.target && (gagaga || room.action == 'uporstvo')) {
                         const sigrat = () => {
                             state.discard.push(card);
                             state.playerHand[slot].splice(index, 1);

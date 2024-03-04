@@ -35,7 +35,9 @@
                     <span v-if="message.card" class="podskazkaLoga"> ({{ getCardName(message.card.id) }})</span>
                 </span>
                 <span v-if="message.card && message.panika" class="messageCard" :style="{ color: '#C71585' }">
-                    {{ getKnopkaName('panika') }} {{ getCardName(message.card.id) }}</span>
+                    {{ getKnopkaName('panika') }}
+                    <Card :v-loge="true" :card="message.card" :zoomed="clicknutaCarta" />
+                </span>
                 <span v-if="message.smetKrinj">
                     <span v-if="message.actors?.[0]" :style="{
                         'color':
@@ -53,10 +55,11 @@
 import { computed, nextTick, ref, watch } from 'vue';
 import { getCardName, getCardLog, getActionLog, getKnopkaName } from '../log';
 import { useNechtoService, useNechtoState } from '../service';
+import Card from './Card.vue';
 
 const bodyLog = ref<HTMLElement>()
 var isClossed = ref(true);
-
+const clicknutaCarta: number | null = null 
 const trogal = ref(false)
 const neTrogal = computed(() => !trogal.value)
 let lastScroll = 0
@@ -82,6 +85,9 @@ watch(state, async () => {
 })
 const clickLog = () => {
     isClossed.value = !isClossed.value
+}
+const clickCard = () => {
+
 }
 
 const colors = [

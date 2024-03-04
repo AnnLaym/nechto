@@ -133,6 +133,19 @@ export function createNechtoService() {
         soblaznResolve: (index: number) => socket.emit("resolve-soblazn", index)
     };
 }
+const zoomed = ref(false)
+let cardTimer: number
+
+window.addEventListener('mouseup', () => {
+    zoomed.value = false;
+    window.clearTimeout(cardTimer)
+})
+
+export function mouseDaun() {
+    cardTimer = window.setTimeout(() => {
+        zoomed.value = true
+    }, 250)
+}
 
 let nechtoState = ref(window.gameState || { inited: false });
 let stateMaintained = false;

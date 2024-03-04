@@ -1,12 +1,12 @@
 <template>
         <div class="section">
             <div class="speki" v-if="state.teamsLocked && state.spectators.length">
-                <span class="gap-1 margin-1"> {{ getKnopkaName('spektators') }} </span>
-                <span v-for="chel in state.spectators"> {{ state.playerNames[chel] }} </span>
+                <span class="spek"> {{ getKnopkaName('spektators') }} </span>
+                <span v-for="chel in state.spectators" class="spek"> {{ state.playerNames[chel] }} </span>
             </div>
             <div class="speki" v-if="!state.teamsLocked" @click="service.spectatorsJoin()">
-                <span class="gap-1 margin-1"> {{ getKnopkaName('spektators') }} </span>
-                <span v-for="chel in state.spectators"> {{ state.playerNames[chel] }} </span>
+                <span class="spek"> {{ getKnopkaName('spektators') }} </span>
+                <span v-for="chel in state.spectators" class="spek"> {{ state.playerNames[chel] }} </span>
             </div>
         </div>
 </template>
@@ -21,10 +21,13 @@ const state = useNechtoState()
 </script>
 
 <style scoped>
+.spek {
+    padding-left: 3px;
+}
 .speki {
     display: inline-block;
     height: 28px;
-    padding: 4px 6px;
+    padding: 4px 6px !important;
     cursor: pointer;
     justify-content: center;
     background: #363739;

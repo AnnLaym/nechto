@@ -1,9 +1,12 @@
 <template>
-    <div class="card" :class="{ selectedCard: selected && !zoomed, zoomed, stolCard }" @mousedown="mouseDaun()">
+    <div class="card" :class="{ selectedCard: selected && !zoomed, zoomed, stolCard, vLoge }" @mousedown="mouseDaun()">
+        <div class="logImya" v-if="vLoge">
+            <div class="nameLog">{{ getCardName(card.id).toUpperCase() }}</div>
+        </div>
         <div class="kartinka" :style="{
             'background-image': `url(/nechto/cards/${card.type !== 'panika'
                 ? card.id !== 'zarajenie' ? card.id : `z${card.zNumber!}` : 'panika'}.png)`
-        }">
+        }" v-else>
             <div class="name">{{ getCardName(card.id).toUpperCase() }}</div>
             <div v-if="selected || zoomed" class="podkladka">
                 <div class="opisanie" v-if="selected || zoomed">{{ getCardDescription(card.id) }}</div>
@@ -37,6 +40,7 @@ defineProps<{
     card: Card
     selected?: boolean
     stolCard?: boolean
+    vLoge?: boolean
 }>()
 </script>
  
@@ -70,18 +74,25 @@ defineProps<{
     src: url("/src/shrifty/HeadingPro-Light.ttf")
 }
 
+@font-face {
+    font-family: "matToni1234";
+    /* Название вашего кастомного шрифта */
+    src: url("/src/shrifty/Montserrat-Regular.ttf");
+}
+
 .kartinka {
     /* background-image: url(cards/karantin.png) !important; */
     background-size: cover;
     flex: 1;
     user-select: none;
 }
+
 .zoomed {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(3);
-    z-index: 2;
+    z-index: 100;
 }
 
 
@@ -109,6 +120,19 @@ defineProps<{
     bottom: 20px;
 }
 
+.nameLog {
+    font-family: matToni1234 !important;
+    font-size: 16px;
+    padding: 0px;
+    margin: 0px;
+}
+
+.card.vLoge {
+    height: 19px;
+    padding: 0px;
+    width: auto;
+    margin: 0px;
+}
 .name {
     font-size: 25px;
     background: repeating-linear-gradient(to top, #8fbd82, white, white);
@@ -138,14 +162,13 @@ defineProps<{
     pointer-events: auto;
 }
 
-.stolCard:not(.zoomed){
+.stolCard:not(.zoomed) {
     width: 88px;
     height: 115px;
     padding: 3px;
     margin: 4px;
 }
 
-.stolCard .name{
+.stolCard .name {
     font-size: 18px;
-}
-</style>
+}</style>
