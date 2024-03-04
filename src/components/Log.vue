@@ -38,12 +38,12 @@
                     {{ getKnopkaName('panika') }}
                     <Card :v-loge="true" :card="message.card" :zoomed="clicknutaCarta" />
                 </span>
-                <span v-if="message.smetKrinj">
+                <span v-if="message.smetKrinj" class="messageCard">
                     <span v-if="message.actors?.[0]" :style="{
                         'color':
                             colors[state.playerSlots.indexOf(message.actors?.[0])]
                     }" class="actor">
-                        {{ state.playerNames[message.actors[0]] }}</span>
+                        {{ state.playerNames[message.actors?.[0]] }}</span>
                     {{ getActionLog('smertKring') }}
                 </span>
             </div>

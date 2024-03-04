@@ -253,12 +253,12 @@ function dropCardClick() {
 
 .top {
     margin-top: 10px;
-    height: 24%;
+    height: 20%;
 }
 
 .deka {
-    width: 50px;
-    height: 70px;
+    width: 35px;
+    height: 50px;
     background-size: cover;
     font-size: 30px;
     display: flex;

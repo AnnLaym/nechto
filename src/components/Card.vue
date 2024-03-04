@@ -1,12 +1,12 @@
 <template>
     <div class="card" :class="{ selectedCard: selected && !zoomed, zoomed, stolCard, vLoge }" @mousedown="mouseDaun()">
-        <div class="logImya" v-if="vLoge">
+        <span class="logImya" v-if="vLoge && !zoomed">
             <div class="nameLog">{{ getCardName(card.id).toUpperCase() }}</div>
-        </div>
+        </span>
         <div class="kartinka" :style="{
             'background-image': `url(/nechto/cards/${card.type !== 'panika'
                 ? card.id !== 'zarajenie' ? card.id : `z${card.zNumber!}` : 'panika'}.png)`
-        }" v-else>
+        }" v-else-if="!vLoge || (vLoge && zoomed)">
             <div class="name">{{ getCardName(card.id).toUpperCase() }}</div>
             <div v-if="selected || zoomed" class="podkladka">
                 <div class="opisanie" v-if="selected || zoomed">{{ getCardDescription(card.id) }}</div>
@@ -86,7 +86,7 @@ defineProps<{
     flex: 1;
     user-select: none;
 }
-
+ 
 .zoomed {
     position: fixed;
     top: 50%;
@@ -127,11 +127,14 @@ defineProps<{
     margin: 0px;
 }
 
-.card.vLoge {
-    height: 19px;
+.card.vLoge:not(.zoomed) {
     padding: 0px;
     width: auto;
     margin: 0px;
+    height: auto;
+}
+.card.vLoge.zoomed {
+    z-index: 100;
 }
 .name {
     font-size: 25px;

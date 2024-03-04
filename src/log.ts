@@ -64,7 +64,7 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: "Analysis",
         },
         desciption: {
-            ru: "Посмотрите карты на руке сосденего игрока",
+            ru: "Посмотрите карты на руке соседнего игрока",
             ua: "Подивіться карти в руці сусіднього гравця",
             en: "Look at the cards in the next player's hand",
         }
@@ -821,6 +821,20 @@ const podskazkaData: Record<string, ActionMetaData> = {
             ru: "отказывается или соглашается на смерть",
             ua: "відмовляється чи погоджується на смерть",
             en: "refuses or agrees to die",
+        },
+    },
+    'для начала': {
+        log: {
+            ru: "Для начала игры необходимо минимум 4 игрока",
+            ua: "Для початку гри потрібно мінімум 4 гравця",
+            en: "Waiting 4 players for start",
+        },
+    },
+    'хост начать': {
+        log: {
+            ru: "Хост может начать игру",
+            ua: "Хост може почати гру",
+            en: "Host can start the game",
         },
     }
 }

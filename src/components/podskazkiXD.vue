@@ -99,6 +99,14 @@
         </div>
         {{ getPodskazkaName('панику') }}
       </div>
+      <div class="popitka" v-if="state.phase == 0 && Object.values(state.playerSlots)
+        .map(it => it !== null).filter(it => it === true).length < 4">
+        {{ getPodskazkaName('для начала') }}
+      </div>
+      <div class="popitka" v-if="state.phase == 0 && Object.values(state.playerSlots)
+        .map(it => it !== null).filter(it => it === true).length > 3">
+        {{ getPodskazkaName('хост начать') }}
+      </div>
     </div>
   </div>
 </template>
