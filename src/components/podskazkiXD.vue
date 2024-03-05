@@ -94,10 +94,13 @@
         </div>
         {{ getPodskazkaName('сгореть') }}
       </div>
-      <div class="popitka" v-if="state.phase == 2 && (state.currentPanika)">
+      <div class="popitka" v-if="state.phase == 2 && state.currentPanika && state.currentPanika.id !== 'tsepnayaReaksia'">
         <div class="current hueer"> {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
         </div>
         {{ getPodskazkaName('панику') }}
+      </div>
+      <div class="popitka" v-if="state.phase == 2 && state.currentPanika && state.currentPanika.id == 'tsepnayaReaksia'">
+        {{ getPodskazkaName('панику-цепи') }}
       </div>
       <div class="popitka" v-if="state.phase == 0 && Object.values(state.playerSlots)
         .map(it => it !== null).filter(it => it === true).length < 4">

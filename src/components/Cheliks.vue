@@ -4,13 +4,13 @@
         <div v-if="state.currentPlayer === slot" class="backgroundJ" />
         <div class="roditel">
             <div v-if="state.playerSlots[slot] === null &&
-                (state.phase === 0 || !state.teamsLocked)" @click="service.playersJoin(slot)" class="mini-roditel">
+        (state.phase === 0 || !state.teamsLocked)" @click="service.playersJoin(slot)" class="mini-roditel">
                 {{ getKnopkaName('sest') }}</div>
             <div v-else>
                 <div class="suka" @click="slotClick(slot)">
                     <span v-if="service.selectedTarget.value === slot && state.phase === 2">на него:</span>
                     {{ reactCommonRoom().getPlayerAvatarURL(state.playerSlots[slot]!) || state.playerSlots[slot] ?
-                        state.playerNames[state.playerSlots[slot]!] : "" }}
+        state.playerNames[state.playerSlots[slot]!] : "" }}
                     <div class="host-cntrols">
                         <span @click="service.removePLayer(state.playerSlots[slot])">
                             <i className="material-icons host-button " title="Remove"> delete_forever</i>
@@ -32,8 +32,11 @@
                         {{ state.karantin[slot] }}
                     </div>
                 </div>
-                <div class="newTimer" v-if="state.waitMoveSlot === slot && state.timed"
-                    :style="{ 'background-position': `${timerWidth}px 124px` }">
+                <div class="newTimer" v-if="state.timed ?
+        (state.currentPanika !== null && state.currentPanika.id === 'tsepnayaReaksia' && !state.readyPlayers[slot])
+        || (state.currentPanika == null && state.waitMoveSlot === slot)
+        || (state.currentPanika !== null && state.currentPanika.id !== 'tsepnayaReaksia' && state.waitMoveSlot === slot)
+        : false" :style="{ 'background-position': `${timerWidth}px 124px` }">
                     <i className="material-icons">
                         person
                     </i>

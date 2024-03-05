@@ -836,5 +836,12 @@ const podskazkaData: Record<string, ActionMetaData> = {
             ua: "Хост може почати гру",
             en: "Host can start the game",
         },
+    },
+    'панику-цепи': {
+        log: {
+            ru: "Каждый должен выбрать карту для передачи следующему игроку",
+            ua: "Кожен повинен вибрати карту для передачі наступному гравцю",
+            en: "Everyone must choose a card to pass to the next player",
+        },
     }
 }

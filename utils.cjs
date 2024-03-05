@@ -163,7 +163,7 @@ const createDeck = (players, startWithNechto) => {
         }
     });
     let newDeck = realdeck.filter(card => card.id !== "zarajenie" && card.type == "card" && card.id !== "nechto");
-    let panikDeck = realdeck.filter(card => card.type == "panika" && card.id !== 'tsepnayaReaksia');
+    let panikDeck = realdeck.filter(card => card.type == "panika");
     //let panikDeck = realdeck.filter(card => card.type == "p")
     let zarajenieDeck = realdeck.filter(card => card.id == "zarajenie");
     let nechtoDeck = realdeck.filter(card => card.id == "nechto");
@@ -185,7 +185,7 @@ const createDeck = (players, startWithNechto) => {
         // shuffleDeki.unshift({ ...cardsDeck.zarajenie, id: 'zarajenie' })
         // shuffleDeki.unshift({ ...cardsDeck.zarajenie, id: 'zarajenie' })
         // shuffleDeki.unshift({ ...cardsDeck.zarajenie, id: 'zarajenie' })
-        // shuffleDeki.unshift({ ...cardsDeck.ognemet, id: 'ognemet' })
+        shuffleDeki.unshift({ ...cardsDeck.tsepnayaReaksia, id: 'tsepnayaReaksia' })
         res = [...shufledFirsDeck, ...shuffleDeki]
     };
     return res

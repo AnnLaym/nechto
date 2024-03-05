@@ -45,8 +45,8 @@ function init(wsServer, path) {
                 showAllHand: null,
                 allReadyNedeed: false,
                 gameLog: [],
-                smallTimer: 20,
-                bigTimer: 50,
+                smallTimer: 30,
+                bigTimer: 30,
                 isObmenReady: false,
                 voting: false,
                 currentCardPanik: null,
@@ -189,11 +189,12 @@ function init(wsServer, path) {
                         room.normPlayer = null
                         room.normThirdPlayers = null
                         room.teamsLocked = true;
+                        state.tsepnayaReaksiaObmenKard = {}
                         room.currentPanika = null;
                         room.currentPlayer = shuffleArray(room.playerSlots.map((it, index) => index).filter(inx => room.playerSlots[inx]))[0]
                         state.zarajennie = [];
                         room.isNextCardPanika = null
-                        //room.currentPlayer = 4
+                        room.currentPlayer = 4
                         room.invertDirection = (Math.floor(Math.random() * 10) + 1) % 2 !== 0
                         room.gameLog = [];
                         state.showCard = {};
@@ -238,10 +239,11 @@ function init(wsServer, path) {
                     state.uporstvoCards = {};
                     state.showCard = {};
                     room.target = null
-                    state.tsepnayaReaksiaObmenKard = {}
                     room.currentCardPanik = null
                     room.waitMoveSlot = room.currentPlayer
                     room.gameLog.push({ action: 'start-round', actors: [room.playerSlots[room.currentPlayer]] })
+                    state.tsepnayaReaksiaObmenKard = {}
+                    room.readyPlayers = {}
                     findNormPlayers()
                     startTimer();
                     update();
@@ -389,8 +391,8 @@ function init(wsServer, path) {
                             updateState()
                         }
                         if (room.currentPanika !== null) {
-                            if (room.currentPanika === 'tsepnayaReaksia') {
-                                Object.Keys(state.playerHand).forEach(slot => {
+                            if (room.currentPanika.id === 'tsepnayaReaksia') {
+                                Object.keys(state.playerHand).forEach(slot => {
                                     if (!room.readyPlayers[slot]) {
                                         state.tsepnayaReaksiaObmenKard[slot] = getRandomObmenCard(slot)
                                     }
@@ -457,10 +459,11 @@ function init(wsServer, path) {
                     }
                 },
                 startTsepnayaReaksia = () => {
-                    Object.Keys(state.tsepnayaReaksiaObmenKard).forEach(slot => {
+                    room.readyPlayers = {}
+                    Object.keys(state.playerHand).forEach(slot => {
                         let karta1 = state.playerHand[slot][state.tsepnayaReaksiaObmenKard[slot]];
-                        const nextPlayer = getNextPlayer(room.invertDirection)
-                        if (karta1.type === 'zarajenie' && slot !== state.nechto && !state.zarajennie.has(nextPlayer)) {
+                        const nextPlayer = getNextPlayer(room.invertDirection, slot)
+                        if (karta1.type === 'zarajenie' && slot == state.nechto && !state.zarajennie.has(nextPlayer)) {
                             state.zarajennie.push(nextPlayer)
                         }
                         state.playerHand[nextPlayer].push(karta1)
@@ -616,7 +619,7 @@ function init(wsServer, path) {
                         card = state.deck.shift();
                         reshuffle()
                     }
-                    if (card.id === 'necho')
+                    if (card.id === 'nechto')
                         state.nechto = player
                     return card
                 },
@@ -647,6 +650,8 @@ function init(wsServer, path) {
                     room.normSosed = null
                     room.normPlayer = null
                     room.normThirdPlayers = null
+                    state.tsepnayaReaksiaObmenKard = {}
+                    room.readyPlayers = {}
                     updatePlayerState()
                     update()
                     startRound();
@@ -845,6 +850,7 @@ function init(wsServer, path) {
                         if (isAllPlayersReady()) {
                             startTsepnayaReaksia()
                         }
+                        update()
                     }
                 },
                 svidanieVSlepuyuPanika = (slot, index) => {
@@ -1198,7 +1204,8 @@ function init(wsServer, path) {
                             //TODO: НЕ ДЕЛАЮ ХУЙНЮ
                         } else if (card.id === 'tsepnayaReaksia') {
                             //FIXME: bug ist hier
-                            tsepnayaReaksiaPanika()
+                            if (index >= 0 && index < 4 && !state.tsepnayaReaksiaObmenKard[slot])
+                                tsepnayaReaksiaPanika(slot, index)
                         } else if (card.id === 'triChetyre') {
                             triChetyrePanika()
                         } else if (card.id === 'uups') {
