@@ -368,19 +368,6 @@ body {
     justify-content: center;
 }
 
-.card {
-    background: white;
-    margin: 10px;
-    padding: 7px;
-    width: 110px;
-    height: 145px;
-    text-align: center;
-    cursor: pointer;
-    position: relative;
-    -webkit-user-drag: none;
-    box-shadow: 0 0 4px 1px #969696;
-}
-
 .dark-theme .card {
     background: #363739;
     box-shadow: 0 0 4px 1px #050505;

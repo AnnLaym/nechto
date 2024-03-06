@@ -4,9 +4,9 @@
             <div class="nameLog">{{ getCardName(card.id).toUpperCase() }}</div>
         </span>
         <div class="kartinka" :style="{
-            'background-image': `url(/nechto/cards/${card.type !== 'panika'
-                ? card.id !== 'zarajenie' ? card.id : `z${card.zNumber!}` : 'panika'}.png)`
-        }" v-else-if="!vLoge || (vLoge && zoomed)">
+        'background-image': `url(/nechto/cards/${card.type !== 'panika'
+            ? card.id !== 'zarajenie' ? card.id : `z${card.zNumber!}` : 'panika'}.png)`
+    }" v-else-if="!vLoge || (vLoge && zoomed)">
             <div class="name">{{ getCardName(card.id).toUpperCase() }}</div>
             <div v-if="selected || zoomed" class="podkladka">
                 <div class="opisanie" v-if="selected || zoomed">{{ getCardDescription(card.id) }}</div>
@@ -43,7 +43,7 @@ defineProps<{
     vLoge?: boolean
 }>()
 </script>
- 
+
 <style scoped>
 @font-face {
     font-family: "matToni";
@@ -86,7 +86,7 @@ defineProps<{
     flex: 1;
     user-select: none;
 }
- 
+
 .zoomed {
     position: fixed;
     top: 50%;
@@ -133,9 +133,11 @@ defineProps<{
     margin: 0px;
     height: auto;
 }
+
 .card.vLoge.zoomed {
     z-index: 100;
 }
+
 .name {
     font-size: 25px;
     background: repeating-linear-gradient(to top, #8fbd82, white, white);
@@ -157,12 +159,13 @@ defineProps<{
 
 .card {
     background-color: black;
-    padding: 5px;
+    padding: 4px;
     display: flex;
     justify-content: center;
     height: 180px;
     width: 130px;
     pointer-events: auto;
+    margin: 5px;
 }
 
 .stolCard:not(.zoomed) {
@@ -174,4 +177,16 @@ defineProps<{
 
 .stolCard .name {
     font-size: 18px;
-}</style>
+}
+
+@media screen and (max-width: 600px) {
+    .card {
+        height: 129px;
+        width: 84px;
+        margin: 1px;
+    }
+    .name {
+        font-size: 17px;
+    }
+}
+</style>

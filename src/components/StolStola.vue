@@ -79,8 +79,8 @@
                 </div>
             </div>
             <div v-if="state.currentPanika && state.userSlot === state.currentPlayer
-            && state.currentPanika.id !== 'zabivchivost' && state.currentPanika.id !== 'davaiDrujit' && state.currentPanika.id !== 'tsepnayaReaksia'" class="knopka"
-                @click=" 
+            && state.currentPanika.id !== 'zabivchivost' && state.currentPanika.id !== 'davaiDrujit' && state.currentPanika.id !== 'tsepnayaReaksia'"
+                class="knopka" @click=" 
             service.panicAction(service.selectedCard.value, service.selectedTarget.value!)">
                 {{ getKnopkaName(`goPanika`) }}
             </div>
@@ -90,7 +90,8 @@
             </div>
             <div v-if="state.currentPanika && !state.readyPlayers[state.userSlot!]
             && state.currentPanika.id == 'tsepnayaReaksia'
-            " class="knopka" @click="service.panicAction(service.selectedCard.value, service.selectedTarget.value!)"> {{ getKnopkaName(`goPanika`) }}
+            " class="knopka" @click="service.panicAction(service.selectedCard.value, service.selectedTarget.value!)">
+                {{ getKnopkaName(`goPanika`) }}
             </div>
             <div v-if="state.currentPanika && state.userSlot === state.currentPlayer
             && state.currentPanika.id == 'davaiDrujit' && state.isObmenReady === false" class="knopka"
@@ -268,5 +269,68 @@ function dropCardClick() {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+@media screen and (max-width: 1200px) {
+    .stol {
+        width: 660px;
+        height: 350px;
+        flex: unset;
+    }
+}
+
+@media screen and (max-width: 1115px) {
+    .stol {
+        width: 455px;
+        height: 225px;
+        flex: unset;
+    }
+}
+
+@media screen and (max-width: 640px) {
+    .stol {
+        width: 370px;
+        height: 201px;
+        flex: unset;
+    }
+
+    .knopka {
+        width: 70px;
+        height: 20px;
+    }
+
+    .deki {
+        padding: 9px;
+    }
+
+    .deka {
+        width: 27px;
+        height: 35px;
+        font-size: 24px;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .stol {
+        width: 390px;
+        height: 220px;
+        flex: unset;
+    }
+}
+
+@media screen and (max-width: 431px) {
+    .stol {
+        width: 273px;
+        height: 140px;
+        flex: unset;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .stol {
+        width: 180px;
+        height: 90px;
+        flex: unset;
+    }
 }
 </style>

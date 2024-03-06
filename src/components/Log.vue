@@ -1,52 +1,50 @@
 <template>
     <div class="button" @click="clickLog()">X</div>
-    <div v-if="isClossed">
-        <div class="bodyLog" ref="bodyLog" @scroll="handleScroll()">
-            <div class="startScroll" v-if="trogal" @click="startScroll()">
-                лог на паузе
-            </div>
-            <div v-for="message in state.gameLog" class="message">
-                <span v-if="message.action && !message.panika" class="messageCard">
-                    <span v-if="message.actors?.[0]" :style="{
-                        'color':
-                            colors[state.playerSlots.indexOf(message.actors?.[0])]
-                    }" class="actor">
-                        {{ state.playerNames[message.actors[0]] }}
-                    </span>
-                    <span> {{ getActionLog(message.action) }}</span>
-                    <span v-if="!message.nechto && message.action === 'start-game'"> {{ getActionLog("bez-nechto") }}</span>
-                    <span v-if="message.actors?.[1]" :style="{
-                        'color':
-                            colors[state.playerSlots.indexOf(message.actors?.[1])]
-                    }" class="actor">
-                        {{ state.playerNames[message.actors[1]] }} </span>
+    <div class="bodyLog" ref="bodyLog" @scroll="handleScroll()" v-if="isClossed">
+        <div class="startScroll" v-if="trogal" @click="startScroll()">
+            лог на паузе
+        </div>
+        <div v-for="message in state.gameLog" class="message">
+            <span v-if="message.action && !message.panika" class="messageCard">
+                <span v-if="message.actors?.[0]" :style="{
+        'color':
+            colors[state.playerSlots.indexOf(message.actors?.[0])]
+    }" class="actor">
+                    {{ state.playerNames[message.actors[0]] }}
                 </span>
-                <span v-else-if="message.card && !message.panika" class="messageCard">
-                    <span v-if="message.actors?.[0]" :style="{
-                        'color':
-                            colors[state.playerSlots.indexOf(message.actors?.[0])]
-                    }" class="actor"> {{ state.playerNames[message.actors[0]] }} </span>
-                    <span> {{ getCardLog(message.card.id) }} </span>
-                    <span v-if="message.actors?.[1]" :style="{
-                        'color':
-                            colors[state.playerSlots.indexOf(message.actors?.[1])]
-                    }" class="actor">
-                        {{ state.playerNames[message.actors[1]] }}</span>
-                    <span v-if="message.card" class="podskazkaLoga"> ({{ getCardName(message.card.id) }})</span>
-                </span>
-                <span v-if="message.card && message.panika" class="messageCard" :style="{ color: '#C71585' }">
-                    {{ getKnopkaName('panika') }}
-                    <Card :v-loge="true" :card="message.card" :zoomed="clicknutaCarta" />
-                </span>
-                <span v-if="message.smetKrinj" class="messageCard">
-                    <span v-if="message.actors?.[0]" :style="{
-                        'color':
-                            colors[state.playerSlots.indexOf(message.actors?.[0])]
-                    }" class="actor">
-                        {{ state.playerNames[message.actors?.[0]] }}</span>
-                    {{ getActionLog('smertKring') }}
-                </span>
-            </div>
+                <span> {{ getActionLog(message.action) }}</span>
+                <span v-if="!message.nechto && message.action === 'start-game'"> {{ getActionLog("bez-nechto") }}</span>
+                <span v-if="message.actors?.[1]" :style="{
+        'color':
+            colors[state.playerSlots.indexOf(message.actors?.[1])]
+    }" class="actor">
+                    {{ state.playerNames[message.actors[1]] }} </span>
+            </span>
+            <span v-else-if="message.card && !message.panika" class="messageCard">
+                <span v-if="message.actors?.[0]" :style="{
+        'color':
+            colors[state.playerSlots.indexOf(message.actors?.[0])]
+    }" class="actor"> {{ state.playerNames[message.actors[0]] }} </span>
+                <span> {{ getCardLog(message.card.id) }} </span>
+                <span v-if="message.actors?.[1]" :style="{
+        'color':
+            colors[state.playerSlots.indexOf(message.actors?.[1])]
+    }" class="actor">
+                    {{ state.playerNames[message.actors[1]] }}</span>
+                <span v-if="message.card" class="podskazkaLoga"> ({{ getCardName(message.card.id) }})</span>
+            </span>
+            <span v-if="message.card && message.panika" class="messageCard" :style="{ color: '#C71585' }">
+                {{ getKnopkaName('panika') }}
+                <Card :v-loge="true" :card="message.card" :zoomed="clicknutaCarta" />
+            </span>
+            <span v-if="message.smetKrinj" class="messageCard">
+                <span v-if="message.actors?.[0]" :style="{
+        'color':
+            colors[state.playerSlots.indexOf(message.actors?.[0])]
+    }" class="actor">
+                    {{ state.playerNames[message.actors?.[0]] }}</span>
+                {{ getActionLog('smertKring') }}
+            </span>
         </div>
     </div>
 </template>
@@ -59,7 +57,7 @@ import Card from './Card.vue';
 
 const bodyLog = ref<HTMLElement>()
 var isClossed = ref(true);
-const clicknutaCarta: number | null = null 
+const clicknutaCarta: number | null = null
 const trogal = ref(false)
 const neTrogal = computed(() => !trogal.value)
 let lastScroll = 0
@@ -125,12 +123,10 @@ const colors = [
     height: 300px;
     width: 320px;
     bottom: 0px;
-    background-color: black;
-    opacity: 70%;
     padding: 10px;
     margin-bottom: 50px;
     font-family: matToni1234;
-    z-index: 1;
+    z-index: 100;
     overflow-y: auto;
     -webkit-mask-image: none;
 }
@@ -169,7 +165,7 @@ const colors = [
     position: fixed;
     bottom: 50px;
     right: 100px;
-    background-color: aliceblue;
+    background-color: rgb(46, 27, 51);
     z-index: 1;
 }
 
@@ -177,5 +173,16 @@ const colors = [
     font-size: 16px;
     text-shadow: 0 0 3px black;
     color: #cecac1;
+}
+
+@media screen and (max-width: 1200px) {
+    .bodyLog {
+        position: relative;
+        height: auto;
+        width: auto;
+        bottom: 0px;
+        height: auto;
+    }
+
 }
 </style>

@@ -136,4 +136,15 @@ const activeSlots = computed(() => {
 .stol {
     margin: 20px 40px;
 }
+
+@media screen and (max-width: 1200px){
+    .stol {
+        margin: 10px 20px;
+    }
+}
+@media screen and (max-width: 600px) {
+    .stol {
+        margin: 4px 8px;
+    }
+}
 </style>

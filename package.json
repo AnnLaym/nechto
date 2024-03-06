@@ -11,12 +11,12 @@
     "postinstall": "npm run build"
   },
   "dependencies": {
-    "vue": "^3.2.47",
+    "vue": "3.4.21",
     "randomcolor": "0.5.3",
     "nedb-promises": "^6.0.3",
-    "primeflex": "^3.3.0",
+    "primeflex": "3.3.1",
     "primeicons": "^6.0.1",
-    "primevue": "^3.27.0",
+    "primevue": "3.49.1",
     "sass": "^1.61.0",
     "@vite/vitejs-client": "^2.2.10",
     "@vitejs/plugin-vue": "^4.1.0",

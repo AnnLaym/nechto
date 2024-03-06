@@ -1,5 +1,4 @@
 <template>
-    <div>
         <div class="ruka">
             <div v-for="(card, index) in state.cards" @click="cardClick(index)"
                 v-if="!state.umerSlots?.includes(state.userSlot!)">
@@ -9,7 +8,6 @@
                     service.selectedZabivchivost3.value == index" />
             </div>
         </div>
-    </div>
 </template>
 
 <script lang="ts" setup>
@@ -61,14 +59,25 @@ function cardClick(index: number) {
     align-items: center;
     justify-content: center;
     height: 100px;
-    gap: 4px;
+    gap: 0px;
     position: fixed;
     bottom: 0;
     width: 100%;
     left: 0px;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
     z-index: 1;
     pointer-events: none;
+}
 
+@media screen and (max-width: 600px) {
+    .ruka {
+    }
+}
+@media screen and (max-height: 1019px) {
+    .ruka {
+        position: relative;
+        margin-bottom: 0%;
+        height: auto;
+    }
 }
 </style>

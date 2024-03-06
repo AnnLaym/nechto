@@ -1,12 +1,12 @@
 <template>
-    <div v-if="state.inited">
+    <div v-if="state.inited" class="bigMain">
         <PhoneXd />
         <Plashka />
-        <Pravii_corner />
-        <DashMenu :bottom-buttons="bottomButtons" :number-settings="numberSettings" />
         <SPECTATORSI />
         <Stol />
         <Hand />
+        <Pravii_corner />
+        <DashMenu :bottom-buttons="bottomButtons" :number-settings="numberSettings" />
     </div>
 </template>
 
@@ -79,13 +79,13 @@ const bottomButtons = computed<DashMenuButton[]>(() => {
 });
 
 const numberSettings: DashMenuNumberSetting[] = [
-    {
-        icon: 'wb_sunny',
-        originalValue: 1,
-        onChange: (v) => {
-            console.log('wb_sunny', v);
-        },
-    },
+    // {
+    //     icon: 'wb_sunny',
+    //     originalValue: 1,
+    //     onChange: (v) => {
+    //         console.log('wb_sunny', v);
+    //     },
+    // },
 ];
 
 </script>
@@ -100,5 +100,18 @@ body.dark-theme {
     background: url(../components/img/phone.png);
     background-size: contain;
     background-repeat: repeat;
+}
+
+.bigMain {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+}
+
+@media screen and (max-width: 900px) {
+    .bigMain {
+        height: 100vh;
+        overflow: hidden;
+    }
 }
 </style>

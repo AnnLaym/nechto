@@ -182,7 +182,7 @@ defineProps<{
     width: 124px;
     height: 124px;
     border-radius: 27px;
-    z-index: 1;
+    z-index: 0;
     position: relative;
     overflow: hidden;
     padding-left: 0px;
@@ -289,6 +289,83 @@ defineProps<{
     width: 90%;
     position: absolute;
     height: 90%;
+}
+
+@media screen and (max-width: 1200) {
+    .kartinka {
+        height: 114px;
+        width: 114px;
+    }
+
+    .chel {
+        width: 130px;
+        height: 148px;
+        max-width: 100px;
+    }
+
+    .suka {
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width: 1115px) {
+    .kartinka {
+        width: 90px;
+        height: 90px;
+    }
+
+    .chel {
+        width: 100px;
+        height: 122px;
+    }
+
+    .suka {
+        font-size: 16px;
+        max-width: 100px
+    }
+
+    .roditel {
+        margin-top: 4px;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .kartinka {
+        height: 56px;
+        width: 60px;
+        border-radius: 17px;
+        margin-top: 2px;
+    }
+
+    .chel {
+        width: 66px;
+        height: 69px;
+        border-radius: 19px;
+    }
+
+    .suka {
+        font-size: 10px;
+        max-width: 66px;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .kartinka {
+        height: 45px;
+        width: 45px;
+        border-radius: 10px;
+    }
+
+    .chel {
+        width: 50px;
+        height: 69px;
+        border-radius: 15px;
+    }
+
+    .suka {
+        font-size: 10px;
+        max-width:50px
+    }
 }
 
 .slot-color-1 {

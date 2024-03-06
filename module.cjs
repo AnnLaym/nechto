@@ -467,6 +467,9 @@ function init(wsServer, path) {
                             state.zarajennie.push(nextPlayer)
                         }
                         state.playerHand[nextPlayer].push(karta1)
+                        if (karta1.id === 'zarajenie' && !state.zarajennie.includes(nextPlayer)) {
+                            state.zarajennie.push(nextPlayer)
+                        } // бля случайно написала то что уже написано, но не увренно что из этого работает. ОСтавлю оба
                         state.playerHand[slot].splice(state.tsepnayaReaksiaObmenKard[slot], 1)
                         isDead(nextPlayer)
                     });
