@@ -364,7 +364,7 @@ defineProps<{
 
     .suka {
         font-size: 10px;
-        max-width:50px
+        max-width: 50px
     }
 }
 

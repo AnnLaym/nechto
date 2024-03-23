@@ -7802,6 +7802,8 @@
   
   .flex {
     display: flex !important;
+    position: relative;
+    z-index: 5;
   }
   
   .inline-flex {

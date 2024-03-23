@@ -6,7 +6,7 @@
         <div class="kartinka" :style="{
         'background-image': `url(/nechto/cards/${card.type !== 'panika'
             ? card.id !== 'zarajenie' ? card.id : `z${card.zNumber!}` : 'panika'}.png)`
-    }" v-else-if="!vLoge || (vLoge && zoomed)">
+    }" v-if="!vLoge || (vLoge && zoomed)">
             <div class="name">{{ getCardName(card.id).toUpperCase() }}</div>
             <div v-if="selected || zoomed" class="podkladka">
                 <div class="opisanie" v-if="selected || zoomed">{{ getCardDescription(card.id) }}</div>
@@ -154,6 +154,7 @@ defineProps<{
     font-size: 14px;
     font-family: matToni2;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    max-width: 100%;
 
 }
 
@@ -166,6 +167,7 @@ defineProps<{
     width: 130px;
     pointer-events: auto;
     margin: 5px;
+    z-index: 2;
 }
 
 .stolCard:not(.zoomed) {
@@ -185,6 +187,7 @@ defineProps<{
         width: 84px;
         margin: 1px;
     }
+
     .name {
         font-size: 17px;
     }

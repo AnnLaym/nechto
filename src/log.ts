@@ -639,6 +639,13 @@ const knopki = {
             en: "play",
         },
     },
+    zarajen: {
+        title: {
+            ru: "Вас заразили. Вы теперь играете за команду Нечто. Нажмите, что бы скрыть подсказку",
+            ua: "Вас заразили. Ви тепер граєте за команду Щось. Натисніть, щоб приховати підказку",
+            en: "You have been infected. You now play for the Thing team. Click to hide the hint",
+        },
+    },
     polojitKartuNaObmen: {
         title: {
             ru: "положить карту на обмен",

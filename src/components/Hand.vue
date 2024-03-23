@@ -1,4 +1,5 @@
 <template>
+    <ZarajenieNadpis />
         <div class="ruka">
             <div v-for="(card, index) in state.cards" @click="cardClick(index)"
                 v-if="!state.umerSlots?.includes(state.userSlot!)">
@@ -15,6 +16,7 @@ import { watch } from 'vue';
 import { getCardName, getKnopkaName } from '../log';
 import { useNechtoService, useNechtoState } from '../service';
 import Card from './Card.vue';
+import ZarajenieNadpis from './ZarajenieNadpis.vue';
 
 const service = useNechtoService()
 const state = useNechtoState()

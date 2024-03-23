@@ -27,7 +27,7 @@ const ugolockSize = ref(ugolock.value?.clientWidth)
     display: flex;
     justify-content: space-between;
     flex-basis: 100px !important;
-    background-image: url(http://localhost:5173/nechto/src/components/img/2.png);
+    background-image: url(./img/2.png);
     background-repeat: repeat-x !important;
     max-width: 100% !important;
 }
@@ -71,6 +71,7 @@ const ugolockSize = ref(ugolock.value?.clientWidth)
     left: 0;
     right: 0;
     bottom: 0;
+    z-index: 0;
 }
 
 .root>* {

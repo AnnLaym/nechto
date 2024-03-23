@@ -1,0 +1,19 @@
+arrowParens: always
+printWidth: 150
+quoteProps: consistent
+singleQuote: true
+endOfLine: lf
+tabWidth: 4
+trailingComma: all
+bracketSpacing: true
+useTabs: true
+vueIndentScriptAndStyle: true
+bracketSameLine: true
+htmlWhitespaceSensitivity: ignore
+overrides:
+  - files: '*.{yaml,yml}'
+    parser: yaml-eslint-parser
+    options:
+      tabWidth: 2
+semi: false
+
