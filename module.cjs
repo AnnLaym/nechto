@@ -232,7 +232,6 @@ function init(wsServer, path) {
                                 }
                             }
                         }
-                        state.zarajennie.push(4)
                         startRound();
                     }
                 },
