@@ -75,7 +75,7 @@ function cardClick(index: number) {
     .ruka {
     }
 }
-@media screen and (max-height: 1019px) {
+@media screen and (max-width: 900px) {
     .ruka {
         position: relative;
         margin-bottom: 0%;
