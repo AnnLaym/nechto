@@ -1,18 +1,21 @@
 <template>
-    <div class="chel" :class="`slot-color-${state.startSlotColor.value ? state.startSlotColor : slot}`"
-        @click="slotClick(slot)">
+    <div class="chel" :class="{
+        [`slot-color-${state.startSlotColor.value ? state.startSlotColor : slot}`]: true,
+        'selected': service.selectedTarget.value === slot && state.phase === 2
+    }" @click="slotClick(slot)">
         <div v-if="state.currentPlayer === slot" class="backgroundJ" />
         <div class="roditel">
             <div v-if="state.playerSlots[slot] === null &&
-        (state.phase === 0 || !state.teamsLocked)" @click="service.playersJoin(slot)" class="mini-roditel">
+        (state.phase === 0 || !state.teamsLocked)
+        " @click="service.playersJoin(slot)" class="mini-roditel">
                 {{ getKnopkaName('sest') }}</div>
             <div v-else>
                 <div class="suka" @click="slotClick(slot)">
-                    <span v-if="service.selectedTarget.value === slot && state.phase === 2">на него:</span>
                     {{ reactCommonRoom().getPlayerAvatarURL(state.playerSlots[slot]!) || state.playerSlots[slot] ?
         state.playerNames[state.playerSlots[slot]!] : "" }}
                     <div class="host-cntrols">
-                        <span @click="service.removePLayer(state.playerSlots[slot])">
+                        <span @click="service.removePLayer(state.playerSlots[slot])"
+                            v-if="state.hostId === state.userId">
                             <i className="material-icons host-button " title="Remove"> delete_forever</i>
                         </span>
                         <span @click="handleClickChangeName()" v-if="state.userSlot == slot">
@@ -21,9 +24,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div v-if="state.umerSlots!.includes(slot) && state.phase !== 0" class="umer">
-            УМЕР
         </div>
         <div class="mamaMami">
             <div class="kartinka">
@@ -36,14 +36,17 @@
         (state.currentPanika !== null && state.currentPanika.id === 'tsepnayaReaksia' && !state.readyPlayers[slot])
         || (state.currentPanika == null && state.waitMoveSlot === slot)
         || (state.currentPanika !== null && state.currentPanika.id !== 'tsepnayaReaksia' && state.waitMoveSlot === slot)
-        : false" :style="{ 'background-position': `${timerWidth}px 124px` }">
+        : false
+        " :style="{ 'background-position': `${timerWidth}px 124px` }">
                     <i className="material-icons">
                         person
                     </i>
                 </div>
-                <div v-if="slot === state.userSlot" class="setAvatarButton"> </div>
+                <div v-if="slot === state.userSlot" class="setAvatarButton">
+                </div>
                 <img :src="reactCommonRoom().getPlayerAvatarURL(state.playerSlots[slot]!) || ' /nechto/cards/avatar1.png'"
                     class="otdelnii">
+                <img :src="false || '/nechto/img/umer.png'" class="umer" v-if="state.umerSlots?.includes(slot)">
             </div>
         </div>
         <div v-if="state.dveriClient[slot]?.next" :class="position" class="dver svoya" />
@@ -201,6 +204,7 @@ defineProps<{
 
 .mini-roditel {
     text-decoration: underline;
+    cursor: pointer;
 }
 
 .timerbar {
@@ -253,7 +257,10 @@ defineProps<{
 }
 
 .umer {
-    z-index: 4;
+    height: 100%;
+    object-fit: fill;
+    width: 100%;
+    position: absolute;
 }
 
 .roditel:hover .host-cntrols {

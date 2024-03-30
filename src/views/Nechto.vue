@@ -4,12 +4,11 @@
         <Plashka />
         <SPECTATORSI />
         <Stol />
-        <Hand />
         <Pravii_corner />
+        <Hand />
         <DashMenu :bottom-buttons="bottomButtons" :number-settings="numberSettings" />
     </div>
 </template>
-
 <script setup lang="ts">
 import DashMenu from '../components/common/DashMenu.vue';
 import { DashMenuButton, DashMenuNumberSetting } from '../components/common/dash-menu';

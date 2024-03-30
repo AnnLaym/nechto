@@ -1,5 +1,5 @@
 <template>
-  <div class="text" @click="skritZarajenie()" v-if="state.zarajennie?.includes(state.userSlot!) && !skrito">
+  <div class="texto" @click="skritZarajenie()" v-if="state.zarajennie?.includes(state.userSlot!) && !skrito">
     {{ getKnopkaName('zarajen') }}
   </div>
 </template>
@@ -17,4 +17,14 @@ function skritZarajenie() {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.texto {
+  font-size: 20px;
+  background-color: black;
+  color: white;
+  z-index: 10000;
+  position: absolute;
+  top: 50%;
+}
+</style>
+

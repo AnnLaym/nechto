@@ -46,7 +46,7 @@ function init(wsServer, path) {
                 allReadyNedeed: false,
                 gameLog: [],
                 smallTimer: 15,
-                bigTimer: 50,
+                bigTimer: 60,
                 isObmenReady: false,
                 voting: false,
                 currentCardPanik: null,
@@ -196,7 +196,7 @@ function init(wsServer, path) {
                         room.isNextCardPanika = null
                         // room.currentPlayer = 4
                         room.invertDirection = (Math.floor(Math.random() * 10) + 1) % 2 !== 0
-                        // room.invertDirection = false
+                        //room.invertDirection = false
                         room.gameLog = [];
                         state.showCard = {};
                         room.isObmenReady = false;
@@ -232,6 +232,7 @@ function init(wsServer, path) {
                                 }
                             }
                         }
+                        state.zarajennie.push(4)
                         startRound();
                     }
                 },
@@ -334,7 +335,7 @@ function init(wsServer, path) {
                             update()
                             updatePlayerState()
                         }
-                        else if (room.isObmenReady) {
+                        else if (room.isObmenReady && state.action !== 'strah') {
                             startTimer()
                             update()
                             updatePlayerState()
@@ -540,7 +541,7 @@ function init(wsServer, path) {
                 isGameEnd = (k) => {
                     if (state.zarajennie.length + 1 === Object.keys(state.playerHand).length) {
                         endGame()
-                    } else if (k == state.nechto)
+                    } else if (k !== undefined && k == state.nechto)
                         endGame('nechtoZdohlo')
                 },
                 reshuffle = () => {
@@ -672,6 +673,7 @@ function init(wsServer, path) {
                     room.normThirdPlayers = null
                     state.tsepnayaReaksiaObmenKard = {}
                     room.readyPlayers = {}
+                    isGameEnd()
                     updatePlayerState()
                     update()
                     startRound();
@@ -747,7 +749,8 @@ function init(wsServer, path) {
                     const card = state.playerHand[slot][index];
                     const zarajenieRuki = state.playerHand[slot].filter(card => card.id === 'zarajenie').length
                     if (card.id == 'nechto') return false
-                    else if (!state.zarajennie.includes(slot) || zarajenieRuki >= 2) return true
+                    else if (!state.zarajennie.includes(slot) || (zarajenieRuki >= 2 || card.id !== 'zarajenie'))
+                        return true
                 },
                 chekDropCardCard = (slot, index) => {
                     const card = index;
@@ -765,7 +768,7 @@ function init(wsServer, path) {
                         return false
                     else if (getHandCard(slot, index).id == 'zarajenie' && slot == state.nechto) {
                         return true
-                    } else if (getHandCard(slot, index).id == 'zarajenie' && getNextPlayer(room.invertDirection) === state.nechto
+                    } else if (getHandCard(slot, index).id == 'zarajenie' && room.target === state.nechto
                         && state.zarajennie.includes(slot) && zarC > 1) {
                         return true
                     } else if (getHandCard(slot, index).id !== 'zarajenie')
@@ -1202,7 +1205,7 @@ function init(wsServer, path) {
                                 razDvaPanika(target)
                             }
                         } else if (card.id === 'ubiraysyaProch') {
-                            if (target !== null) {
+                            if (target !== null && state.playerHand[target]) {
                                 room.target = target
                                 ubiraysyaProchPanika(target, slot)
                             }

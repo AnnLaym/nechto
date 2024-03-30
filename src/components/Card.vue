@@ -114,9 +114,7 @@ defineProps<{
 
 .podkladka {
     background-color: black;
-    border-radius: 25px;
     opacity: 0.7;
-    position: absolute;
     bottom: 20px;
 }
 
@@ -191,5 +189,12 @@ defineProps<{
     .name {
         font-size: 17px;
     }
+}
+
+.kartinka {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    padding-bottom: 5px;
 }
 </style>

@@ -1,5 +1,6 @@
 import { Ref, ref, watch } from 'vue';
 import { processWrappedRequest, ReactAppWindow, requestWrap, SocketWrappedRequestResult } from './react-common';
+import { proccessSound } from './sound';
 
 const GAME_CHANNEL = '/bg/nechto';
 
@@ -20,7 +21,7 @@ export interface Card {
 	target?: 'sosed' | 'any' | 'selfOrSosed';
 }
 
-interface NechtoState {
+export interface NechtoState {
 	inited: boolean;
 	hostId: string;
 	playerSlots: (User | null)[];
@@ -187,6 +188,7 @@ function maintainState() {
 					nechtoService.selectedTarget.value = null;
 				}
 			}
+			proccessSound(prevState, state);
 		});
 	}
 }

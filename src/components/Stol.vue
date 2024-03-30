@@ -2,7 +2,7 @@
     <div class="topovie" :class="{ 'full': activeSlots.top.length > 3 }">
         <Cheliks :slot="slot" v-for="slot in activeSlots.top" position="top" />
     </div>
-    <div class="flex">
+    <div class="stolStolaStola">
         <div v-for="slot in activeSlots.left" class="seredina">
             <Cheliks :slot="slot" position="left" />
         </div>
@@ -114,6 +114,10 @@ const activeSlots = computed(() => {
     justify-content: space-around;
     width: 70%;
     margin: auto;
+}
+
+.stolStolaStola{
+    display: flex;
 }
 
 .full {
