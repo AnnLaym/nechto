@@ -46,7 +46,7 @@
                 </div>
                 <img :src="reactCommonRoom().getPlayerAvatarURL(state.playerSlots[slot]!) || ' /nechto/cards/avatar1.png'"
                     class="otdelnii">
-                <img :src="false || '/nechto/img/umer.png'" class="umer" v-if="state.umerSlots?.includes(slot)">
+                <img :src="false || '/nechto/img/umer.png'" class="umer" v-if="state.umerSlots?.includes(slot) && state.phase !== 0">
             </div>
         </div>
         <div v-if="state.dveriClient[slot]?.next" :class="position" class="dver svoya" />
@@ -373,6 +373,10 @@ defineProps<{
         font-size: 10px;
         max-width: 50px
     }
+}
+
+.chel.selected {
+    box-shadow: 1px 1px 8px 3px red;
 }
 
 .slot-color-1 {
