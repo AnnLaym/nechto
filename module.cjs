@@ -533,6 +533,9 @@ function init(wsServer, path) {
                             room.dveri.push(prevPLayer)
                         }
                     }
+                    if (state.zarajennie.includes(target)) {
+                        state.zarajennie.splice(state.zarajennie.indexOf(target), 1)
+                    }
                     if (target === state.nechto) {
                         isGameEnd(target)
                     }
@@ -758,20 +761,22 @@ function init(wsServer, path) {
                     else if (!state.zarajennie.includes(slot) || zarajenieRuki >= 2) return true
                 },
                 obmenChekZarajeniy = (slot, index) => {
-                    let zarC = 0
-                    state.playerHand[slot].forEach(el => {
-                        if (el.id === 'zarajenie')
-                            zarC++
-                    });
-                    if (getHandCard(slot, index).id == 'nechto')
-                        return false
-                    else if (getHandCard(slot, index).id == 'zarajenie' && slot == state.nechto) {
-                        return true
-                    } else if (getHandCard(slot, index).id == 'zarajenie' && room.target === state.nechto
-                        && state.zarajennie.includes(slot) && zarC > 1) {
-                        return true
-                    } else if (getHandCard(slot, index).id !== 'zarajenie')
-                        return true
+                    if (index === 1 | index === 2 | index === 3 | index === 4 | index === 0) {
+                        let zarC = 0
+                        state.playerHand[slot].forEach(el => {
+                            if (el.id === 'zarajenie')
+                                zarC++
+                        });
+                        if (getHandCard(slot, index).id == 'nechto')
+                            return false
+                        else if (getHandCard(slot, index).id == 'zarajenie' && slot == state.nechto) {
+                            return true
+                        } else if (getHandCard(slot, index).id == 'zarajenie' && room.target === state.nechto
+                            && state.zarajennie.includes(slot) && zarC > 1) {
+                            return true
+                        } else if (getHandCard(slot, index).id !== 'zarajenie')
+                            return true
+                    }
                 },
                 getHandCard = (slot, index) => {
                     return state.playerHand[slot][index];
@@ -1228,7 +1233,7 @@ function init(wsServer, path) {
                         } else if (card.id === 'uups') {
                             uuupsPamnika()
                         } else if (card.id === 'svidanieVSlepuyu') {
-                            if (index !== null)
+                            if (index !== null && getHandCard(slot, index).id !== 'zarajenie')
                                 svidanieVSlepuyuPanika(slot, index)
                         } else if (card.id === 'zabivchivost') {
                             zabivchivostPanika(slot, index1, index2, index3)
