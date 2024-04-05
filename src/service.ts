@@ -44,7 +44,7 @@ export interface NechtoState {
 	dveri: Slot[];
 	showAllHand?: Card[];
 	allReadyNedeed: boolean;
-	gameLog: { action?: string; card?: Card; actors?: User[]; panika?: boolean; smetKrinj?: string; nechto?: boolean }[];
+	gameLog: {smertDolbaeba?: string, action?: string; card?: Card; actors?: User[]; panika?: boolean; smetKrinj?: string; nechto?: boolean }[];
 	result?: string;
 	smallTimer: number;
 	bigTimer: number;
@@ -148,6 +148,11 @@ export function mouseDaun() {
 let nechtoState = ref(window.gameState || { inited: false });
 let stateMaintained = false;
 let nechtoService: ReturnType<typeof createNechtoService> | undefined;
+export let offZvuk = ref(false);
+
+export function offnutZvuk() {
+	offZvuk.value = !offZvuk.value;
+}
 
 function maintainState() {
 	if (!stateMaintained) {
@@ -177,6 +182,12 @@ function maintainState() {
 					nechtoService.selectedCard.value = null;
 				}
 				if (prevState.phase === 2 && state.phase === 3) {
+					nechtoService.selectedCard.value = null;
+				}
+				if(!prevState.showAllHand && state.showAllHand) {
+					nechtoService.selectedCard.value = null;
+				}
+				if(!prevState.chekCards && state.chekCards) {
 					nechtoService.selectedCard.value = null;
 				}
 			}

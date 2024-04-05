@@ -31,16 +31,19 @@
         </span>
         <span>
           <span>
-            {{ getPodskazkaName('Выбирает карту для обмена') }} </span>
-          <span> {{ getPodskazkaName('c') }} </span>
+            &nbsp;
+            {{ getPodskazkaName('Выбирает карту для обмена') }}
+            &nbsp;
+          </span>
+          <span>
+            {{ getPodskazkaName('с') }}
+          </span>
         </span>
         <span class="current hueer" v-if="state.isObmenReady">
           {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
         </span>
         <span class="obmen" v-if="!state.isObmenReady">
           <span> {{ state.playerNames[state.playerSlots[state.target!]!] }} </span>
-        </span>
-        <span>
         </span>
       </span>
       <span class="popitka" v-if="(state.phase == 2 && state.action == 'soblazn' && !state.isObmenReady)
@@ -133,6 +136,10 @@ const state = useNechtoState()
   src: url("/src/shrifty/Montserrat-Regular.ttf");
 }
 
+.hueer {
+  white-space: nowrap;
+}
+
 .main {
   right: 0px;
   height: 100px;
@@ -147,7 +154,6 @@ const state = useNechtoState()
 }
 
 .obmen {
-  display: flex;
   gap: 2px;
   flex-flow: column;
 }

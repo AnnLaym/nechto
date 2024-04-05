@@ -615,6 +615,13 @@ const actionsData: Record<string, ActionMetaData> = {
             en: 'умирает от кринжа'
         }
     },
+    'smertDolbaeb': {
+        log: {
+            ru: 'умирает потому что долбаеб',
+            ua: 'вмер тому що долбаеб',
+            en: 'died because of dolbaeb'
+        }
+    },
     'bez-nechto': {
         log: {
             ru: 'с Нечто в колоде',
@@ -637,6 +644,20 @@ const knopki = {
             ru: "сыграть",
             ua: "зіграти",
             en: "play",
+        },
+    },
+    'tiPobedil': {
+        title: {
+            ru: "Ты победил!",
+            ua: "Ти переміг!",
+            en: "You won!",
+        },
+    },
+    'tiProigral': {
+        title: {
+            ru: "Ты проиграл!",
+            ua: "Ти програв!",
+            en: "You lost!",
         },
     },
     zarajen: {

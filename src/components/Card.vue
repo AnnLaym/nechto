@@ -92,7 +92,7 @@ defineProps<{
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(3);
-    z-index: 100;
+    z-index: 230;
 }
 
 
@@ -173,6 +173,7 @@ defineProps<{
     height: 115px;
     padding: 3px;
     margin: 4px;
+    z-index: 101;
 }
 
 .stolCard .name {

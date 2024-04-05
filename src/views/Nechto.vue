@@ -13,7 +13,7 @@
 import DashMenu from '../components/common/DashMenu.vue';
 import { DashMenuButton, DashMenuNumberSetting } from '../components/common/dash-menu';
 import { computed, ref } from 'vue';
-import { useNechtoService, useNechtoState, toggleLanguage1 } from '../service';
+import { useNechtoService, useNechtoState, toggleLanguage1, offZvuk, offnutZvuk } from '../service';
 import Stol from '../components/Stol.vue';
 import Hand from '../components/Hand.vue';
 import Log from '../components/Log.vue';
@@ -69,9 +69,9 @@ const bottomButtons = computed<DashMenuButton[]>(() => {
             }
         },
         {
-            icon: 'lock',
+            icon: offZvuk ? 'volume_up' : 'volume_off',
             onClick: () => {
-                service.toggleLock();
+                offnutZvuk();
             }
         }
     ];

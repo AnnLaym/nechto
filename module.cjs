@@ -194,7 +194,7 @@ function init(wsServer, path) {
                         room.currentPlayer = shuffleArray(room.playerSlots.map((it, index) => index).filter(inx => room.playerSlots[inx]))[0]
                         state.zarajennie = [];
                         room.isNextCardPanika = null
-                        // room.currentPlayer = 4
+                        room.currentPlayer = 4
                         room.invertDirection = (Math.floor(Math.random() * 10) + 1) % 2 !== 0
                         //room.invertDirection = false
                         room.gameLog = [];
@@ -279,7 +279,7 @@ function init(wsServer, path) {
                             room.time = room.smallTimer * 1000;
                         else if (room.phase === 2) {
                             //TODO: all piniks nije
-                            if ([].includes(room.currentPanika) || room.action === 'strah' || room.action === 'viski') {
+                            if (['uups'].includes(room.currentPanika) || room.action === 'strah' || room.action === 'viski') {
                                 room.time = room.smallTimer * 1000;
                             } else
                                 room.time = room.bigTimer * 1000;
@@ -646,16 +646,33 @@ function init(wsServer, path) {
                         state.nechto = player
                     return card
                 },
+                proverkaNaDolbaeba = () => {
+                    proccesProverkaNaDolbaeba(room.currentPlayer)
+                    if (room.target) {
+                        proccesProverkaNaDolbaeba(room.target)
+                    }
+                },
+                proccesProverkaNaDolbaeba = (slot) => { //TRUE kogda dolbaeb
+                    return state.playerHand[slot].filter(card => card.id === 'zarajenie').length >= 4 ? slot : false
+                },
                 startObmen = () => {
-                    room.phase = 3; // фаза обмена
-                    room.target = getNextPlayer(room.invertDirection)
-                    room.action = null
-                    room.currentPanika = null
-                    if (chekSosedaNaPidora(room.target) && !room.karantin[room.currentPlayer] && !room.karantin[room.target]) {
+                    if (!proverkaNaDolbaeba()) {
+                        room.phase = 3; // фаза обмена
+                        room.target = getNextPlayer(room.invertDirection)
+                        room.action = null
+                        room.currentPanika = null
+                        if (chekSosedaNaPidora(room.target) && !room.karantin[room.currentPlayer] && !room.karantin[room.target]) {
+                            startTimer()
+                            update()
+                            updateState()
+                        } else endRound()
+                    } else {
+                        playerKill(proccesProverkaNaDolbaeba())
+                        room.gameLog.push({ smertDolbaeba: 'smert-dolbaeb', actors: [room.playerSlots[proccesProverkaNaDolbaeba()]] })
                         startTimer()
                         update()
                         updateState()
-                    } else endRound()
+                    }
                 },
                 endRound = () => {
                     const players = Object.keys(state.playerHand)
@@ -820,8 +837,7 @@ function init(wsServer, path) {
                 },
                 uuupsPamnika = () => {
                     room.showAllHand = state.playerHand[room.currentPlayer]
-                    room.currentPanika = null
-                    startObmen()
+                    startTimer()
                 },
                 iViEtoNazivaeteVecherinkoyPanika = () => {
                     room.dveri = [];
@@ -917,6 +933,14 @@ function init(wsServer, path) {
                             startObmen()
                         }
                     }
+                },
+                calcZar = (slot) => {
+                    let zarC = 0
+                    state.playerHand[slot].forEach(el => {
+                        if (el.id === 'zarajenie')
+                            zarC++
+                    });
+                    return zarC
                 }
             this.userJoin = userJoin;
             this.userLeft = userLeft;
@@ -1233,7 +1257,7 @@ function init(wsServer, path) {
                         } else if (card.id === 'uups') {
                             uuupsPamnika()
                         } else if (card.id === 'svidanieVSlepuyu') {
-                            if (index !== null && getHandCard(slot, index).id !== 'zarajenie')
+                            if (index !== null && (getHandCard(slot, index).id !== 'zarajenie' || calcZar(slot)))
                                 svidanieVSlepuyuPanika(slot, index)
                         } else if (card.id === 'zabivchivost') {
                             zabivchivostPanika(slot, index1, index2, index3)

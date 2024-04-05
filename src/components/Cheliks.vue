@@ -46,7 +46,8 @@
                 </div>
                 <img :src="reactCommonRoom().getPlayerAvatarURL(state.playerSlots[slot]!) || ' /nechto/cards/avatar1.png'"
                     class="otdelnii">
-                <img :src="false || '/nechto/img/umer.png'" class="umer" v-if="state.umerSlots?.includes(slot) && state.phase !== 0">
+                <img :src="false || '/nechto/img/umer.png'" class="umer"
+                    v-if="state.umerSlots?.includes(slot) && state.phase !== 0">
             </div>
         </div>
         <div v-if="state.dveriClient[slot]?.next" :class="position" class="dver svoya" />
@@ -59,6 +60,7 @@ import { Slot, useNechtoService, useNechtoState, reactCommonRoom } from '../serv
 import { getCardName, getKnopkaName } from '../log';
 import { computed } from '@vue/reactivity';
 import { reactive, ref, watch } from 'vue';
+import { proccessSoundClient } from '../sound';
 
 const service = useNechtoService()
 const state = useNechtoState()
@@ -84,9 +86,11 @@ watch(state, () => {
 function setAvatarClick() {
 
 }
+
 function slotClick(index: number) {
     if (state.value.phase === 2)
         service.selectedTarget.value = service.selectedTarget.value !== index ? index : null
+    proccessSoundClient()
 }
 
 function handleClickChangeName() {
@@ -245,6 +249,7 @@ defineProps<{
     text-overflow: ellipsis;
     max-width: 100px;
     display: inline-block;
+    white-space: nowrap;
 }
 
 .host-cntrols {

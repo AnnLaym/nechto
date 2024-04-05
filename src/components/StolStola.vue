@@ -20,9 +20,19 @@
 		<div class="knopkee">
 			<div v-if="state.winner == 'ebanati'" class="win">
 				{{ getKnopkaName('win-ebanati') }}
+				<div v-if="state.nechto === state.userSlot || state.zarajennie?.includes(state.userSlot!)" class="win">
+					{{ getKnopkaName('tiProigral') }} </div>
+				<div v-else class="win">
+					{{ getKnopkaName('tiPobedil') }} </div>
 			</div>
 			<div v-if="state.winner == 'nechto and team'" class="win">
 				{{ getKnopkaName('win') }}
+				<div v-if="state.nechto === state.userSlot || state.zarajennie?.includes(state.userSlot!)" class="win">
+					{{ getKnopkaName('tiPobedil') }}
+				</div>
+				<div v-else class="win">
+					{{ getKnopkaName('tiProigral') }}
+				</div>
 			</div>
 			<div v-if="service.selectedCard.value! >= 0 && state.action !== 'soblazn'" class="knopkee hui">
 				<div v-if="service.selectedCard.value !== null &&
@@ -289,7 +299,7 @@ function dropCardClick() {
 	height: 20%;
 }
 
-.cursorsk{
+.cursorsk {
 	cursor: pointer;
 }
 

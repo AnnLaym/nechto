@@ -45,6 +45,14 @@
                     {{ state.playerNames[message.actors?.[0]] }}</span>
                 {{ getActionLog('smertKring') }}
             </span>
+            <span v-if="message.smertDolbaeba" class="messageCard">
+                <span v-if="message.actors?.[0]" :style="{
+        'color':
+            colors[state.playerSlots.indexOf(message.actors?.[0])]
+    }" class="actor">
+                    {{ state.playerNames[message.actors?.[0]] }}</span>
+                {{ getActionLog('smertDolbaeb') }}
+            </span>
         </div>
     </div>
 </template>
@@ -159,6 +167,7 @@ const colors = [
     max-height: 19px;
     display: inline-block;
     align-items: flex-start;
+    white-space: nowrap;
 }
 
 .startScroll {

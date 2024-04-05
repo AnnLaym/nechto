@@ -1,18 +1,20 @@
 <template>
-    <div class="topovie" :class="{ 'full': activeSlots.top.length > 3 }">
-        <Cheliks :slot="slot" v-for="slot in activeSlots.top" position="top" />
-    </div>
-    <div class="stolStolaStola">
-        <div v-for="slot in activeSlots.left" class="seredina">
-            <Cheliks :slot="slot" position="left" />
+    <div class="slotMain">
+        <div class="topovie" :class="{ 'full': activeSlots.top.length > 3 }">
+            <Cheliks :slot="slot" v-for="slot in activeSlots.top" position="top" />
         </div>
-        <StolStola class="stol" />
-        <div v-for="slot in activeSlots.right" class="seredina">
-            <Cheliks :slot="slot" position="right" />
+        <div class="stolStolaStola">
+            <div v-for="slot in activeSlots.left" class="seredina">
+                <Cheliks :slot="slot" position="left" />
+            </div>
+            <StolStola class="stol" />
+            <div v-for="slot in activeSlots.right" class="seredina">
+                <Cheliks :slot="slot" position="right" />
+            </div>
         </div>
-    </div>
-    <div class="nijnie" :class="{ 'full': activeSlots.bottom.length > 3 }">
-        <Cheliks :slot="slot" v-for="slot in activeSlots.bottom" position="bottom" />
+        <div class="nijnie" :class="{ 'full': activeSlots.bottom.length > 3 }">
+            <Cheliks :slot="slot" v-for="slot in activeSlots.bottom" position="bottom" />
+        </div>
     </div>
 </template>
 
@@ -116,7 +118,7 @@ const activeSlots = computed(() => {
     margin: auto;
 }
 
-.stolStolaStola{
+.stolStolaStola {
     display: flex;
 }
 
@@ -141,11 +143,16 @@ const activeSlots = computed(() => {
     margin: 20px 40px;
 }
 
-@media screen and (max-width: 1200px){
+.slotMain{
+    z-index: 100;
+}
+
+@media screen and (max-width: 1200px) {
     .stol {
         margin: 10px 20px;
     }
 }
+
 @media screen and (max-width: 600px) {
     .stol {
         margin: 4px 8px;

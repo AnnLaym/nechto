@@ -1,14 +1,14 @@
 <template>
     <ZarajenieNadpis />
-        <div class="ruka">
-            <div v-for="(card, index) in state.cards" @click="cardClick(index)"
-                v-if="!state.umerSlots?.includes(state.userSlot!)">
-                <Card :card="card" :selected="service.selectedCard.value == index ||
-                    service.selectedZabivchivost1.value == index ||
-                    service.selectedZabivchivost2.value == index ||
-                    service.selectedZabivchivost3.value == index" />
-            </div>
+    <div class="ruka">
+        <div v-for="(card, index) in state.cards" @click="cardClick(index)"
+            v-if="!state.umerSlots?.includes(state.userSlot!)">
+            <Card :card="card" :selected="service.selectedCard.value == index ||
+                service.selectedZabivchivost1.value == index ||
+                service.selectedZabivchivost2.value == index ||
+                service.selectedZabivchivost3.value == index" />
         </div>
+    </div>
 </template>
 
 <script lang="ts" setup>
@@ -17,6 +17,7 @@ import { getCardName, getKnopkaName } from '../log';
 import { useNechtoService, useNechtoState } from '../service';
 import Card from './Card.vue';
 import ZarajenieNadpis from './ZarajenieNadpis.vue';
+import { proccessSoundClient } from '../sound';
 
 const service = useNechtoService()
 const state = useNechtoState()
@@ -51,6 +52,7 @@ function cardClick(index: number) {
             }
         }
     }
+    proccessSoundClient()
 }
 </script>
 
@@ -67,14 +69,14 @@ function cardClick(index: number) {
     width: 100%;
     left: 0px;
     margin-bottom: 40px;
-    z-index: 1;
+    z-index: 120;
     pointer-events: none;
 }
 
 @media screen and (max-width: 600px) {
-    .ruka {
-    }
+    .ruka {}
 }
+
 @media screen and (max-width: 900px) {
     .ruka {
         position: relative;
