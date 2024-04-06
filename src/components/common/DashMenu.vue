@@ -1,5 +1,5 @@
 <template>
-    <div class="fixed bottom-0 right-0 wrap bg-panel p-2 surface-card flex flex-column gap-2">
+    <div class="fixed bottom-0 right-0 wrap bg-panel p-2 surface-card flex flex-column gap-2 hui">
         <div class="hidden-part">
             <div v-for="(setting, index) of props.numberSettings" :key="index" class="kmopka">
                 <InputNumber v-model="settingsValues[index]" :pt="{ input: () => ({ class:[ 'hui'] }) }"
@@ -54,5 +54,9 @@ function settingChange(index: number) {
 
 .hidden-part {
     flex-flow: row;
+}
+
+.hui {
+    z-index: 200;
 }
 </style>

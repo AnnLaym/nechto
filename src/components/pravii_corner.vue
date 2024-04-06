@@ -22,7 +22,7 @@ import PodskazkiXD from './podskazkiXD.vue';
   width: 300px;
   bottom: 0px;
   background-color: rgba(0, 0, 0, 0.498);
-  ;
+  z-index: 200;
 }
 
 @media screen and (max-width: 1000px) and (min-height: 700px) {
