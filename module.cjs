@@ -194,7 +194,7 @@ function init(wsServer, path) {
                         room.currentPlayer = shuffleArray(room.playerSlots.map((it, index) => index).filter(inx => room.playerSlots[inx]))[0]
                         state.zarajennie = [];
                         room.isNextCardPanika = null
-                        room.currentPlayer = 4
+                        //room.currentPlayer = 4
                         room.invertDirection = (Math.floor(Math.random() * 10) + 1) % 2 !== 0
                         //room.invertDirection = false
                         room.gameLog = [];
@@ -324,7 +324,7 @@ function init(wsServer, path) {
                     }
                     if (room.phase === 1) {
                         grabCard(true)
-                    } else if (room.phase === 3) {
+                    } else if (room.phase === 3 && room.action !== 'strah') {
                         if (!room.isObmenReady) {
                             state.obmenCardIndex = getRandomObmenCard(room.currentPlayer)
                             room.isObmenReady = true
@@ -334,7 +334,7 @@ function init(wsServer, path) {
                             update()
                             updatePlayerState()
                         }
-                        else if (room.isObmenReady && state.action !== 'strah') {
+                        else if (room.isObmenReady) {
                             startTimer()
                             update()
                             updatePlayerState()
@@ -343,9 +343,10 @@ function init(wsServer, path) {
                     } else if (room.action) {
                         const logi = (chel, act) => (room.gameLog.push({ actors: [room.playerSlots[chel]], action: act, bot: true }))
                         if (room.action === 'ognemet') {
-                            playerKill(room.target, "smert-ognemet")
+                            playerKill(room.target)
                             logi(room.currentPlayer)
                             room.waitMoveSlot = room.currentPlayer
+                            room.target = null
                             update()
                             updatePlayerState()
                             startObmen()
@@ -517,7 +518,6 @@ function init(wsServer, path) {
                     if (zarCount >= 3 && state.nechto !== player) {
                         room.gameLog.push({ smetKrinj: 'smetKrinj', actors: [room.playerSlots[player]] })
                         playerKill(player)
-                        room.currentPlayer = getNextPlayer(room.currentPlayer)
                     }
                 },
                 playerKill = (target) => {
@@ -538,6 +538,9 @@ function init(wsServer, path) {
                     }
                     if (target === state.nechto) {
                         isGameEnd(target)
+                    }
+                    if (room.currentPlayer === target) {
+                        room.currentPlayer = getNextPlayer(room.currentPlayer)
                     }
                 },
                 isGameEnd = (k) => {
@@ -653,7 +656,7 @@ function init(wsServer, path) {
                     }
                 },
                 proccesProverkaNaDolbaeba = (slot) => { //TRUE kogda dolbaeb
-                    return state.playerHand[slot].filter(card => card.id === 'zarajenie').length >= 4 ? slot : false
+                    return Object.values(state.playerHand[slot]).filter(card => card.id === 'zarajenie').length >= 4 ? slot : false
                 },
                 startObmen = () => {
                     if (!proverkaNaDolbaeba()) {
@@ -768,7 +771,7 @@ function init(wsServer, path) {
                     const card = state.playerHand[slot][index];
                     const zarajenieRuki = state.playerHand[slot].filter(card => card.id === 'zarajenie').length
                     if (card.id == 'nechto') return false
-                    else if (!state.zarajennie.includes(slot) || (zarajenieRuki >= 2 || card.id !== 'zarajenie'))
+                    else if (state.nechto === slot || !state.zarajennie.includes(slot) || (zarajenieRuki >= 2 || card.id !== 'zarajenie'))
                         return true
                 },
                 chekDropCardCard = (slot, index) => {
@@ -854,6 +857,8 @@ function init(wsServer, path) {
                         smenaMest(slot, target);
                         room.currentPanika = null
                         room.target = null
+                        startTimer()
+                        update()
                         startObmen()
                     }
                 },

@@ -46,7 +46,9 @@
                 </div>
                 <img :src="reactCommonRoom().getPlayerAvatarURL(state.playerSlots[slot]!) || ' /nechto/cards/avatar1.png'"
                     class="otdelnii">
-                <img :src="false || '/nechto/img/umer.png'" class="umer"
+                <img :src="false || '/nechto/img/nechto2.png'" class="umer" v-if="state.nechto === slot">
+                <img :src="false || '/nechto/img/zarazilsya.png'" class="umer" v-if="state.zarajennie?.includes(slot)">
+                <img :src="false || '/nechto/img/umer(2).png'" class="umer"
                     v-if="state.umerSlots?.includes(slot) && state.phase !== 0">
             </div>
         </div>
