@@ -192,12 +192,12 @@ function init(wsServer, path) {
                         room.teamsLocked = true;
                         state.tsepnayaReaksiaObmenKard = {}
                         room.currentPanika = null;
+                        shufflePlayerSLots()
                         room.currentPlayer = shuffleArray(room.playerSlots.map((it, index) => index).filter(inx => room.playerSlots[inx]))[0]
                         state.zarajennie = [];
                         room.isNextCardPanika = null
                         // room.currentPlayer = 4
                         room.invertDirection = (Math.floor(Math.random() * 10) + 1) % 2 !== 0
-                        shufflePlayerSLots()
                         // room.invertDirection = false
                         room.gameLog = [];
                         state.showCard = {};
