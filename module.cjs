@@ -414,13 +414,13 @@ function init(wsServer, path) {
                                 tolkoMejduNamiPanika(sosedi[shuffleArray([0, 1])], room.currentPlayer)
                             } else if (room.currentPanika.id === 'razDva') {
                                 if (!room.target) {
-                                    if (room.karantin[getThirdPlayers(3)[0]]) {
+                                    if (!room.karantin[getThirdPlayers(3)[0]]) {
                                         room.target = getThirdPlayers(3)[0]
                                         smenaMest(room.target, room.currentPlayer)
                                         room.currentPanika = null
                                         startObmen()
                                     }
-                                    else if (room.karantin[getThirdPlayers(3)[1]]) {
+                                    else if (!room.karantin[getThirdPlayers(3)[1]]) {
                                         room.target = getThirdPlayers(3)[1]
                                         smenaMest(room.target, room.currentPlayer)
                                         room.currentPanika = null
@@ -623,7 +623,6 @@ function init(wsServer, path) {
                         room.gameLog.push({ card: card, panika: true, bot: bot })
                         room.currentCardPanik = card
                         state.discard.push(card)
-                        state.deck.splice(0, 1)
                     } else {
                         state.playerHand[room.currentPlayer].push(card)
                         if (card.id === 'nechto') {
@@ -705,7 +704,9 @@ function init(wsServer, path) {
                     isGameEnd()
                     updatePlayerState()
                     update()
-                    startRound();
+                    if (room.phase !== 0) {
+                        startRound();
+                    }
                 },
                 endGame = (nechtoZdohlo) => {
                     room.currentPlayer = null;
@@ -924,26 +925,32 @@ function init(wsServer, path) {
                     }
                     endRound()
                 },
-                zabivchivostPanika = (slot, index1, index2, index3) => {
+                zabivchivostPanika = (slot, index1, index2, index3, isCringe) => {
                     if (new Set([index1, index2, index3]).size == 3) {
-                        if (slot === room.currentPlayer &&
-                            [index1, index2, index3].every((ind) => ind >= 0 && ind <= 4
-                                && state.playerHand[slot][ind].id !== "nechto")) {
-                            state.discard.push(state.playerHand[slot][index1])
-                            state.discard.push(state.playerHand[slot][index2])
-                            state.discard.push(state.playerHand[slot][index3])
-                            const sortedIndices = [index1, index2, index3].sort((a, b) => a - b);
-                            state.playerHand[slot].splice(sortedIndices[2], 1)
-                            state.playerHand[slot].splice(sortedIndices[1], 1)
-                            state.playerHand[slot].splice(sortedIndices[0], 1)
-                            state.playerHand[slot].push(dealNewCard())
-                            state.playerHand[slot].push(dealNewCard())
-                            state.playerHand[slot].push(dealNewCard())
-                            room.currentCardPanik = null
-                            room.currentPanika = null
-                            update()
-                            updateState()
-                            startObmen()
+                        if (!state.zarajennie.includes(slot) || isCringe) {
+                            if (slot === room.currentPlayer &&
+                                [index1, index2, index3].every((ind) => ind >= 0 && ind <= 4
+                                    && state.playerHand[slot][ind].id !== "nechto")) {
+                                state.discard.push(state.playerHand[slot][index1])
+                                state.discard.push(state.playerHand[slot][index2])
+                                state.discard.push(state.playerHand[slot][index3])
+                                const sortedIndices = [index1, index2, index3].sort((a, b) => a - b);
+                                state.playerHand[slot].splice(sortedIndices[2], 1)
+                                state.playerHand[slot].splice(sortedIndices[1], 1)
+                                state.playerHand[slot].splice(sortedIndices[0], 1)
+                                state.playerHand[slot].push(dealNewCard())
+                                state.playerHand[slot].push(dealNewCard())
+                                state.playerHand[slot].push(dealNewCard())
+                                room.currentCardPanik = null
+                                room.currentPanika = null
+                                update()
+                                updateState()
+                                startObmen()
+                            }
+                        } else {
+                            if (state.playerHand[slot][state.playerHand[slot].findIndex((card, ind) =>
+                                ![index1, index2, index3].includes(ind))].id === 'zarajenie')
+                                zabivchivostPanika(slot, index1, index2, index3, true)
                         }
                     }
                 },
@@ -1082,6 +1089,7 @@ function init(wsServer, path) {
                                     }
                                 } else if (card.id === 'karantin') {
                                     if (chekSosedaNaPidora(target) || slot === target) {
+                                        room.target = target
                                         room.karantin[target] = 2 //2 turns lol
                                         sigrat()
                                         logs()

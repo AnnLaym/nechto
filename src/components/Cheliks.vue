@@ -5,14 +5,15 @@
         'sosed': state.cards && state.phase === 2
             ? state.cards![service.selectedCard.value!]?.target === 'sosed' && state.normSosed.includes(slot)
             : false,
-        'any': state.cards && state.phase === 2
+        'any': state.cards && state.phase === 2 && state.currentPanika?.id !== 'tsepnayaReaksia'
             ? state.cards![service.selectedCard.value!]?.target === 'any'
             && state.normPlayer.includes(slot) : false,
-        'selfOrSosed': state.cards && state.phase === 2
+        'selfOrSosed': state.cards && state.phase === 2 && state.currentPanika?.id !== 'tsepnayaReaksia'
             ? state.cards![service.selectedCard.value!]?.target === 'selfOrSosed'
             && (state.normSosed.includes(slot) || slot === state.userSlot)
             : false,
-        'thirdplayer': state.currentPanika?.id === 'razDva' && state.currentPlayer === state.userSlot && state.phase === 2
+        'thirdplayer': state.currentPanika?.id !== 'tsepnayaReaksia' &&
+            state.currentPanika?.id === 'razDva' && state.currentPlayer === state.userSlot && state.phase === 2
             ? state.normThirdPlayers.includes(slot) : false,
     }" @click="slotClick(slot)">
         <div v-if="state.currentPlayer === slot" class="backgroundJ" />
@@ -61,7 +62,7 @@ function setAvatarClick() {
 function slotClick(index: number) {
     if (state.value.phase === 2
         && state.value.currentPlayer === state.value.userSlot
-        && state.value.action == null) {
+        && (state.value.action == null || state.value.currentPanika)) {
         service.selectedTarget.value = service.selectedTarget.value !== index ? index : null
         proccessSoundClient()
     }

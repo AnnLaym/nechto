@@ -184,7 +184,7 @@ const createDeck = (players, startWithNechto) => {
         let shuffleDeki = shuffleArray([...ostatokDeck, ...panikDeck, ...zarajenieDeck])
         //shuffleDeki.unshift({ ...cardsDeck.zarajenie, id: 'zarajenie' })
         // shufledFirsDeck.push({ ...cardsDeck.zarajenie, id: 'zarajenie' })
-        // shufledFirsDeck.push({ ...cardsDeck.karantin, id: 'karantin' })
+        // shufledFirsDeck.push({ ...cardsDeck.ubiraysyaProch, id: 'ubiraysyaProch' })
         // shuffleDeki.unshift({ ...cardsDeck.ubiraysyaProch, id: 'ubiraysyaProch' })
         res = [...shufledFirsDeck, ...shuffleDeki]
     };

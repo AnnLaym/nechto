@@ -155,7 +155,9 @@
 				{{ getKnopkaName(`goPanika`) }}
 			</div>
 			<div v-if="state.currentPanika && !state.readyPlayers[state.userSlot!]
-		&& state.currentPanika.id == 'tsepnayaReaksia' && !state.spectators.includes(state.playerSlots[state.userSlot!]!)
+		&& state.currentPanika.id == 'tsepnayaReaksia' 
+		&& !state.spectators.includes(state.playerSlots[state.userSlot!]!)
+		&& !state.umerSlots!.includes(state.userSlot!)
 		" class="knopka" @click="
 		service.panicAction(service.selectedCard.value, service.selectedTarget.value!)
 		">
