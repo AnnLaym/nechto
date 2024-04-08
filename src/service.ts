@@ -172,6 +172,7 @@ export function createNechtoService() {
 		selectedZabivchivost3: ref<Slot | null>(null),
 		changeName: (name: string) => socket.emit('change-name', name),
 		soblaznResolve: (index: number) => socket.emit('resolve-soblazn', index),
+		shufflePlayers: () => socket.emit('shuffle-players'),
 	}
 }
 const zoomed = ref(false)
@@ -242,6 +243,12 @@ function maintainState() {
 				if (prevState.currentPanika && !state.currentPanika) {
 					nechtoService.selectedCard.value = null
 				}
+				if (state.phase === 1) {
+					nechtoService.selectedCard.value = null
+				}
+				if(prevState.cards !== state.cards) {
+					nechtoService.selectedCard.value = null
+				}
 			}
 			if (nechtoService?.selectedTarget.value !== null) {
 				if (
@@ -254,6 +261,12 @@ function maintainState() {
 					prevState.currentPlayer === prevState.userSlot &&
 					state.currentPlayer !== state.userSlot
 				) {
+					nechtoService.selectedTarget.value = null
+				}
+				if (prevState.phase === 1 && state.phase === 2) {
+					nechtoService.selectedTarget.value = null
+				}
+				if (prevState.phase === 2 && state.phase === 3) {
 					nechtoService.selectedTarget.value = null
 				}
 			}

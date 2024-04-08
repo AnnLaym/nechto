@@ -141,7 +141,8 @@
 		state.userSlot === state.currentPlayer &&
 		state.currentPanika.id !== 'zabivchivost' &&
 		state.currentPanika.id !== 'davaiDrujit' &&
-		state.currentPanika.id !== 'tsepnayaReaksia'
+		state.currentPanika.id !== 'tsepnayaReaksia' &&
+		state.action !== 'showUPS'
 		" class="knopka" @click="
 		service.panicAction(service.selectedCard.value, service.selectedTarget.value!)
 		">
@@ -170,7 +171,7 @@
 				{{ getKnopkaName(`goPanika`) }}
 			</div>
 		</div>
-		<div v-if="state.currentPanika" class="action">
+		<div v-if="state.currentPanika && state.action !== 'showUPS'" class="action">
 			<Card :card="state.currentCardPanik!" class="uporstvo1" :stolCard="true" />
 		</div>
 		<div>

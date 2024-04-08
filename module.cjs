@@ -45,7 +45,7 @@ function init(wsServer, path) {
                 showAllHand: null,
                 allReadyNedeed: false,
                 gameLog: [],
-                smallTimer: 15,
+                smallTimer: 10,
                 bigTimer: 60,
                 isObmenReady: false,
                 voting: false,
@@ -113,7 +113,8 @@ function init(wsServer, path) {
                         else
                             send(user, "player-state", {
                                 cards: state.playerHand[slot],
-                                chekCards: state.showCard[slot] ? state.showCard[slot] : null
+                                chekCards: state.showCard[slot] ? state.showCard[slot] : null,
+                                nechto: null
                             });
                     } else {
                         send(user, "player-state", {});
@@ -194,9 +195,10 @@ function init(wsServer, path) {
                         room.currentPlayer = shuffleArray(room.playerSlots.map((it, index) => index).filter(inx => room.playerSlots[inx]))[0]
                         state.zarajennie = [];
                         room.isNextCardPanika = null
-                        //room.currentPlayer = 4
+                        // room.currentPlayer = 4
                         room.invertDirection = (Math.floor(Math.random() * 10) + 1) % 2 !== 0
-                        //room.invertDirection = false
+                        shufflePlayerSLots()
+                        // room.invertDirection = false
                         room.gameLog = [];
                         state.showCard = {};
                         room.isObmenReady = false;
@@ -256,14 +258,15 @@ function init(wsServer, path) {
                     room.normThirdPlayers = []
                     Object.keys(state.playerHand).forEach(player => {
                         if ((player == getNextPlayer(room.invertDirection, room.currentPlayer) ||
-                            player == getNextPlayer(!room.invertDirection, room.currentPlayer)) && !room.karantin[player]) {
-                            room.normSosed.push(player);
+                            player == getNextPlayer(!room.invertDirection, room.currentPlayer))
+                            && !room.karantin[player]) {
+                            room.normSosed.push(parseInt(player));
                         }
                         if (player == getThirdPlayers()[1] || player == getThirdPlayers()[0]) {
-                            room.normThirdPlayers.push(player);
+                            room.normThirdPlayers.push(parseInt(player));
                         }
                         if (!room.karantin[player]) {
-                            room.normPlayer.push(player);
+                            room.normPlayer.push(parseInt(player));
                         }
                     })
                     if (room.normSosed.length == 0) room.normSosed = null
@@ -279,7 +282,8 @@ function init(wsServer, path) {
                             room.time = room.smallTimer * 1000;
                         else if (room.phase === 2) {
                             //TODO: all piniks nije
-                            if (['uups'].includes(room.currentPanika) || room.action === 'strah' || room.action === 'viski') {
+                            if (['uups'].includes(room.currentPanika) || room.action === 'strah'
+                                || room.action === 'viski' || (room.currentPanika && room.currentPanika.id === 'uups')) {
                                 room.time = room.smallTimer * 1000;
                             } else
                                 room.time = room.bigTimer * 1000;
@@ -464,6 +468,9 @@ function init(wsServer, path) {
                                 triChetyrePanika()
                             } else if (room.currentPanika.id === 'starieVerevki') {
                                 starieVerevkiPanika()
+                            } else if (room.currentPanika.id === 'uups') {
+                                room.showAllHand = null
+                                startObmen()
                             }
                         }
                     } else if (room.phase === 2 && !room.currentPanika && !biloUporstvo) {
@@ -703,14 +710,14 @@ function init(wsServer, path) {
                 endGame = (nechtoZdohlo) => {
                     room.currentPlayer = null;
                     room.phase = 0;
-                    room.teamsLocked = false;
+                    //room.teamsLocked = false;
                     room.currentPanika = null;
                     room.action = null;
                     room.target = null;
                     room.invertDirection = false
                     room.isObmenReady = false;
-                    state.nechto = null;
-                    state.zarajennie = [];
+                    //state.nechto = null;
+                    //state.zarajennie = [];
                     state.uporstvoCards = {};
                     if (nechtoZdohlo) {
                         room.winner = 'ebanati'
@@ -840,6 +847,7 @@ function init(wsServer, path) {
                 },
                 uuupsPamnika = () => {
                     room.showAllHand = state.playerHand[room.currentPlayer]
+                    room.action = 'showUPS'
                     startTimer()
                 },
                 iViEtoNazivaeteVecherinkoyPanika = () => {
@@ -946,6 +954,9 @@ function init(wsServer, path) {
                             zarC++
                     });
                     return zarC
+                },
+                shufflePlayerSLots = () => {
+                    room.playerSlots = shuffleArray(room.playerSlots)
                 }
             this.userJoin = userJoin;
             this.userLeft = userLeft;
@@ -1260,7 +1271,8 @@ function init(wsServer, path) {
                         } else if (card.id === 'triChetyre') {
                             triChetyrePanika()
                         } else if (card.id === 'uups') {
-                            uuupsPamnika()
+                            if (!room.showAllHand)
+                                uuupsPamnika()
                         } else if (card.id === 'svidanieVSlepuyu') {
                             if (index !== null && (getHandCard(slot, index).id !== 'zarajenie' || calcZar(slot)))
                                 svidanieVSlepuyuPanika(slot, index)
@@ -1316,6 +1328,12 @@ function init(wsServer, path) {
                     if (room.hostId === user && playerId) {
                         room.hostId = playerId;
                         this.emit("host-changed", user, playerId);
+                    }
+                    update();
+                },
+                "shuffle-players": (user) => {
+                    if (room.hostId === user && room.phase === 0) {
+                        shufflePlayerSLots()
                     }
                     update();
                 },

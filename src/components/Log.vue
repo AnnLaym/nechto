@@ -31,7 +31,9 @@
             colors[state.playerSlots.indexOf(message.actors?.[1])]
     }" class="actor">
                     {{ state.playerNames[message.actors[1]] }}</span>
-                <span v-if="message.card" class="podskazkaLoga"> ({{ getCardName(message.card.id) }})</span>
+                <span v-if="message.card" class="podskazkaLoga">
+                    <Card :v-loge="true" :card="message.card" :zoomed="clicknutaCarta" />
+                </span>
             </span>
             <span v-if="message.card && message.panika" class="messageCard" :style="{ color: '#C71585' }">
                 {{ getKnopkaName('panika') }}
@@ -182,6 +184,7 @@ const colors = [
     font-size: 16px;
     text-shadow: 0 0 3px black;
     color: #cecac1;
+    cursor: pointer;
 }
 
 @media screen and (max-width: 1200px) {

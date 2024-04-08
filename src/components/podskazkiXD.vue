@@ -12,14 +12,15 @@
           || (state.phase == 2 && state.action == 'soblazn' && !state.isObmenReady)
           || (state.phase == 2 && (state.action === 'analiz' || state.action === 'viski'))
           || (state.phase == 2 && state.currentPanika?.id == 'davaiDrujit' && !state.isObmenReady)
-          || (state.phase == 2 && state.action === 'ognemet')">
+          ">
       <img
         :src="reactCommonRoom().getPlayerAvatarURL(state.playerSlots[state.target!]!) || ' /nechto/cards/avatar1.png'"
         class="otdelnii" v-if="(state.isObmenReady && state.phase == 3)
           || (state.phase == 2 && (state.action === 'menyaemsyaMestami' || state.action === 'smaivayUdochki'))
           || (state.phase == 2 && state.action == 'soblazn' && state.isObmenReady)
           || (state.phase == 2 && state.currentPanika?.id == 'davaiDrujit' && state.isObmenReady)
-          || (state.action === 'strah')">
+          || (state.action === 'strah')
+          || (state.phase == 2 && state.action === 'ognemet')">
     </div>
     <div class="text">
       <span class="obmen" v-if="state.phase == 3 && state.action !== 'strah'">
@@ -95,15 +96,21 @@
         {{ getPodskazkaName('просмотр карты') }}
       </div>
       <div class="popitka" v-if="state.phase == 2 && state.action === 'ognemet'">
-        <div class="current hueer"> {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
+        <div class="current hueer"> {{ state.playerNames[state.playerSlots[state.target!]!] }}
         </div>
         {{ getPodskazkaName('сгореть') }}
       </div>
-      <div class="popitka"
-        v-if="state.phase == 2 && state.currentPanika && state.currentPanika.id !== 'tsepnayaReaksia'">
+      <div class="popitka" v-if="state.phase == 2 && state.currentPanika
+          && state.currentPanika.id !== 'tsepnayaReaksia'
+          && state.action !== 'showUPS'">
         <div class="current hueer"> {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
         </div>
         {{ getPodskazkaName('панику') }}
+      </div>
+      <div v-if="state.action === 'showUPS'">
+        <div class="current hueer"> {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
+        </div>
+        {{ getPodskazkaName('Показывает карты') }}
       </div>
       <div class="popitka"
         v-if="state.phase == 2 && state.currentPanika && state.currentPanika.id == 'tsepnayaReaksia'">

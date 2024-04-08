@@ -1,7 +1,19 @@
 <template>
     <div class="chel" :class="{
         [`slot-color-${state.startSlotColor.value ? state.startSlotColor : slot}`]: true,
-        'selected': service.selectedTarget.value === slot && state.phase === 2
+        'selected': service.selectedTarget.value === slot && state.phase === 2,
+        'sosed': state.cards && state.phase === 2
+            ? state.cards![service.selectedCard.value!]?.target === 'sosed' && state.normSosed.includes(slot)
+            : false,
+        'any': state.cards && state.phase === 2
+            ? state.cards![service.selectedCard.value!]?.target === 'any'
+            && state.normPlayer.includes(slot) : false,
+        'selfOrSosed': state.cards && state.phase === 2
+            ? state.cards![service.selectedCard.value!]?.target === 'selfOrSosed'
+            && (state.normSosed.includes(slot) || slot === state.userSlot)
+            : false,
+        'thirdplayer': state.currentPanika?.id === 'razDva' && state.currentPlayer === state.userSlot && state.phase === 2
+            ? state.normThirdPlayers.includes(slot) : false,
     }" @click="slotClick(slot)">
         <div v-if="state.currentPlayer === slot" class="backgroundJ" />
         <div class="roditel">
@@ -25,33 +37,7 @@
                 </div>
             </div>
         </div>
-        <div class="mamaMami">
-            <div class="kartinka">
-                <div v-if="state.karantin[slot]" class="karantin">
-                    <div class="skokaSidet">
-                        {{ state.karantin[slot] }}
-                    </div>
-                </div>
-                <div class="newTimer" v-if="state.timed ?
-        (state.currentPanika !== null && state.currentPanika.id === 'tsepnayaReaksia' && !state.readyPlayers[slot])
-        || (state.currentPanika == null && state.waitMoveSlot === slot)
-        || (state.currentPanika !== null && state.currentPanika.id !== 'tsepnayaReaksia' && state.waitMoveSlot === slot)
-        : false
-        " :style="{ 'background-position': `${timerWidth}px 124px` }">
-                    <i className="material-icons">
-                        person
-                    </i>
-                </div>
-                <div v-if="slot === state.userSlot" class="setAvatarButton">
-                </div>
-                <img :src="reactCommonRoom().getPlayerAvatarURL(state.playerSlots[slot]!) || ' /nechto/cards/avatar1.png'"
-                    class="otdelnii">
-                <img :src="false || '/nechto/img/nechto2.png'" class="umer" v-if="state.nechto === slot">
-                <img :src="false || '/nechto/img/zarazilsya.png'" class="umer" v-if="state.zarajennie?.includes(slot)">
-                <img :src="false || '/nechto/img/umer(2).png'" class="umer"
-                    v-if="state.umerSlots?.includes(slot) && state.phase !== 0">
-            </div>
-        </div>
+        <avatarSpace :slot="slot" />
         <div v-if="state.dveriClient[slot]?.next" :class="position" class="dver svoya" />
         <div v-if="state.dveriClient[slot]?.prev" :class="position" class="dver chujaya" />
     </div>
@@ -63,36 +49,22 @@ import { getCardName, getKnopkaName } from '../log';
 import { computed } from '@vue/reactivity';
 import { reactive, ref, watch } from 'vue';
 import { proccessSoundClient } from '../sound';
+import avatarSpace from './avatarSpace.vue'
 
 const service = useNechtoService()
 const state = useNechtoState()
-const timerWidth = computed(() => {
-    const time = state.value.time - timePassed.value
-    //const percentage = (time / state.value.fullTimer) * 100;
-    const tile = (Math.round((869 * time) / state.value.fullTimer)) * 124;
-    return tile >= 0 ? tile : 0;
-})
-const timePassed = ref(0)
-let interval: number
-
-watch(state, () => {
-    window.clearInterval(interval);
-    timePassed.value = 0
-    if (state.value.time) { //TODO: paused and ..
-        interval = window.setInterval(() => {
-            timePassed.value += 50
-        }, 50)
-    }
-})
 
 function setAvatarClick() {
 
 }
 
 function slotClick(index: number) {
-    if (state.value.phase === 2)
+    if (state.value.phase === 2
+        && state.value.currentPlayer === state.value.userSlot
+        && state.value.action == null) {
         service.selectedTarget.value = service.selectedTarget.value !== index ? index : null
-    proccessSoundClient()
+        proccessSoundClient()
+    }
 }
 
 function handleClickChangeName() {
@@ -179,65 +151,25 @@ defineProps<{
     bottom: initial;
 }
 
-.karantin {
-    background-image: url(./img/sep.png);
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    background-size: contain;
+.sosed {
+    box-shadow: 1px 1px 9px 0px white;
 }
 
-.kartinka {
-    width: 124px;
-    height: 124px;
-    border-radius: 27px;
-    z-index: 0;
-    position: relative;
-    overflow: hidden;
-    padding-left: 0px;
-    padding-right: 0px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 5px;
+.any {
+    box-shadow: 1px 1px 9px 0px white;
 }
 
-.otdelnii {
-    height: 100%;
-    object-fit: fill;
-    width: 100%;
+.thirdplayer {
+    box-shadow: 1px 1px 9px 0px white;
+}
+
+.selfOrSosed {
+    box-shadow: 1px 1px 9px 0px white;
 }
 
 .mini-roditel {
     text-decoration: underline;
     cursor: pointer;
-}
-
-.timerbar {
-    position: absolute;
-    height: 100%;
-    background-color: #ceb5b57a;
-    transition: all 0.2s;
-    top: 4px;
-}
-
-.skokaSidet {
-    position: absolute;
-    background-color: #6c6c6c;
-    color: white;
-    left: 68px;
-    bottom: 4px;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 20;
-    border: 2px solid white;
-}
-
-.newTimer {
-    position: absolute;
-    height: 100%;
-    background-image: url(./img/timerAvatar.png);
-    width: 100%;
 }
 
 .suka {
@@ -263,13 +195,6 @@ defineProps<{
     font-family: matToni1234;
 }
 
-.umer {
-    height: 100%;
-    object-fit: fill;
-    width: 100%;
-    position: absolute;
-}
-
 .roditel:hover .host-cntrols {
     display: block;
     gap: 5px;
@@ -291,12 +216,6 @@ defineProps<{
     overflow: visible;
     width: 136px;
     height: 157px;
-}
-
-.mamaMami {
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .backgroundJ {
@@ -390,47 +309,95 @@ defineProps<{
     background: linear-gradient(180deg, #A32A2A 0%, rgba(122, 52, 52, 0) 100%);
 }
 
+.slot-color-1.selected {
+    box-shadow: 1px 1px 6px 4px #A32A2A;
+}
+
 .slot-color-2 {
     background: linear-gradient(180deg, #653E29 0%, rgba(101, 62, 41, 0) 100%);
+}
+
+.slot-color-2.selected {
+    box-shadow: 1px 1px 6px 4px #A32A2A;
 }
 
 .slot-color-3 {
     background: linear-gradient(180deg, #C38144 0%, rgba(196, 129, 68, 0) 100%);
 }
 
+.slot-color-3.selected {
+    box-shadow: 1px 1px 6px 4px #C38144;
+}
+
 .slot-color-4 {
     background: linear-gradient(180deg, #BDB35B 0%, rgba(132, 126, 79, 0) 100%);
+}
+
+.slot-color-4.selected {
+    box-shadow: 1px 1px 6px 4px #BDB35B;
 }
 
 .slot-color-5 {
     background: linear-gradient(180deg, #6BB95E 0%, rgba(118, 157, 112, 0) 100%)
 }
 
+.slot-color-5.selected {
+    box-shadow: 1px 1px 6px 4px #6BB95E;
+}
+
 .slot-color-6 {
     background: linear-gradient(180deg, #29572B 0%, rgba(41, 87, 43, 0) 100%)
+}
+
+.slot-color-6.selected {
+    box-shadow: 1px 1px 6px 4px #29572B;
 }
 
 .slot-color-7 {
     background: linear-gradient(180deg, #227A80 0%, rgba(45, 110, 114, 0) 100%);
 }
 
+.slot-color-7.selected {
+    box-shadow: 1px 1px 6px 4px #227A80;
+}
+
 .slot-color-8 {
     background: linear-gradient(180deg, #898989 0%, rgba(137, 137, 137, 0) 100%);
+}
+
+.slot-color-8.selected {
+    box-shadow: 1px 1px 6px 4px #898989;
 }
 
 .slot-color-9 {
     background: linear-gradient(180deg, #318FC5 0%, rgba(44, 62, 124, 0) 100%);
 }
 
+.slot-color-9.selected {
+    box-shadow: 1px 1px 6px 4px #318FC5;
+}
+
 .slot-color-10 {
     background: linear-gradient(180deg, #2C3E7C 0%, rgba(84, 59, 137, 0) 100%);
+}
+
+.slot-color-10.selected {
+    box-shadow: 1px 1px 6px 4px #2C3E7C;
 }
 
 .slot-color-11 {
     background: linear-gradient(180deg, #543B89 0%, rgba(152, 75, 103, 0) 100%);
 }
 
+.slot-color-11.selected {
+    box-shadow: 1px 1px 6px 4px #543B89;
+}
+
 .slot-color-0 {
     background: linear-gradient(180deg, #B24A7C 0%, rgba(213, 135, 135, 0) 100%);
+}
+
+.slot-color-0.selected {
+    box-shadow: 1px 1px 6px 4px #B24A7C;
 }
 </style>

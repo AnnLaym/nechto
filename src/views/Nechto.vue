@@ -73,6 +73,12 @@ const bottomButtons = computed<DashMenuButton[]>(() => {
             onClick: () => {
                 offnutZvuk();
             }
+        },
+        {
+            icon: 'shuffle',
+            onClick: () => {
+               service.shufflePlayers()
+            }
         }
     ];
 });

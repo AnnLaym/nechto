@@ -1,70 +1,70 @@
 const cardsDeck = {
     ognemet: {
-        type: "card", isAttacking: true, isDefending: false, target: 'sosed', action: true, smallTimer: true,
+        type: "card", target: 'sosed',
         count: { 4: 2, 5: 2, 6: 3, 7: 3, 8: 3, 9: 4, 10: 4, 11: 5, 12: 5 }
     },
     analiz: {
-        type: "card", isAttacking: false, isDefending: false, target: 'sosed', action: true, allReady: true,
+        type: "card", target: 'sosed', allReady: true,
         count: { 4: 0, 5: 1, 6: 2, 7: 2, 8: 2, 9: 3, 10: 3, 11: 3, 12: 3 }
     },
     topor: {
-        type: "card", isAttacking: false, isDefending: false, target: 'selfOrSosed', action: true,
+        type: "card", target: 'selfOrSosed',
         count: { 4: 1, 5: 1, 6: 1, 7: 1, 8: 1, 9: 2, 10: 2, 11: 2, 12: 2 }
     },
     podozrenie: {
-        type: "card", isAttacking: true, isDefending: false, target: 'sosed', action: true,
+        type: "card", target: 'sosed',
         count: { 4: 4, 5: 4, 6: 4, 7: 5, 8: 6, 9: 7, 10: 8, 11: 8, 12: 8 }
     },
     viski: {
-        type: "card", isAttacking: false, isDefending: false, action: true,
+        type: "card",
         count: { 4: 1, 5: 1, 6: 2, 7: 2, 8: 2, 9: 2, 10: 3, 11: 3, 12: 3 }
     },
     uporstvo: {
-        type: "card", isAttacking: false, isDefending: false, action: true,
+        type: "card",
         count: { 4: 2, 5: 2, 6: 3, 7: 3, 8: 3, 9: 3, 10: 4, 11: 4, 12: 4 }
     },
     glyadiPoStoronam: {
-        type: "card", isAttacking: false, isDefending: false, action: true,
+        type: "card",
         count: { 4: 1, 5: 1, 6: 1, 7: 1, 8: 1, 9: 2, 10: 2, 11: 2, 12: 2 }
     },
     menyaemsyaMestami: {
-        type: "card", isAttacking: true, isDefending: false, target: 'sosed', action: true,
+        type: "card", target: 'sosed', action: true,
         count: { 4: 2, 5: 2, 6: 2, 7: 3, 8: 3, 9: 4, 10: 4, 11: 5, 12: 5 }
     },
     smaivayUdochki: {
-        type: "card", isAttacking: true, isDefending: false, target: 'any', action: true,
+        type: "card", target: 'any', action: true,
         count: { 4: 2, 5: 2, 6: 2, 7: 3, 8: 3, 9: 3, 10: 3, 11: 4, 12: 4 }
     },
     soblazn: {
-        type: "card", isAttacking: true, isDefending: false, endTurn: true, target: 'any', action: true, endTurn: true,
+        type: "card", endTurn: true, target: 'any', action: true, endTurn: true,
         count: { 4: 2, 5: 2, 6: 3, 7: 4, 8: 5, 9: 5, 10: 6, 11: 7, 12: 7 }
     },
     strah: {
-        type: "card", isAttacking: false, isDefending: true,
+        type: "card",
         count: { 4: 0, 5: 1, 6: 2, 7: 2, 8: 3, 9: 3, 10: 3, 11: 4, 12: 4 }
     },
     mneIZdesNePloha: {
-        type: "card", isAttacking: false, isDefending: true,
+        type: "card",
         count: { 4: 1, 5: 1, 6: 2, 7: 2, 8: 2, 9: 2, 10: 2, 11: 3, 12: 3 }
     },
     netUjSpasibo: {
-        type: "card", isAttacking: false, isDefending: true,
+        type: "card",
         count: { 4: 1, 5: 1, 6: 2, 7: 2, 8: 3, 9: 3, 10: 3, 11: 4, 12: 4 }
     },
     mimo: {
-        type: "card", isAttacking: false, isDefending: true,
+        type: "card",
         count: { 4: 1, 5: 1, 6: 2, 7: 2, 8: 2, 9: 2, 10: 2, 11: 3, 12: 3 }
     },
     nikakogoShahlika: {
-        type: "card", isAttacking: false, isDefending: true,
+        type: "card",
         count: { 4: 1, 5: 1, 6: 2, 7: 2, 8: 2, 9: 2, 10: 2, 11: 3, 12: 3 }
     },
     karantin: {
-        type: "card", isAttacking: false, isDefending: true, target: 'selfOrSosed',
+        type: "card", target: 'selfOrSosed',
         count: { 4: 0, 5: 1, 6: 1, 7: 1, 8: 1, 9: 2, 10: 2, 11: 2, 12: 2 }
     },
     zakolchennayDver: {
-        type: "card", isAttacking: false, isDefending: true, target: 'selfOrSosed',
+        type: "card", target: 'selfOrSosed',
         count: { 4: 1, 5: 1, 6: 1, 7: 2, 8: 2, 9: 2, 10: 2, 11: 3, 12: 3 }
     },
     iViEtoNazivaeteVecherinkoy: {
@@ -76,7 +76,7 @@ const cardsDeck = {
         count: { 4: 0, 5: 1, 6: 1, 7: 1, 8: 1, 9: 2, 10: 2, 11: 2, 12: 2 }
     },
     ubiraysyaProch: {
-        type: "panika",
+        type: "panika", target: 'any',
         count: { 4: 0, 5: 1, 6: 1, 7: 1, 8: 1, 9: 1, 10: 1, 11: 1, 12: 1 }
     },
     starieVerevki: {
@@ -84,11 +84,11 @@ const cardsDeck = {
         count: { 4: 0, 5: 0, 6: 1, 7: 1, 8: 1, 9: 2, 10: 2, 11: 2, 12: 2 }
     },
     tolkoMejduNami: {
-        type: "panika",
+        type: "panika", target: 'sosed',
         count: { 4: 0, 5: 0, 6: 0, 7: 1, 8: 1, 9: 2, 10: 2, 11: 2, 12: 2 }
     },
     davaiDrujit: {
-        type: "panika",
+        type: "panika", target: 'any',
         count: { 4: 0, 5: 0, 6: 0, 7: 1, 8: 1, 9: 2, 10: 2, 11: 2, 12: 2 }
     },
     vremyaPriznaniy: {
@@ -104,7 +104,7 @@ const cardsDeck = {
         count: { 4: 1, 5: 1, 6: 1, 7: 1, 8: 1, 9: 2, 10: 2, 11: 2, 12: 2 }
     },
     uups: {
-        type: "panika",
+        type: "panika", target: 'sosed',
         count: { 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 1, 12: 1 }
     },
     svidanieVSlepuyu: {
@@ -184,7 +184,7 @@ const createDeck = (players, startWithNechto) => {
         let shuffleDeki = shuffleArray([...ostatokDeck, ...panikDeck, ...zarajenieDeck])
         //shuffleDeki.unshift({ ...cardsDeck.zarajenie, id: 'zarajenie' })
         // shufledFirsDeck.push({ ...cardsDeck.zarajenie, id: 'zarajenie' })
-        // shufledFirsDeck.push({ ...cardsDeck.zarajenie, id: 'zarajenie' })
+        // shufledFirsDeck.push({ ...cardsDeck.karantin, id: 'karantin' })
         // shuffleDeki.unshift({ ...cardsDeck.ubiraysyaProch, id: 'ubiraysyaProch' })
         res = [...shufledFirsDeck, ...shuffleDeki]
     };

@@ -844,6 +844,13 @@ const podskazkaData: Record<string, ActionMetaData> = {
             en: "checks card",
         },
     },
+    'Показывает руку': {
+        log: {
+            ru: "показывает руку",
+            ua: "показує руку",
+            en: "shows hand",
+        },
+    },
     'сгореть': {
         log: {
             ru: "отказывается или соглашается на смерть",
