@@ -6,7 +6,7 @@
                     {{ state.karantin[slot] }}
                 </div>
             </div>
-            <div class="newTimer" v-if="state.timed ?
+            <div class="newTimer" v-if="state.timed && !state.paused ?
                 (state.currentPanika !== null && state.currentPanika.id === 'tsepnayaReaksia' && !state.readyPlayers[slot])
                 || (state.currentPanika == null && state.waitMoveSlot === slot)
                 || (state.currentPanika !== null && state.currentPanika.id !== 'tsepnayaReaksia' && state.waitMoveSlot === slot)
@@ -128,5 +128,36 @@ watch(state, () => {
     height: 100%;
     background-image: url(./img/timerAvatar.png);
     width: 100%;
+}
+
+@media screen and (max-width: 1200) {
+    .kartinka {
+        height: 114px;
+        width: 114px;
+    }
+}
+
+@media screen and (max-width: 1115px) {
+    .kartinka {
+        width: 90px;
+        height: 90px;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .kartinka {
+        height: 56px;
+        width: 60px;
+        border-radius: 17px;
+        margin-top: 2px;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .kartinka {
+        height: 45px;
+        width: 45px;
+        border-radius: 10px;
+    }
 }
 </style>

@@ -130,10 +130,14 @@ defineProps<{
     width: auto;
     margin: 0px;
     height: auto;
+    cursor: pointer;
 }
 
 .card.vLoge.zoomed {
     z-index: 100;
+    font-family: matToni10 !important;
+    font-size: 10px;
+    color: white;
 }
 
 .name {

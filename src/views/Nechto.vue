@@ -77,7 +77,13 @@ const bottomButtons = computed<DashMenuButton[]>(() => {
         {
             icon: 'shuffle',
             onClick: () => {
-               service.shufflePlayers()
+                service.shufflePlayers()
+            }
+        },
+        {
+            icon: 'pause_circle_filled',
+            onClick: () => {
+                service.pauseGame()
             }
         }
     ];

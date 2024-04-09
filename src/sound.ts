@@ -6,6 +6,7 @@ import panicaZvukFile from './components/zvuki/panica.mp3'
 import grabCardZvukFile from './components/zvuki/grabCard.mp3'
 import svapMestaZvukFile from './components/zvuki/svapMesta.mp3'
 import clickSoundFile from './components/zvuki/click.mp3'
+import karantinZvukFile from './components/zvuki/karantin.mp3'
 
 const startRoundVzuk = new Audio(startRoundZvukFile)
 const startGameVzuk = new Audio(startGameZvukFile)
@@ -14,9 +15,12 @@ const panicaVzuk = new Audio(panicaZvukFile)
 const grabCardVzuk = new Audio(grabCardZvukFile)
 const svapMestaVzuk = new Audio(svapMestaZvukFile)
 const clickSound = new Audio(clickSoundFile)
+const karantinVzuk = new Audio(karantinZvukFile)
 
 panicaVzuk.volume = 0.3
 pickVzuk.volume = 0.7
+clickSound.volume = 0.6
+startGameVzuk.volume = 0.6
 
 export function proccessSound(prevState: NechtoState, newStat: NechtoState) {
 	if (!prevState.inited) return
@@ -64,6 +68,13 @@ export function proccessSound(prevState: NechtoState, newStat: NechtoState) {
 		!offZvuk.value
 	) {
 		clickSound.play()
+	}
+
+	if (
+		Object.values(prevState.karantin).length !==
+		Object.values(newStat.karantin).length
+	) {
+		karantinVzuk.play()
 	}
 }
 

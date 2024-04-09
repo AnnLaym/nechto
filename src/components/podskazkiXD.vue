@@ -25,6 +25,7 @@
     <div class="text">
       <span class="obmen" v-if="state.phase == 3 && state.action !== 'strah'">
         <span class="current hueer" v-if="!state.isObmenReady">
+          &nbsp;
           {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
         </span>
         <span class="obmen" v-if="state.isObmenReady">
@@ -66,38 +67,45 @@
       <span class="popitka" v-if="state.phase == 1">
         <span class="current hueer"> {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
         </span>
+        &nbsp;
         {{ getPodskazkaName('взять карту') }}
       </span>
       <span class="popitka" v-if="(state.action === 'strah')">
         <span class="current hueer"> {{ state.playerNames[state.playerSlots[state.target!]!] }}
         </span>
+        &nbsp;
         {{ getPodskazkaName('смотрит карту') }}
       </span>
       <span class="popitka" v-if="state.phase == 2 && state.action == null">
         <span class="current hueer"> {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
         </span>
+        &nbsp;
         {{ getPodskazkaName('играть') }}
       </span>
       <span class="popitka"
         v-if="state.phase == 2 && (state.action === 'menyaemsyaMestami' || state.action === 'smaivayUdochki')">
         <span class="current hueer"> {{ state.playerNames[state.playerSlots[state.target!]!] }}
         </span>
+        &nbsp;
         {{ getPodskazkaName('свап местом') }}
       </span>
       <div class="popitka" v-if="state.phase == 2 && state.action === 'uporstvo'">
         <div class="current hueer"> {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
         </div>
+        &nbsp;
         {{ getPodskazkaName('упорство') }}
       </div>
       <div class="popitka"
         v-if="state.phase == 2 && (state.action === 'analiz' || state.action === 'viski' || state.action === 'podozrenie')">
         <div class="current hueer"> {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
         </div>
+        &nbsp;
         {{ getPodskazkaName('просмотр карты') }}
       </div>
       <div class="popitka" v-if="state.phase == 2 && state.action === 'ognemet'">
         <div class="current hueer"> {{ state.playerNames[state.playerSlots[state.target!]!] }}
         </div>
+        &nbsp;
         {{ getPodskazkaName('сгореть') }}
       </div>
       <div class="popitka" v-if="state.phase == 2 && state.currentPanika
@@ -105,11 +113,13 @@
           && state.action !== 'showUPS'">
         <div class="current hueer"> {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
         </div>
+        &nbsp;
         {{ getPodskazkaName('панику') }}
       </div>
       <div v-if="state.action === 'showUPS'">
         <div class="current hueer"> {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
         </div>
+        &nbsp;
         {{ getPodskazkaName('Показывает карты') }}
       </div>
       <div class="popitka"
@@ -145,6 +155,9 @@ const state = useNechtoState()
 
 .hueer {
   white-space: nowrap;
+  justify-content: center;
+  display: flex;
+  align-items: center;
 }
 
 .main {
@@ -189,6 +202,7 @@ const state = useNechtoState()
 .popitka {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 @media screen and (max-width: 1200px) {

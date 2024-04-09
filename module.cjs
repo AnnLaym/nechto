@@ -46,7 +46,7 @@ function init(wsServer, path) {
                 allReadyNedeed: false,
                 gameLog: [],
                 smallTimer: 10,
-                bigTimer: 60,
+                bigTimer: 45,
                 isObmenReady: false,
                 voting: false,
                 currentCardPanik: null,
@@ -114,7 +114,7 @@ function init(wsServer, path) {
                             send(user, "player-state", {
                                 cards: state.playerHand[slot],
                                 chekCards: state.showCard[slot] ? state.showCard[slot] : null,
-                                nechto: null
+                                nechto: null, zarajennie: null
                             });
                     } else {
                         send(user, "player-state", {});
@@ -196,9 +196,9 @@ function init(wsServer, path) {
                         room.currentPlayer = shuffleArray(room.playerSlots.map((it, index) => index).filter(inx => room.playerSlots[inx]))[0]
                         state.zarajennie = [];
                         room.isNextCardPanika = null
-                        // room.currentPlayer = 4
+                        //room.currentPlayer = 4
                         room.invertDirection = (Math.floor(Math.random() * 10) + 1) % 2 !== 0
-                        // room.invertDirection = false
+                        //room.invertDirection = false
                         room.gameLog = [];
                         state.showCard = {};
                         room.isObmenReady = false;
@@ -274,7 +274,7 @@ function init(wsServer, path) {
                     if (room.normThirdPlayers.length == 0) room.normThirdPlayers = null
                 },
                 startTimer = () => {
-                    if (room.timed) {
+                    if (room.timed && !room.paused) {
                         clearInterval(interval);
                         if (room.phase === 0)
                             return
@@ -289,7 +289,7 @@ function init(wsServer, path) {
                                 room.time = room.bigTimer * 1000;
                         }
                         else if (room.phase === 3)
-                            room.time = room.smallTimer * 1000;
+                            room.time = room.bigTimer * 1000;
                         let time = new Date();
                         interval = setInterval(() => {
                             if (!room.paused) {
@@ -303,6 +303,20 @@ function init(wsServer, path) {
                         }, 100);
                         room.fullTimer = room.time
                         update()
+                    } else if (['uups'].includes(room.currentPanika) || room.action === 'strah'
+                        || room.action === 'viski' || (room.currentPanika && room.currentPanika.id === 'uups')) {
+                        room.time = room.smallTimer * 1000;
+                        let time = new Date();
+                        interval = setInterval(() => {
+                            if (!room.paused) {
+                                room.time -= new Date() - time;
+                                time = new Date();
+                                if (room.time <= 0) {
+                                    clearInterval(interval);
+                                    resolvePassAction()
+                                };
+                            }
+                        }, 100);
                     }
                 },
                 resolvePassAction = () => {
@@ -707,22 +721,20 @@ function init(wsServer, path) {
                     if (room.phase !== 0) {
                         startRound();
                     }
+
                 },
                 endGame = (nechtoZdohlo) => {
                     room.currentPlayer = null;
                     room.phase = 0;
-                    //room.teamsLocked = false;
                     room.currentPanika = null;
                     room.action = null;
                     room.target = null;
                     room.invertDirection = false
                     room.isObmenReady = false;
-                    //state.nechto = null;
-                    //state.zarajennie = [];
                     state.uporstvoCards = {};
                     if (nechtoZdohlo) {
                         room.winner = 'ebanati'
-                    } else if (state.zarajennie.length - 2 === Object.keys(state.playerHand).length) {
+                    } else if (state.zarajennie.length === Object.keys(state.playerHand).length - 1) {
                         room.winner = 'nechto and team'
                     }
                     room.gameLog.push({ action: 'end-game' })
@@ -1304,6 +1316,11 @@ function init(wsServer, path) {
                     if (user === room.hostId)
                         room.teamsLocked = !room.teamsLocked;
                     update();
+                },
+                "toggle-pause": (user) => {
+                    if (user === room.hostId)
+                        room.paused = !room.paused;
+                    update()
                 },
                 "players-join": (user, slot) => {
                     if (!room.teamsLocked && room.playerSlots[slot] === null) {

@@ -104,6 +104,7 @@ export interface NechtoState {
 	isNextCardPanika: boolean | null
 	actionCard: Card | null
 	bot: boolean | null
+	paused: boolean
 }
 
 declare const window: ReactAppWindow<NechtoState>
@@ -173,6 +174,7 @@ export function createNechtoService() {
 		changeName: (name: string) => socket.emit('change-name', name),
 		soblaznResolve: (index: number) => socket.emit('resolve-soblazn', index),
 		shufflePlayers: () => socket.emit('shuffle-players'),
+		pauseGame: () => socket.emit('toggle-pause'),
 	}
 }
 const zoomed = ref(false)

@@ -2,17 +2,17 @@
     <div class="chel" :class="{
         [`slot-color-${state.startSlotColor.value ? state.startSlotColor : slot}`]: true,
         'selected': service.selectedTarget.value === slot && state.phase === 2,
-        'sosed': state.cards && state.phase === 2
+        'sosed': state.cards && state.phase === 2 && state.action === null
             ? state.cards![service.selectedCard.value!]?.target === 'sosed' && state.normSosed.includes(slot)
             : false,
-        'any': state.cards && state.phase === 2 && state.currentPanika?.id !== 'tsepnayaReaksia'
+        'any': state.cards && state.phase === 2 && state.action === null && state.currentPanika?.id !== 'tsepnayaReaksia'
             ? state.cards![service.selectedCard.value!]?.target === 'any'
             && state.normPlayer.includes(slot) : false,
-        'selfOrSosed': state.cards && state.phase === 2 && state.currentPanika?.id !== 'tsepnayaReaksia'
+        'selfOrSosed': state.cards && state.phase === 2 && state.action === null && state.currentPanika?.id !== 'tsepnayaReaksia'
             ? state.cards![service.selectedCard.value!]?.target === 'selfOrSosed'
             && (state.normSosed.includes(slot) || slot === state.userSlot)
             : false,
-        'thirdplayer': state.currentPanika?.id !== 'tsepnayaReaksia' &&
+        'thirdplayer': state.currentPanika?.id !== 'tsepnayaReaksia' && state.action === null &&
             state.currentPanika?.id === 'razDva' && state.currentPlayer === state.userSlot && state.phase === 2
             ? state.normThirdPlayers.includes(slot) : false,
     }" @click="slotClick(slot)">
@@ -60,9 +60,9 @@ function setAvatarClick() {
 }
 
 function slotClick(index: number) {
-    if (state.value.phase === 2
-        && state.value.currentPlayer === state.value.userSlot
-        && (state.value.action == null || state.value.currentPanika)) {
+    if (state.value.phase === 2 && state.value.currentPlayer === state.value.userSlot
+        && (state.value.action == null || state.value.currentPanika?.id === 'razDva'
+            || state.value.currentPanika?.id === 'ubiraysyaProch')) {
         service.selectedTarget.value = service.selectedTarget.value !== index ? index : null
         proccessSoundClient()
     }
@@ -106,7 +106,7 @@ defineProps<{
     background-image: url(./img/dver1.png);
     background-size: contain;
     background-repeat: no-repeat;
-    z-index: 5;
+    z-index: 2;
 }
 
 .dver.svoya {
