@@ -28,7 +28,7 @@ export function proccessSound(prevState: NechtoState, newStat: NechtoState) {
 		prevState.currentPlayer !== prevState.userSlot &&
 		newStat.currentPlayer === newStat.userSlot &&
 		!newStat.spectators.includes(newStat.userId) &&
-		offZvuk.value
+		!offZvuk.value
 	) {
 		startRoundVzuk.play()
 	}
