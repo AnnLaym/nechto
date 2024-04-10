@@ -121,6 +121,7 @@ watch(state, () => {
     border-radius: 20px;
     font-size: 20;
     border: 2px solid white;
+    cursor: pointer;
 }
 
 .newTimer {

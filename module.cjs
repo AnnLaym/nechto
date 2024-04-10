@@ -45,8 +45,8 @@ function init(wsServer, path) {
                 showAllHand: null,
                 allReadyNedeed: false,
                 gameLog: [],
-                smallTimer: 10,
-                bigTimer: 45,
+                smallTimer: 15,
+                bigTimer: 40,
                 isObmenReady: false,
                 voting: false,
                 currentCardPanik: null,
@@ -360,9 +360,10 @@ function init(wsServer, path) {
                         }
                     } else if (room.action) {
                         const logi = (chel, act) => (room.gameLog.push({ actors: [room.playerSlots[chel]], action: act, bot: true }))
+                        const logiX = (chel, chel2) => (room.gameLog.push({ actors: [room.playerSlots[chel], room.playerSlots[chel2]], bot: true }))
                         if (room.action === 'ognemet') {
                             playerKill(room.target)
-                            logi(room.currentPlayer)
+                            logiX(room.currentPlayer, room.target)
                             room.waitMoveSlot = room.currentPlayer
                             room.target = null
                             update()
@@ -830,9 +831,9 @@ function init(wsServer, path) {
                     let karta1 = state.playerHand[room.currentPlayer][state.obmenCardIndex];
                     let karta2 = state.playerHand[room.target][i];
                     if (karta1.id !== 'nechto' && karta2.id !== 'nechto') {
-                        if (karta1.id == 'zarajenie' && room.currentPlayer == state.nechto && !state.zarajennie.includes(room.currentPlayer)) { // TODO: bug
+                        if (karta1.id == 'zarajenie' && room.currentPlayer == state.nechto && !state.zarajennie.includes(room.target)) { // TODO: bug
                             state.zarajennie.push(room.target)
-                        } else if (karta2.id == 'zarajenie' && room.target == state.nechto && !state.zarajennie.includes(room.target)) {
+                        } else if (karta2.id == 'zarajenie' && room.target == state.nechto && !state.zarajennie.includes(room.currentPlayer)) {
                             state.zarajennie.push(room.currentPlayer)
                         }
                         state.playerHand[room.currentPlayer][state.obmenCardIndex] = karta2;
@@ -1010,7 +1011,7 @@ function init(wsServer, path) {
                             state.playerHand[slot].splice(index, 1);
                         }
                         const logs = () => {
-                            room.gameLog.push({ card: card, actors: [room.playerSlots[room.currentPlayer], room.target ? room.playerSlots[room.target] : null] })
+                            room.gameLog.push({ card: card, actors: [room.playerSlots[room.currentPlayer], (room.target || room.target === 0) ? room.playerSlots[room.target] : null] })
                         }
                         const nextPlayer = getNextPlayer(room.invertDirection)
                         const prevPLayer = getNextPlayer(!room.invertDirection)

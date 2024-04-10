@@ -97,11 +97,11 @@ const cardsDeck = {
     },
     tsepnayaReaksia: {
         type: "panika", endTurn: true, allReady: true,
-        count: { 4: 1, 5: 1, 6: 1, 7: 1, 8: 1, 9: 2, 10: 2, 11: 2, 12: 2 }
+        count: { 4: 0, 5: 1, 6: 1, 7: 1, 8: 1, 9: 2, 10: 2, 11: 2, 12: 2 }
     },
     triChetyre: {
         type: "panika",
-        count: { 4: 1, 5: 1, 6: 1, 7: 1, 8: 1, 9: 2, 10: 2, 11: 2, 12: 2 }
+        count: { 4: 0, 5: 1, 6: 1, 7: 1, 8: 1, 9: 2, 10: 2, 11: 2, 12: 2 }
     },
     uups: {
         type: "panika", target: 'sosed',
@@ -109,11 +109,11 @@ const cardsDeck = {
     },
     svidanieVSlepuyu: {
         type: "panika", endTurn: true,
-        count: { 4: 1, 5: 1, 6: 1, 7: 1, 8: 1, 9: 1, 10: 2, 11: 2, 12: 2 }
+        count: { 4: 0, 5: 1, 6: 1, 7: 1, 8: 1, 9: 1, 10: 2, 11: 2, 12: 2 }
     },
     zabivchivost: {
         type: "panika",
-        count: { 4: 1, 5: 1, 6: 1, 7: 1, 8: 1, 9: 1, 10: 1, 11: 1, 12: 1 }
+        count: { 4: 0, 5: 1, 6: 1, 7: 1, 8: 1, 9: 1, 10: 1, 11: 1, 12: 1 }
     },
     zarajenie: {
         type: "card",
@@ -184,8 +184,9 @@ const createDeck = (players, startWithNechto) => {
         let shuffleDeki = shuffleArray([...ostatokDeck, ...panikDeck, ...zarajenieDeck])
         //shuffleDeki.unshift({ ...cardsDeck.zarajenie, id: 'zarajenie' })
         // shufledFirsDeck.push({ ...cardsDeck.zarajenie, id: 'zarajenie' })
-        // shufledFirsDeck.push({ ...cardsDeck.ubiraysyaProch, id: 'ubiraysyaProch' })
-        // shuffleDeki.unshift({ ...cardsDeck.ubiraysyaProch, id: 'ubiraysyaProch' })
+        //shufledFirsDeck.push({ ...cardsDeck.topor, id: 'topor' })
+        // shuffleDeki.unshift({ ...cardsDeck.topor, id: 'topor' })
+        // shuffleDeki.unshift({ ...cardsDeck.ognemet, id: 'ognemet' })
         res = [...shufledFirsDeck, ...shuffleDeki]
     };
     return res

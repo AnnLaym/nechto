@@ -7,6 +7,10 @@ import grabCardZvukFile from './components/zvuki/grabCard.mp3'
 import svapMestaZvukFile from './components/zvuki/svapMesta.mp3'
 import clickSoundFile from './components/zvuki/click.mp3'
 import karantinZvukFile from './components/zvuki/karantin.mp3'
+import zakolotilDverZvukFile from './components/zvuki/door.mp3'
+import zarajenieZvukFile from './components/zvuki/zarajenie.mp3'
+import axeZvukFile from './components/zvuki/axe.mp3'
+import ognemetZvukFile from './components/zvuki/ognemet.mp3'
 
 const startRoundVzuk = new Audio(startRoundZvukFile)
 const startGameVzuk = new Audio(startGameZvukFile)
@@ -16,11 +20,18 @@ const grabCardVzuk = new Audio(grabCardZvukFile)
 const svapMestaVzuk = new Audio(svapMestaZvukFile)
 const clickSound = new Audio(clickSoundFile)
 const karantinVzuk = new Audio(karantinZvukFile)
+const zakolotilDverVzuk = new Audio(zakolotilDverZvukFile)
+const zarajenieVzuk = new Audio(zarajenieZvukFile)
+const axeVzuk = new Audio(axeZvukFile)
+const ognemetVzuk = new Audio(ognemetZvukFile)
 
 panicaVzuk.volume = 0.3
 pickVzuk.volume = 0.7
 clickSound.volume = 0.6
 startGameVzuk.volume = 0.6
+startRoundVzuk.volume = 0.8
+axeVzuk.volume = 0.8
+ognemetVzuk.volume = 0.5
 
 export function proccessSound(prevState: NechtoState, newStat: NechtoState) {
 	if (!prevState.inited) return
@@ -60,6 +71,36 @@ export function proccessSound(prevState: NechtoState, newStat: NechtoState) {
 
 	if (prevState.gameLog.length !== newStat.gameLog.length && !offZvuk.value) {
 		clickSound.play()
+		if (newStat.gameLog[newStat.gameLog.length - 1]['card']?.id === 'topor') {
+			axeVzuk.play()
+		}
+	}
+
+	if (newStat.gameLog.length > 2) { //ne rabotaet 
+		if (
+			newStat
+				.umerSlots!.join('')
+				.includes(
+					newStat.playerSlots
+						.indexOf(
+							newStat.gameLog[newStat.gameLog.length - 1]['actors']?.[1]!,
+						)
+						.toString(),
+				) &&
+			!offZvuk.value &&
+			prevState
+				.umerSlots!.join('')
+				.includes(
+					newStat.playerSlots
+						.indexOf(
+							newStat.gameLog[newStat.gameLog.length - 1]['actors']?.[1]!,
+						)
+						.toString(),
+				) &&
+			prevState.umerSlots?.length !== newStat.umerSlots?.length
+		) {
+			ognemetVzuk.play()
+		}
 	}
 
 	if (
@@ -70,11 +111,30 @@ export function proccessSound(prevState: NechtoState, newStat: NechtoState) {
 		clickSound.play()
 	}
 
+	if (!offZvuk.value) {
+		for (let i = 0; i <= Object.values(prevState.karantin).length; i++) {
+			if (prevState.karantin[i] !== 2 && newStat.karantin[i] === 2) {
+				karantinVzuk.play()
+			}
+		}
+		for (let i = 0; i <= Object.values(prevState.dveriClient).length; i++) {
+			if (
+				prevState.dveriClient[i] &&
+				newStat.dveriClient[i] &&
+				prevState.dveriClient[i]['next'] !== newStat.dveriClient[i]['next'] &&
+				prevState.dveriClient[i]['next'] === false
+			) {
+				zakolotilDverVzuk.play()
+			}
+		}
+	}
+
 	if (
-		Object.values(prevState.karantin).length !==
-		Object.values(newStat.karantin).length
+		!prevState.zarajennie?.includes(prevState.userSlot!) &&
+		newStat.zarajennie?.includes(newStat.userSlot!) &&
+		!offZvuk.value
 	) {
-		karantinVzuk.play()
+		zarajenieVzuk.play()
 	}
 }
 
