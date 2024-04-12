@@ -11,45 +11,90 @@ import zakolotilDverZvukFile from './components/zvuki/door.mp3'
 import zarajenieZvukFile from './components/zvuki/zarajenie.mp3'
 import axeZvukFile from './components/zvuki/axe.mp3'
 import ognemetZvukFile from './components/zvuki/ognemet.mp3'
+import analizZvukFile from './components/zvuki/analiz.mp3'
+import mimoZvukFile from './components/zvuki/mimo.mp3'
+import nechtoWinZvukFile from './components/zvuki/nechto_Win.mp3'
+import nechtoZvukFile from './components/zvuki/nechto.mp3'
+import nikakogoShashlikaZvukFile from './components/zvuki/ognetushitel.mp3'
+import podozrenieZvukFile from './components/zvuki/podozrenie.mp3'
+import soblaznZvukFile from './components/zvuki/soblazn.mp3'
+import strahZvukFile from './components/zvuki/strah.mp3'
+import uporstvoZvukFile from './components/zvuki/uporstvo.mp3'
+import viskiZvukFile from './components/zvuki/viski.mp3'
+import glyadiPoStoronamZvukFile from './components/zvuki/watch_your_back.mp3'
+import mneIZdesNelzyaZvukFile from './components/zvuki/zdes_ne_ploho.mp3'
 
-const startRoundVzuk = new Audio(startRoundZvukFile)
-const startGameVzuk = new Audio(startGameZvukFile)
-const pickVzuk = new Audio(pickZvukFile)
-const panicaVzuk = new Audio(panicaZvukFile)
-const grabCardVzuk = new Audio(grabCardZvukFile)
-const svapMestaVzuk = new Audio(svapMestaZvukFile)
-const clickSound = new Audio(clickSoundFile)
-const karantinVzuk = new Audio(karantinZvukFile)
-const zakolotilDverVzuk = new Audio(zakolotilDverZvukFile)
-const zarajenieVzuk = new Audio(zarajenieZvukFile)
-const axeVzuk = new Audio(axeZvukFile)
-const ognemetVzuk = new Audio(ognemetZvukFile)
+const sounds = {
+	startRoundVzuk: new Audio(startRoundZvukFile), // work
+	startGameVzuk: new Audio(startGameZvukFile), // work
+	pickVzuk: new Audio(pickZvukFile), // work
+	panicaVzuk: new Audio(panicaZvukFile), // work
+	grabCardVzuk: new Audio(grabCardZvukFile), // work
+	svapMestaVzuk: new Audio(svapMestaZvukFile),
+	clickSound: new Audio(clickSoundFile), // work
+	karantinVzuk: new Audio(karantinZvukFile), // work
+	zakolotilDverVzuk: new Audio(zakolotilDverZvukFile), //work
+	zarajenieVzuk: new Audio(zarajenieZvukFile), // work
+	axeVzuk: new Audio(axeZvukFile),
+	ognemetVzuk: new Audio(ognemetZvukFile), // work
+	analizVzuk: new Audio(analizZvukFile), // work
+	mimoVzuk: new Audio(mimoZvukFile),
+	nechtoWinVzuk: new Audio(nechtoWinZvukFile), //work
+	nechtoVzuk: new Audio(nechtoZvukFile), // work
+	nikakogoShashlikaVzuk: new Audio(nikakogoShashlikaZvukFile),
+	podozrenieVzuk: new Audio(podozrenieZvukFile), //work
+	soblaznVzuk: new Audio(soblaznZvukFile),
+	strahVzuk: new Audio(strahZvukFile), //work
+	uporstvoVzuk: new Audio(uporstvoZvukFile),
+	viskiVzuk: new Audio(viskiZvukFile), //work
+	glyadiPoStoronamVzuk: new Audio(glyadiPoStoronamZvukFile), //work
+	mneIZdesNelzyaVzuk: new Audio(mneIZdesNelzyaZvukFile), //work
+}
 
-panicaVzuk.volume = 0.3
-pickVzuk.volume = 0.7
-clickSound.volume = 0.6
-startGameVzuk.volume = 0.6
-startRoundVzuk.volume = 0.8
-axeVzuk.volume = 0.8
-ognemetVzuk.volume = 0.5
+sounds.startGameVzuk.volume = 0.3
+sounds.startRoundVzuk.volume = 0.3
+sounds.panicaVzuk.volume = 0.3
 
+const tihieZvuki: (keyof typeof sounds)[] = [
+	'mneIZdesNelzyaVzuk',
+	'glyadiPoStoronamVzuk',
+	'viskiVzuk',
+	'uporstvoVzuk',
+	'strahVzuk',
+	'soblaznVzuk',
+	'podozrenieVzuk',
+	'nikakogoShashlikaVzuk',
+	'mimoVzuk',
+	'analizVzuk',
+	'axeVzuk',
+]
+
+const playSound = (sound: keyof typeof sounds) => {
+	if (!offZvuk.value) {
+		if (tihieZvuki.includes(sound)) {
+			sounds[sound].volume = 0.5
+		}
+		sounds[sound].play()
+	}
+}
 export function proccessSound(prevState: NechtoState, newStat: NechtoState) {
 	if (!prevState.inited) return
+
 	if (
 		prevState.currentPlayer !== prevState.userSlot &&
 		newStat.currentPlayer === newStat.userSlot &&
 		!newStat.spectators.includes(newStat.userId) &&
 		!offZvuk.value
 	) {
-		startRoundVzuk.play()
+		playSound('startRoundVzuk')
 	}
 
 	if (prevState.phase === 0 && newStat.phase === 1 && !offZvuk.value) {
-		startGameVzuk.play()
+		playSound('startGameVzuk')
 	}
 
 	if (!prevState.currentPanika && newStat.currentPanika && !offZvuk.value) {
-		panicaVzuk.play()
+		playSound('panicaVzuk')
 	}
 
 	if (
@@ -58,7 +103,7 @@ export function proccessSound(prevState: NechtoState, newStat: NechtoState) {
 		!offZvuk.value &&
 		newStat.currentPlayer === newStat.userSlot
 	) {
-		grabCardVzuk.play()
+		playSound('grabCardVzuk')
 	}
 
 	if (
@@ -66,17 +111,16 @@ export function proccessSound(prevState: NechtoState, newStat: NechtoState) {
 		prevState.playerSlots.join('') !== newStat.playerSlots.join('') &&
 		!offZvuk.value
 	) {
-		svapMestaVzuk.play()
+		playSound('svapMestaVzuk')
 	}
 
 	if (prevState.gameLog.length !== newStat.gameLog.length && !offZvuk.value) {
-		clickSound.play()
+		playSound('clickSound')
 		if (newStat.gameLog[newStat.gameLog.length - 1]['card']?.id === 'topor') {
-			axeVzuk.play()
+			playSound('axeVzuk')
 		}
 	}
-
-	if (newStat.gameLog.length > 2) { //ne rabotaet 
+	if (newStat.gameLog.length > 2) {
 		if (
 			newStat
 				.umerSlots!.join('')
@@ -87,8 +131,7 @@ export function proccessSound(prevState: NechtoState, newStat: NechtoState) {
 						)
 						.toString(),
 				) &&
-			!offZvuk.value &&
-			prevState
+			!prevState
 				.umerSlots!.join('')
 				.includes(
 					newStat.playerSlots
@@ -99,7 +142,59 @@ export function proccessSound(prevState: NechtoState, newStat: NechtoState) {
 				) &&
 			prevState.umerSlots?.length !== newStat.umerSlots?.length
 		) {
-			ognemetVzuk.play()
+			playSound('ognemetVzuk')
+		}
+
+		if (
+			newStat.gameLog[newStat.gameLog.length - 1]['card']?.id ===
+				'glyadiPoStoronam' &&
+			prevState.invertDirection !== newStat.invertDirection
+		) {
+			playSound('glyadiPoStoronamVzuk')
+		}
+
+		if (
+			newStat.gameLog[newStat.gameLog.length - 1]['card']?.id === 'viski' &&
+			newStat.showAllHand?.length !== prevState.showAllHand?.length
+		) {
+			playSound('viskiVzuk')
+		}
+
+		if (
+			newStat.gameLog[newStat.gameLog.length - 1]['card']?.id === 'uporstvo' &&
+			newStat.chekCards?.length !== prevState.chekCards?.length
+		) {
+			playSound('uporstvoVzuk')
+		}
+
+		if (
+			newStat.gameLog[newStat.gameLog.length - 1]['card']?.id ===
+				'mneIZdesNePloha' &&
+			prevState.phase === 2 &&
+			newStat.phase === 3
+		) {
+			playSound('mneIZdesNelzyaVzuk')
+		}
+
+		if (
+			newStat.gameLog[newStat.gameLog.length - 1]['card']?.id === 'strah' &&
+			newStat.chekCards?.length !== prevState.chekCards?.length
+		) {
+			playSound('strahVzuk')
+		}
+
+		if (
+			newStat.gameLog[newStat.gameLog.length - 1]['card']?.id === 'podozrenie' &&
+			newStat.action === 'podozrenie'
+		) {
+			playSound('podozrenieVzuk')
+		}
+
+		if (
+			newStat.gameLog[newStat.gameLog.length - 1]['card']?.id === 'analiz' &&
+			newStat.action === 'analiz'
+		) {
+			playSound('analizVzuk')
 		}
 	}
 
@@ -108,13 +203,13 @@ export function proccessSound(prevState: NechtoState, newStat: NechtoState) {
 			Object.values(newStat.readyPlayers).filter((it) => it === true).length &&
 		!offZvuk.value
 	) {
-		clickSound.play()
+		playSound('clickSound')
 	}
 
 	if (!offZvuk.value) {
 		for (let i = 0; i <= Object.values(prevState.karantin).length; i++) {
 			if (prevState.karantin[i] !== 2 && newStat.karantin[i] === 2) {
-				karantinVzuk.play()
+				playSound('karantinVzuk')
 			}
 		}
 		for (let i = 0; i <= Object.values(prevState.dveriClient).length; i++) {
@@ -124,20 +219,37 @@ export function proccessSound(prevState: NechtoState, newStat: NechtoState) {
 				prevState.dveriClient[i]['next'] !== newStat.dveriClient[i]['next'] &&
 				prevState.dveriClient[i]['next'] === false
 			) {
-				zakolotilDverVzuk.play()
+				playSound('zakolotilDverVzuk')
 			}
 		}
 	}
 
 	if (
-		!prevState.zarajennie?.includes(prevState.userSlot!) &&
-		newStat.zarajennie?.includes(newStat.userSlot!) &&
-		!offZvuk.value
+		newStat.phase === 0 &&
+		newStat.gameLog.length > 7 &&
+		newStat.winner === 'nechto and team' &&
+		newStat.phase !== prevState.phase
 	) {
-		zarajenieVzuk.play()
+		playSound('nechtoWinVzuk')
+	}
+
+	if (
+		newStat.nechto === newStat.userSlot &&
+		prevState.nechto !== newStat.userSlot &&
+		!newStat.startWithNechto &&
+		(prevState.phase === 1 || prevState.phase === 2 || prevState.phase === 3)
+	) {
+		playSound('nechtoVzuk')
+	}
+
+	if (
+		!prevState.zarajennie?.includes(prevState.userSlot!) &&
+		newStat.zarajennie?.includes(newStat.userSlot!)
+	) {
+		playSound('zarajenieVzuk')
 	}
 }
 
 export function proccessSoundClient() {
-	if (!offZvuk.value) pickVzuk.play()
+	//if (!offZvuk.value) playSound('pickVzuk')
 }

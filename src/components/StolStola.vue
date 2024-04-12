@@ -66,9 +66,14 @@
 			state.phase === 2 &&
 			!state.isObmenReady &&
 			state.action !== 'strah' &&
-			(state.action === 'ognemet' ||
-				state.action === 'menyaemsyaMestami' ||
-				state.action === 'smaivayUdochki'))
+			(
+				(state.action === 'ognemet' && chekSgorelaJopaIliNet)
+				|| (
+					(state.action === 'menyaemsyaMestami'
+						|| state.action === 'smaivayUdochki')
+					&& passPriSmeneTaburetok)
+			)
+		)
 		" @click="service.resolveAction(service.selectedCard.value)" class="knopka">
 				{{ getKnopkaName('sigrat') }}
 			</div>
@@ -82,7 +87,7 @@
 			<div v-if="state.target === state.userSlot &&
 		state.phase === 3 &&
 		state.isObmenReady &&
-		state.action !== 'strah'
+		state.action !== 'strah' && chekhandForPlayNeObmen
 		" @click="service.resolveAction(service.selectedCard.value)" class="knopka">
 				{{ getKnopkaName('sigrat') }}
 			</div>
@@ -155,7 +160,7 @@
 				{{ getKnopkaName(`goPanika`) }}
 			</div>
 			<div v-if="state.currentPanika && !state.readyPlayers[state.userSlot!]
-		&& state.currentPanika.id == 'tsepnayaReaksia' 
+		&& state.currentPanika.id == 'tsepnayaReaksia'
 		&& !state.spectators.includes(state.playerSlots[state.userSlot!]!)
 		&& !state.umerSlots!.includes(state.userSlot!)
 		" class="knopka" @click="
@@ -246,6 +251,12 @@ function playCardClick() {
 function dropCardClick() {
 	if (service.selectedCard.value !== null) service.dropCard(service.selectedCard.value);
 }
+
+const chekhandForPlayNeObmen = computed(() => state.value.cards?.some(card =>
+	card.id === 'mimo' || card.id === 'netUjSpasibo' || card.id === 'strah'))
+const chekSgorelaJopaIliNet = computed(() => state.value.cards?.some(card => card.id === 'nikakogoShahlika'));
+const passPriSmeneTaburetok = computed(() => state.value.cards?.some(card => card.id === 'mneIZdesNePloha'));
+
 </script>
 
 <style scoped>
