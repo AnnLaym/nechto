@@ -186,8 +186,8 @@ const createDeck = (players, startWithNechto) => {
         // shufledFirsDeck.push({ ...cardsDeck.zarajenie, id: 'zarajenie' })
         //shufledFirsDeck.push({ ...cardsDeck.topor, id: 'topor' })
         // shuffleDeki.unshift({ ...cardsDeck.topor, id: 'topor' })
-        // shuffleDeki.unshift({ ...cardsDeck.mneIZdesNePloha, id: 'mneIZdesNePloha' })
-        // shuffleDeki.unshift({ ...cardsDeck.analiz, id: 'analiz' })
+        // shuffleDeki.unshift({ ...cardsDeck.strah, id: 'strah' })
+        // shuffleDeki.unshift({ ...cardsDeck.tolkoMejduNami, id: 'tolkoMejduNami' })
         res = [...shufledFirsDeck, ...shuffleDeki]
     };
     return res

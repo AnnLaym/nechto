@@ -162,7 +162,7 @@ export function proccessSound(prevState: NechtoState, newStat: NechtoState) {
 
 		if (
 			newStat.gameLog[newStat.gameLog.length - 1]['card']?.id === 'uporstvo' &&
-			newStat.chekCards?.length !== prevState.chekCards?.length
+			newStat.chekCards?.length !== prevState.chekCards?.length //POCHINIT 
 		) {
 			playSound('uporstvoVzuk')
 		}

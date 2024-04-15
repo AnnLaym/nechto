@@ -61,8 +61,10 @@ function setAvatarClick() {
 
 function slotClick(index: number) {
     if (state.value.phase === 2 && state.value.currentPlayer === state.value.userSlot
-        && (state.value.action == null || state.value.currentPanika?.id === 'razDva'
-            || state.value.currentPanika?.id === 'ubiraysyaProch')) {
+        && (state.value.action == null
+            || state.value.currentPanika?.id === 'razDva'
+            || state.value.currentPanika?.id === 'ubiraysyaProch'
+            || state.value.currentPanika?.id === 'tolkoMejduNami')) {
         service.selectedTarget.value = service.selectedTarget.value !== index ? index : null
         proccessSoundClient()
     }
