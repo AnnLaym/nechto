@@ -50,7 +50,7 @@ function init(wsServer, path) {
                 allReadyNedeed: false,
                 gameLog: [],
                 smallTimer: 15,
-                bigTimer: 14,
+                bigTimer: 50,
                 isObmenReady: false,
                 voting: false,
                 currentCardPanik: null,
@@ -198,13 +198,13 @@ function init(wsServer, path) {
                         room.teamsLocked = true;
                         state.tsepnayaReaksiaObmenKard = {}
                         room.currentPanika = null;
-                        //shufflePlayerSLots()
+                        shufflePlayerSLots()
                         room.currentPlayer = shuffleArray(room.playerSlots.map((it, index) => index).filter(inx => room.playerSlots[inx]))[0]
                         state.zarajennie = [];
                         room.isNextCardPanika = null
-                        room.currentPlayer = 4
+                        // room.currentPlayer = 4
                         room.invertDirection = (Math.floor(Math.random() * 10) + 1) % 2 !== 0
-                        room.invertDirection = false
+                        // room.invertDirection = false
                         room.gameLog = [];
                         state.showCard = {};
                         room.isObmenReady = false;
