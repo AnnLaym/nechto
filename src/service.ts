@@ -102,6 +102,7 @@ export interface NechtoState {
 	normThirdPlayers: Slot[]
 	dveriClient: Record<Slot, { prev: boolean; next: boolean }>
 	isNextCardPanika: boolean | null
+	isPrevCardPanika: boolean | null
 	actionCard: Card | null
 	bot: boolean | null
 	paused: boolean
@@ -248,7 +249,7 @@ function maintainState() {
 				if (state.phase === 1) {
 					nechtoService.selectedCard.value = null
 				}
-				if(prevState.cards !== state.cards) {
+				if (prevState.cards !== state.cards) {
 					nechtoService.selectedCard.value = null
 				}
 			}

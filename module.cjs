@@ -23,6 +23,7 @@ function init(wsServer, path) {
             super(hostId, hostData, userRegistry, registry.games.citadels.id, path);
             let interval
             let pidorstvo = false // bilo mimo = true
+            let seflKarantin = false
             const room = {
                 ...this.room,
                 inited: true,
@@ -49,7 +50,7 @@ function init(wsServer, path) {
                 allReadyNedeed: false,
                 gameLog: [],
                 smallTimer: 15,
-                bigTimer: 40,
+                bigTimer: 14,
                 isObmenReady: false,
                 voting: false,
                 currentCardPanik: null,
@@ -78,7 +79,8 @@ function init(wsServer, path) {
                 obmenCardIndex: null,
                 showCard: [],
                 uporstvoCards: {},
-                tsepnayaReaksiaObmenKard: {}
+                tsepnayaReaksiaObmenKard: {},
+                umerZarajennim: []
             };
             this.state = state;
             const
@@ -89,7 +91,8 @@ function init(wsServer, path) {
                         .filter(i => !state.playerHand[i] && room.playerSlots[i] !== null)
                         .map((slot) => parseInt(slot)),
                     dveriClient: calcDveriClient(),
-                    isNextCardPanika: CalcNextCardPanika()
+                    isNextCardPanika: CalcNextCardPanika(),
+                    isPrevCardPanika: calcPrevCardPanika(),
                     // actionCard: utils.getActionCard(room.action)
                 }),
                 updatePlayerState = (user) => {
@@ -195,13 +198,13 @@ function init(wsServer, path) {
                         room.teamsLocked = true;
                         state.tsepnayaReaksiaObmenKard = {}
                         room.currentPanika = null;
-                        shufflePlayerSLots()
+                        //shufflePlayerSLots()
                         room.currentPlayer = shuffleArray(room.playerSlots.map((it, index) => index).filter(inx => room.playerSlots[inx]))[0]
                         state.zarajennie = [];
                         room.isNextCardPanika = null
-                        //room.currentPlayer = 4
+                        room.currentPlayer = 4
                         room.invertDirection = (Math.floor(Math.random() * 10) + 1) % 2 !== 0
-                        //room.invertDirection = false
+                        room.invertDirection = false
                         room.gameLog = [];
                         state.showCard = {};
                         room.isObmenReady = false;
@@ -393,7 +396,7 @@ function init(wsServer, path) {
                         } else if (room.action == 'strah') {
                             state.showCard = {}
                             room.currentPlayer = getNextPlayer(room.invertDirection);
-                            startRound()
+                            endRound()
                         } else if (room.action == 'viski') {
                             room.showAllHand = null
                             startObmen()
@@ -565,6 +568,7 @@ function init(wsServer, path) {
                     }
                     if (state.zarajennie.includes(target)) {
                         state.zarajennie.splice(state.zarajennie.indexOf(target), 1)
+                        state.umerZarajennim.push(target)
                     }
                     if (target === state.nechto) {
                         isGameEnd(target)
@@ -672,6 +676,10 @@ function init(wsServer, path) {
                 CalcNextCardPanika = () => {
                     return state.deck.length > 0 ? state.deck[0].type == 'panika' : null
                 },
+                calcPrevCardPanika = () => {
+                    return state.discard.length > 0
+                        ? state.discard[state.discard.length - 1].type == 'panika' : null
+                },
                 isNumber = (value) => {
                     return typeof value === "number" && !Number.isNaN(value);
                 },
@@ -722,80 +730,81 @@ function init(wsServer, path) {
                     }
                 },
                 endRound = () => {
+                    room.target = null
                     const players = Object.keys(state.playerHand)
                     players.forEach(el => {
                         isDead(Number(el))
                     });
-                    if (room.karantin[room.currentPlayer]) {
+                    if (room.karantin[room.currentPlayer] && !seflKarantin) {
                         room.karantin[room.currentPlayer]--
                         if (room.karantin[room.currentPlayer] === 0) {
                             slometKarantin()
                         }
                     }
-                    room.currentPlayer = getNextPlayer(room.invertDirection);
-                    room.currentPanika = null;
-                    room.action = null;
-                    room.target = null;
+                    room.currentPlayer = getNextPlayer(room.invertDirection)
+                    room.currentPanika = null
+                    room.action = null
                     state.obmenCardIndex = null
-                    room.isObmenReady = false;
+                    room.isObmenReady = false
                     room.normSosed = null
                     room.normPlayer = null
                     room.normThirdPlayers = null
                     state.tsepnayaReaksiaObmenKard = {}
                     room.readyPlayers = {}
+                    seflKarantin = false
                     isGameEnd()
                     updatePlayerState()
                     update()
                     if (room.phase !== 0) {
-                        startRound();
+                        startRound()
                     }
-
                 },
                 endGame = (nechtoZdohlo) => {
-                    room.currentPlayer = null;
-                    room.phase = 0;
-                    room.currentPanika = null;
-                    room.action = null;
-                    room.target = null;
+                    room.currentPlayer = null
+                    room.phase = 0
+                    room.currentPanika = null
+                    room.action = null
+                    room.target = null
                     room.invertDirection = false
-                    room.isObmenReady = false;
-                    state.uporstvoCards = {};
+                    room.isObmenReady = false
+                    state.uporstvoCards = {}
                     if (nechtoZdohlo) {
                         room.winner = 'ebanati'
                     } else if (state.zarajennie.length === Object.keys(state.playerHand).length - 1) {
                         room.winner = 'nechto and team'
                     }
+                    state.zarajennie.push(...state.umerZarajennim)
                     room.gameLog.push({ action: 'end-game' })
-                    update();
-                    updateState();
+                    update()
+                    updateState()
                 },
                 removePlayer = (playerId) => {
                     if (room.spectators.has(playerId)) {
-                        this.emit("user-kicked", playerId);
-                        room.spectators.delete(playerId);
+                        this.emit("user-kicked", playerId)
+                        room.spectators.delete(playerId)
                     } else {
-                        room.playerSlots[room.playerSlots.indexOf(playerId)] = null;
+                        room.playerSlots[room.playerSlots.indexOf(playerId)] = null
                         if (room.onlinePlayers.has(playerId)) {
-                            room.spectators.add(playerId);
-                            updatePlayerState();
+                            room.spectators.add(playerId)
+                            updatePlayerState()
                         }
                     }
                 },
                 userJoin = (data) => {
                     const user = data.userId;
                     if (!room.playerNames[user])
-                        room.spectators.add(user);
-                    room.onlinePlayers.add(user);
-                    room.playerNames[user] = data.userName.substr && data.userName.substr(0, 60);
-                    update();
+                        room.spectators.add(user)
+                    room.onlinePlayers.add(user)
+                    room.playerNames[user] = data.userName.substr && data.userName.substr(0, 60)
+                    update()
                     updateState()
                 },
                 userLeft = (user) => {
-                    room.onlinePlayers.delete(user);
+                    room.onlinePlayers.delete(user)
                     if (room.spectators.has(user))
-                        delete room.playerNames[user];
-                    room.spectators.delete(user);
-                    update();
+                        delete room.playerNames[user]
+                    room.spectators.delete(user)
+                    update()
                 },
                 // panikaTsepnayaReaksiaDva = () => {
                 //     while (state.tsepnayaReaksiaObmenKard.length > 0) {
@@ -1168,6 +1177,7 @@ function init(wsServer, path) {
                                         room.target = target
                                         room.karantin[target] = 2 //2 turns lol
                                         state.playerHand[slot].splice(index, 1);
+                                        seflKarantin = true
                                         logs()
                                         startObmen()
                                     }

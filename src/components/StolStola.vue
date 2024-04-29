@@ -12,7 +12,11 @@
 	}" class="deka">
 					<div class="deka-count">{{ state.deckSize }}</div>
 				</div>
-				<div :style="{ 'background-image': `url(/nechto/cards/4.png)` }" class="deka">
+				<div :style="{
+		'background-image': state.isPrevCardPanika
+			? `url(/nechto/img/panica.png)`
+			: `url(/nechto/cards/4.png)`,
+	}" class="deka">
 					<div class="deka-count">{{ state.discardSize }}</div>
 				</div>
 			</div>
