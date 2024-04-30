@@ -7,7 +7,8 @@
                 </div>
             </div>
             <div class="newTimer" v-if="state.timed && !state.paused ?
-                (state.currentPanika !== null && state.currentPanika.id === 'tsepnayaReaksia' && !state.readyPlayers[slot])
+                (state.currentPanika !== null && state.currentPanika.id === 'tsepnayaReaksia'
+                    && !state.readyPlayers[slot] && state.umerSlots?.includes(slot))
                 || (state.currentPanika == null && state.waitMoveSlot === slot)
                 || (state.currentPanika !== null && state.currentPanika.id !== 'tsepnayaReaksia' && state.waitMoveSlot === slot)
                 : false

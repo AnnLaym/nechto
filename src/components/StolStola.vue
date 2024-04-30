@@ -191,8 +191,11 @@
 					<span>
 						{{ getKnopkaName('карты') }}
 					</span>
-					<span>
+					<span v-if="state.currentPanika?.id === 'tolkoMejduNami'">
 						{{ state.playerNames[state.playerSlots[state.target!]!] }}
+					</span>
+					<span v-else-if="state.currentPanika?.id !== 'tolkoMejduNami'">
+						{{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
 					</span>
 				</div>
 				<div v-if="state.chekCards?.length" class="uporstvo1">
