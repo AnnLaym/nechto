@@ -64,7 +64,8 @@ function slotClick(index: number) {
         && (state.value.action == null
             || state.value.currentPanika?.id === 'razDva'
             || state.value.currentPanika?.id === 'ubiraysyaProch'
-            || state.value.currentPanika?.id === 'tolkoMejduNami')) {
+            || state.value.currentPanika?.id === 'tolkoMejduNami'
+            || state.value.currentPanika?.id === 'davaiDrujit')) {
         service.selectedTarget.value = service.selectedTarget.value !== index ? index : null
         proccessSoundClient()
     }

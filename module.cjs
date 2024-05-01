@@ -202,9 +202,9 @@ function init(wsServer, path) {
                         room.currentPlayer = shuffleArray(room.playerSlots.map((it, index) => index).filter(inx => room.playerSlots[inx]))[0]
                         state.zarajennie = [];
                         room.isNextCardPanika = null
-                        // room.currentPlayer = 4
+                        //room.currentPlayer = 4
                         room.invertDirection = (Math.floor(Math.random() * 10) + 1) % 2 !== 0
-                        // room.invertDirection = false
+                        //room.invertDirection = false
                         room.gameLog = [];
                         state.showCard = {};
                         room.isObmenReady = false;
@@ -573,9 +573,6 @@ function init(wsServer, path) {
                     if (target === state.nechto) {
                         isGameEnd(target)
                     }
-                    if (room.currentPlayer === target) {
-                        room.currentPlayer = getNextPlayer(room.currentPlayer)
-                    }
                 },
                 isGameEnd = (k) => {
                     if (state.zarajennie.length + 1 === Object.keys(state.playerHand).length) {
@@ -854,12 +851,13 @@ function init(wsServer, path) {
                     })
                 },
                 obmenChekZarajeniy = (slot, index) => {
-                    if (index === 1 | index === 2 | index === 3 | index === 4 | index === 0) {
+                    if (index === 1 | index === 2 | index === 3 | index === 0) {
                         let zarC = 0
                         state.playerHand[slot].forEach(el => {
                             if (el.id === 'zarajenie')
                                 zarC++
                         });
+                        zarC++
                         if (getHandCard(slot, index).id == 'nechto')
                             return false
                         else if (getHandCard(slot, index).id == 'zarajenie' && slot == state.nechto) {
@@ -1269,6 +1267,7 @@ function init(wsServer, path) {
                         if (obmenChekZarajeniy(slot, index)) {
                             state.obmenCardIndex = index;
                             room.isObmenReady = true;
+                            room.waitMoveSlot = room.target
                             startTimer()
                             update()
                             updateState()
