@@ -2,7 +2,7 @@
     <div class="root-plashki">
       <div  class="plashka"> {{ getKnopkaName('phashka') }}</div> 
       <div  class="plashka"> {{ getKnopkaName('plahskaTwo') }}</div> 
-
+      <div> гагагага </div>
     </div>
 </template>
 <script lang="ts" setup>
