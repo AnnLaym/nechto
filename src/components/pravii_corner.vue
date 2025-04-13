@@ -25,7 +25,7 @@ import PodskazkiXD from './podskazkiXD.vue';
   z-index: 200;
 }
 
-@media screen and (max-width: 1000px) and (min-height: 700px) {
+@media screen and (max-width: 1115px) and (min-height: 700px) {
   .corner {
     position: relative;
     width: 100%;
