@@ -4,7 +4,6 @@ const utils = require('./utils.cjs');
 const { get } = require("http");
 const { isNumber } = require("util");
 const { pid } = require("process");
-//hui dlya testa
 function init(wsServer, path) {
     const
         app = wsServer.app,
