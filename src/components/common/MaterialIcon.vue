@@ -1,13 +1,12 @@
 <template>
-    <i class="material-icons icon" :class="{button}">{{ icon }}</i>
+    <i class="material-icons icon" :class="{ button }">{{ icon }}</i>
 </template>
 
 <script setup lang="ts">
-
     defineProps<{
-        icon: string,
-        button?: boolean,
-    }>();
+        icon: string
+        button?: boolean
+    }>()
 </script>
 
 <style lang="scss">
