@@ -69,7 +69,7 @@ function init(wsServer, path) {
                 normThirdPlayers: null,
                 winner: null,
             }
-            if (testMode) {
+            if (true || testMode) {
                 [0, 2, 4, 6].forEach(ind => {
                     room.playerSlots[ind] = `kek${ind}`
                     room.playerNames[`kek${ind}`] = `kek${ind}`
@@ -322,7 +322,6 @@ function init(wsServer, path) {
                 }
             }
             const notEndRound = () => {
-                // TODO: проверить, что все паники без конца хода вызывают обмен
                 state.showCard = {}
                 room.waitMoveSlot = room.currentPlayer
                 room.action = null
@@ -353,6 +352,7 @@ function init(wsServer, path) {
                     discardSize: state.discard.length,
                     deckSize: state.deck.length,
                     umerSlots: freshUmerSlots,
+                    survivors: state.survivors,
                     dveriClient: calcDveriClient(),
                     isNextCardPanika: calcNextCardPanika(),
                     isPrevCardPanika: calcPrevCardPanika(),
@@ -366,7 +366,6 @@ function init(wsServer, path) {
                         zarajennie: state.zarajennie,
                         umerZarajennim: state.umerZarajennim,
                         umerChelovekom: state.umerChelovekom,
-                        survivors: state.survivors,
                         cards: null,
                         chekCards: null,
                     })
@@ -375,6 +374,7 @@ function init(wsServer, path) {
                         userRegistry.send(user, 'player-state', {
                             nechto: state.nechto,
                             zarajennie: state.zarajennie,
+                            umerZarajennim: state.umerZarajennim,
                             cards: state.playerHand[slot],
                             chekCards: state.showCard[slot] ? state.showCard[slot] : null,
                         })
@@ -443,7 +443,7 @@ function init(wsServer, path) {
                     if (karta1.id === utils.cardsDeck.zarajenie.id
                         && room.currentPlayer === state.nechto
                         && !state.zarajennie.includes(room.target)
-                    ) { // TODO: добавить обработку мимо ???
+                    ) {
                         state.zarajennie.push(room.target)
                     } else if (karta2.id === utils.cardsDeck.zarajenie.id
                         && room.target === state.nechto
@@ -505,7 +505,7 @@ function init(wsServer, path) {
                 return prevPLayer === target ? !room.dveri.includes(prevPLayer) : !room.dveri.includes(nextPlayer)
             }
             // phase step
-            const getRandomObmenCardIndex = (slot, target) => { // TODO: сделать, чтобы при пасе на слоте таргета могло отдаться заражение (проверить что везде корректный таргет)
+            const getRandomObmenCardIndex = (slot, target) => {
                 target = target ?? room.target
                 let result
                 if (slot === state.nechto) {
@@ -1562,7 +1562,6 @@ function init(wsServer, path) {
                             updateState()
                         } else if (panika.id === utils.cardsDeck.tsepnayaReaksia.id) {
                             if ([0, 1, 2, 3].includes(index) && !state.tsepnayaReaksiaObmenKard[slot])
-                                // TODO: фиксировать карту на фронте
                                 tsepnayaReaksiaPanika(slot, index)
                         } else if (panika.id === utils.cardsDeck.triChetyre.id) {
                             triChetyrePanika()
@@ -1587,8 +1586,9 @@ function init(wsServer, path) {
             this.userEventHandlers = {
                 ...this.eventHandlers,
                 'start-game': (user) => {
-                    if (user === room.hostId)
+                    if (user === room.hostId && room.phase === 0) {
                         startGame()
+                    }
                 },
                 'abort-game': (user) => {
                     if (user === room.hostId) {
@@ -1608,8 +1608,9 @@ function init(wsServer, path) {
                     }
                 },
                 'toggle-lock': (user) => {
-                    if (user === room.hostId)
+                    if (user === room.hostId) {
                         room.teamsLocked = !room.teamsLocked
+                    }
                     update()
                 },
                 'players-join': (user, slot) => {
@@ -1651,7 +1652,6 @@ function init(wsServer, path) {
                 'remove-player': (user, playerId) => {
                     if (room.hostId === user && playerId)
                         removePlayer(playerId)
-                    // TODO: отображать на фронте пустой слот
                     update()
                     updateState()
                 },

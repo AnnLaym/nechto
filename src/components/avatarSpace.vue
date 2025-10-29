@@ -58,7 +58,6 @@
         window.clearInterval(interval)
         timePassed.value = 0
         if (state.value.time) {
-            // TODO: добавить логику стопа таймера, когда пауза или конец игры
             interval = window.setInterval(() => {
                 timePassed.value += 50
             }, 50)

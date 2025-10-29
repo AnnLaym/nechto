@@ -29,10 +29,24 @@
 
     const activeSlots = computed(() => {
         let slots
+        const allPlayerSlots = [
+            ...new Set(
+                [
+                    ...(state.value.survivors || []),
+                    ...(state.value.umerChelovekom || []),
+                    ...(state.value.zarajennie || []),
+                    ...(state.value.umerZarajennim || []),
+                    ...(state.value.nechto != null ? [state.value.nechto] : []),
+                ].map(Number),
+            ),
+        ].sort((a, b) => a - b)
 
         if (state.value.teamsLocked) {
-            // TODO: всегда state.value.survivors
-            slots = state.value.playerSlots.map((_, i) => i).filter((i) => state.value.playerSlots[i] !== null)
+            if (allPlayerSlots.length) {
+                slots = allPlayerSlots
+            } else {
+                slots = state.value.playerSlots.map((_, i) => i).filter((i) => state.value.playerSlots[i] !== null)
+            }
         } else {
             slots = state.value.playerSlots.map((_, i) => i)
         }

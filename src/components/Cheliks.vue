@@ -21,7 +21,7 @@
         @click="slotClick(slot)">
         <div v-if="state.currentPlayer === slot" class="backgroundJ" />
         <div class="roditel">
-            <div v-if="state.playerSlots[slot] === null && (state.phase === 0 || !state.teamsLocked)" class="mini-roditel" @click="service.playersJoin(slot)">
+            <div v-if="state.playerSlots[slot] === null && !state.teamsLocked" class="mini-roditel" @click="service.playersJoin(slot)">
                 {{ getKnopkaName('sest') }}
             </div>
             <div v-else>

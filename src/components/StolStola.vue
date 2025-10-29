@@ -45,16 +45,26 @@
                         !state.currentPanika &&
                         state.userSlot === state.currentPlayer &&
                         state.chekCards?.length !== 0 &&
-                        !state.karantin[state.currentPlayer!]
+                        !state.karantin[state.currentPlayer!] &&
+                        !['nechto','zarajenie'].includes(state.cards[service.selectedCard.value].id)
                     "
                     class="knopka"
                     @click="playCardClick()">
                     {{ getKnopkaName('sigratCartu') }}
-                    <!--TODO: не отображать сиграть/скинуть для карты нечто-->
                 </div>
                 <div
                     v-if="
-                        state.phase === 2 && state.currentPlayer === state.userSlot && !state.currentPanika && service.selectedCard.value !== null && state.chekCards?.length !== 0
+                        state.phase === 2 &&
+                        state.currentPlayer === state.userSlot &&
+                        !state.currentPanika &&
+                        service.selectedCard.value !== null &&
+                        state.chekCards?.length !== 0 &&
+                        state.cards[service.selectedCard.value].id !== 'nechto' &&
+                        !(
+                            state.zarajennie?.map(Number).includes(state.currentPlayer) &&
+                            state.cards?.filter((c) => c.id === 'zarajenie').length === 1 &&
+                            state.cards[service.selectedCard.value].id === 'zarajenie'
+                        )
                     "
                     class="knopka"
                     @click="dropCardClick()">
@@ -117,13 +127,12 @@
                 v-if="
                     state.phase === 2 &&
                     state.target === state.userSlot &&
-                    (state.action === 'ognemet' || state.action === 'menyaemsyaMestami' || state.action === 'smativayUdochki' || state.action === 'viski')
+                    (state.action === 'ognemet' || state.action === 'menyaemsyaMestami' || state.action === 'smativayUdochki')
                 "
                 class="knopka"
                 @click="service.resolvePassActin()">
                 {{ getKnopkaName('pass') }}
             </div>
-            <!--TODO: а тут надо виски?-->
             <div
                 v-if="state.userSlot === state.vremyaPriznaniySlot && state.currentPanika?.id === 'vremyaPriznaniy' && state.showAllHand === null"
                 class="knopka"

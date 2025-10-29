@@ -151,8 +151,8 @@ for (let card in cardsDeck) {
 const createDeck = (players, startWithNechto, testMode) => {
     if (testMode) {
         const testDeck = Array(8).fill(NaN).map(_ => ({ ...cardsDeck.zarajenie }))
-        const testDeck2 = Array(8).fill(NaN).map(_ => ({ ...cardsDeck.mimo }))
-        const testDeck3 = Array(8).fill(NaN).map(_ => ({ ...cardsDeck.uporstvo }))
+        const testDeck2 = Array(8).fill(NaN).map(_ => ({ ...cardsDeck.viski }))
+        const testDeck3 = Array(8).fill(NaN).map(_ => ({ ...cardsDeck.ognemet }))
         return [
             ...shuffleArray([...testDeck, ...testDeck2, ...testDeck3]),
             ...[cardsDeck.nechto],
