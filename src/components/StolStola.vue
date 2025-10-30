@@ -46,7 +46,7 @@
                         state.userSlot === state.currentPlayer &&
                         state.chekCards?.length !== 0 &&
                         !state.karantin[state.currentPlayer!] &&
-                        !['nechto','zarajenie'].includes(state.cards[service.selectedCard.value].id)
+                        !['nechto','zarajenie'].includes(state.cards![service.selectedCard.value].id)
                     "
                     class="knopka"
                     @click="playCardClick()">
@@ -59,9 +59,9 @@
                         !state.currentPanika &&
                         service.selectedCard.value !== null &&
                         state.chekCards?.length !== 0 &&
-                        state.cards[service.selectedCard.value].id !== 'nechto' &&
+                        state.cards![service.selectedCard.value].id !== 'nechto' &&
                         !(
-                            state.zarajennie?.map(Number).includes(state.currentPlayer) &&
+                            state.zarajennie?.map(Number).includes(state.currentPlayer!) &&
                             state.cards?.filter((c) => c.id === 'zarajenie').length === 1 &&
                             state.cards[service.selectedCard.value].id === 'zarajenie'
                         )
