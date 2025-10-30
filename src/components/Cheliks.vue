@@ -33,7 +33,13 @@
                         <span v-if="state.hostId === state.userId" @click="service.removePLayer(state.playerSlots[slot])">
                             <i class="material-icons host-button settings-button" title="Remove">delete_forever</i>
                         </span>
-                        <span v-if="state.userSlot === slot" @click="handleClickChangeName()">
+                        <span v-if="state.hostId === state.userId && slot !== state.userSlot" @click="service.giveHost(state.playerSlots[slot]!)">
+                            <i class="material-icons host-button settings-button" title="Give Host">military_tech</i>
+                        </span>
+                        <span v-if="state.playerSlots[slot] === state.hostId">
+                            <i class="material-icons host-button settings-button" title="Game Host">star</i>
+                        </span>
+                        <span v-if="slot === state.userSlot" @click="handleClickChangeName()">
                             <i class="material-icons settings-button">edit</i>
                         </span>
                     </div>
@@ -184,11 +190,14 @@
         display: inline-block;
         white-space: nowrap;
         font-family: matToni123;
-        /* убираем ограничение по ширине */
-        max-width: none; /* или удаляем совсем */
     }
 
     .suka .text {
+        max-width: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        vertical-align: middle;
         display: inline-block;
         transition: opacity 0.3s ease;
         opacity: 1;

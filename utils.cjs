@@ -152,13 +152,14 @@ const createDeck = (players, startWithNechto, testMode) => {
     if (testMode) {
         const testDeck = Array(8).fill(NaN).map(_ => ({ ...cardsDeck.zarajenie }))
         const testDeck2 = Array(8).fill(NaN).map(_ => ({ ...cardsDeck.viski }))
-        const testDeck3 = Array(8).fill(NaN).map(_ => ({ ...cardsDeck.ognemet }))
+        const testDeck3 = Array(4).fill(NaN).map(_ => ({ ...cardsDeck.ognemet }))
         return [
             ...shuffleArray([...testDeck, ...testDeck2, ...testDeck3]),
+            ...[cardsDeck.ubiraysyaProch],
+            ...[cardsDeck.razDva],
             ...[cardsDeck.nechto],
             ...[cardsDeck.zarajenie],
             ...[cardsDeck.zarajenie],
-            ...[cardsDeck.ubiraysyaProch],
         ]
     }
 
@@ -185,7 +186,7 @@ const createDeck = (players, startWithNechto, testMode) => {
         }
     })
     let newDeck = realdeck.filter(card => card.id !== cardsDeck.zarajenie.id && card.type === cardTypes.card.id && card.id !== cardsDeck.nechto.id)
-    let panikDeck = realdeck.filter(card => card.type === 'p')
+    let panikDeck = realdeck.filter(card => card.type === cardTypes.panika)
     let zarajenieDeck = realdeck.filter(card => card.id === cardsDeck.zarajenie.id)
     let nechtoDeck = realdeck.filter(card => card.id === cardsDeck.nechto.id)
     let shuffledDeck = shuffleArray([...newDeck])
