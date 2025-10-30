@@ -21,7 +21,7 @@
         <div class="knopkee">
             <div v-if="state.winner === 'ebanati'" class="win">
                 {{ getKnopkaName('win-ebanati') }}
-                <div v-if="state.nechto === state.userSlot || state.zarajennie?.includes(state.userSlot!)" class="win">
+                <div v-if="state.nechto === state.userSlot || state.zarajennie?.includes(state.userSlot!) || state.umerZarajennim?.includes(state.userSlot!)" class="win">
                     {{ getKnopkaName('tiProigral') }}
                 </div>
                 <div v-else class="win">
@@ -30,7 +30,7 @@
             </div>
             <div v-if="state.winner === 'nechto and team'" class="win">
                 {{ getKnopkaName('win') }}
-                <div v-if="state.nechto === state.userSlot || state.zarajennie?.includes(state.userSlot!)" class="win">
+                <div v-if="state.nechto === state.userSlot || state.zarajennie?.includes(state.userSlot!) || state.umerZarajennim?.includes(state.userSlot!)" class="win">
                     {{ getKnopkaName('tiPobedil') }}
                 </div>
                 <div v-else class="win">

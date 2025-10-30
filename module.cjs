@@ -43,7 +43,7 @@ function init(wsServer, path) {
                 phase: 0,
                 currentPlayer: null,
                 invertDirection: false, // true - против часовой
-                startWithNechto: false,
+                startWithNechto: true,
                 action: null,
                 karantin: {},
                 time: 20,
@@ -55,8 +55,8 @@ function init(wsServer, path) {
                 allReadyNedeed: false,
                 vremyaPriznaniySlot: null,
                 gameLog: [],
-                smallTimer: 15,
-                bigTimer: 50,
+                smallTimer: 10,
+                bigTimer: 30,
                 isObmenReady: false,
                 voting: false,
                 currentPanika: null,
@@ -101,8 +101,8 @@ function init(wsServer, path) {
                     room.smallTimer = 5
                     room.bigTimer = 5
                 } else {
-                    room.smallTimer = 15
-                    room.bigTimer = 50
+                    room.smallTimer = 10
+                    room.bigTimer = 30
                 }
                 if (testMode) {
                     if (
@@ -210,7 +210,6 @@ function init(wsServer, path) {
                         room.startSlotColor[player] = slot
                     })
                     if (testMode) {
-                        room.startWithNechto = true
                         room.gameLog.push({ action: 'test-mode' })
                         Object.entries(room.playerNames).forEach(([k, v]) => {
                             if (v.includes('test')) testUserId.push(k)
@@ -628,7 +627,7 @@ function init(wsServer, path) {
                             })
                             startTsepnayaReaksia()
                         } else if (room.currentPanika.id === utils.cardsDeck.tolkoMejduNami.id) {
-                            if (!room.target) {
+                            if (room.target === null) {
                                 tolkoMejduNamiPanika(room.currentPlayer, utils.shuffleArray(getSosedPlayers())[0])
                             } else {
                                 room.waitMoveSlot = room.currentPlayer
@@ -636,12 +635,12 @@ function init(wsServer, path) {
                                 startObmen()
                             }
                         } else if (room.currentPanika.id === utils.cardsDeck.razDva.id) {
-                            if (room.target && !room.karantin[room.target] && room.target !== room.currentPlayer) {
+                            if (room.target !== null && !room.karantin[room.target] && room.target !== room.currentPlayer) {
                                 if (!getThirdPlayers().includes(room.target)) {
                                     pizdets()
                                 }
                                 smenaMest(room.target, room.currentPlayer)
-                            } else if (!room.target) {
+                            } else if (room.target === null) {
                                 const target = utils.shuffleArray(getThirdPlayers()).find(slot => !room.karantin[slot])
 
                                 if (target !== null) {
@@ -933,27 +932,12 @@ function init(wsServer, path) {
                 return Object.values(state.playerHand[slot]).filter(card => card.id === utils.cardsDeck.zarajenie.id).length
             }
             const pushDiscardDver = () => {
-                state.discard.push({
-                    zakolchennayDver: {
-                        type: utils.cardTypes.card.id,
-                        target: utils.targets.selfOrSosed.id,
-                        id: utils.cardsDeck.zakolchennayDver.id,
-                        count: { 4: 1, 5: 1, 6: 1, 7: 2, 8: 2, 9: 2, 10: 2, 11: 3, 12: 3 },
-                    },
-                })
+                state.discard.push(utils.cardsDeck.zakolchennayDver)
             }
             const pushDiscardKarantin = () => {
-                state.discard.push({
-                    karantin: {
-                        type: utils.cardTypes.card.id,
-                        target: utils.targets.selfOrSosed.id,
-                        id: utils.cardsDeck.karantin.id,
-                        count: { 4: 0, 5: 1, 6: 1, 7: 1, 8: 1, 9: 2, 10: 2, 11: 2, 12: 2 },
-                    },
-                })
+                state.discard.push(utils.cardsDeck.karantin)
             }
             const obmenChekZarajeniy = (slot, index, target) => {
-                target = target ?? room.target
                 if (![0, 1, 2, 3].includes(index)) return false
 
                 const card = getHandCard(slot, index)
@@ -1098,7 +1082,7 @@ function init(wsServer, path) {
             const davaiDrujitPanika = (slot, target, index) => {
                 if (!room.karantin[target]) {
                     if (slot === room.currentPlayer && !room.isObmenReady) {
-                        if (obmenChekZarajeniy(slot, index)) {
+                        if (obmenChekZarajeniy(slot, index, target)) {
                             room.target = target
                             state.obmenCardIndex = index
                             room.isObmenReady = true
@@ -1108,7 +1092,7 @@ function init(wsServer, path) {
                             updateState()
                         }
                     } else if (slot === room.target) {
-                        if (obmenChekZarajeniy(slot, index)) {
+                        if (obmenChekZarajeniy(slot, index, target)) {
                             obmenProcces(index)
                         }
                     }
@@ -1231,7 +1215,6 @@ function init(wsServer, path) {
                             updateState()
                         }
                     }
-
                 },
                 'play-card': (slot, index, target) => {
                     if (
@@ -1390,14 +1373,14 @@ function init(wsServer, path) {
                 },
                 'resolve-obmen': (slot, index) => {
                     if (slot === room.target && [0, 1, 2, 3].includes(index)) {
-                        if (room.isObmenReady && obmenChekZarajeniy(slot, index)) {
+                        if (room.isObmenReady && obmenChekZarajeniy(slot, index, room.currentPlayer)) {
                             room.gameLog.push({ actors: room.currentPlayer, act: 'resolve-obmenivatsa' })
                             obmenProcces(index)
                         }
                     }
                 },
                 'vilojit-kartu-na-obmen': (slot, index) => {
-                    if (slot === room.currentPlayer && [0, 1, 2, 3].includes(index) && obmenChekZarajeniy(slot, index)) {
+                    if (slot === room.currentPlayer && [0, 1, 2, 3].includes(index) && obmenChekZarajeniy(slot, index, room.target)) {
                         room.isObmenReady = true
                         state.obmenCardIndex = index
                         room.showAllHand = null
@@ -1480,7 +1463,7 @@ function init(wsServer, path) {
                             }
                         }
                     } else if (slot === room.currentPlayer && room.action === utils.cardsDeck.soblazn.id) {
-                        if (obmenChekZarajeniy(slot, index)) {
+                        if (obmenChekZarajeniy(slot, index, room.target)) {
                             state.obmenCardIndex = index
                             room.isObmenReady = true
                             room.waitMoveSlot = room.target

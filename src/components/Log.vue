@@ -16,6 +16,9 @@
                 <span v-if="!message.nechto && message.action === 'start-game'">
                     {{ getActionLog('bez-nechto') }}
                 </span>
+                <span v-if="message.nechto && message.action === 'start-game'">
+                    {{ getActionLog('s-nechto') }}
+                </span>
                 <span
                     v-if="message.actors?.[1]"
                     :style="{

@@ -517,7 +517,7 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
             en: '',
         },
         title: {
-            ru: 'Забыв- чивость',
+            ru: 'Забывчивость',
             ua: 'Забудьку- ватість',
             en: 'Forgetful',
         },
@@ -568,6 +568,13 @@ const actionsData: Record<string, ActionMetaData> = {
             ru: 'с Нечто в колоде',
             ua: 'з Щось у колоді',
             en: 'with Thing in deck',
+        },
+    },
+    's-nechto': {
+        log: {
+            ru: 'с Нечто в стартовых руках',
+            ua: 'з Щось у стартових руках',
+            en: 'with Thing in starting hands',
         },
     },
     'start-game': {
