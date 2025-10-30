@@ -29,12 +29,12 @@
         </div>
         <div class="text">
             <span v-if="state.phase === 3 && state.action !== 'strah'" class="obmen">
-                <span v-if="!state.isObmenReady" class="current hueer">
+                <span v-if="!state.isObmenReady" class="current hueer nick">
                     &nbsp;
                     {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
                 </span>
                 <span v-if="state.isObmenReady" class="obmen">
-                    <span>
+                    <span class="nick">
                         {{ state.playerNames[state.playerSlots[state.target!]!] }}
                     </span>
                 </span>
@@ -49,23 +49,23 @@
                         &nbsp;
                     </span>
                 </span>
-                <span v-if="state.isObmenReady" class="current hueer">
+                <span v-if="state.isObmenReady" class="current hueer nick">
                     {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
                 </span>
                 <span v-if="!state.isObmenReady" class="obmen">
-                    <span>
+                    <span class="nick">
                         {{ state.playerNames[state.playerSlots[state.target!]!] }}
                     </span>
                 </span>
             </span>
             <span v-if="state.phase === 2 && state.action === 'soblazn' && !state.isObmenReady" class="popitka">
-                <span>
+                <span class="nick">
                     {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
                 </span>
                 <span>{{ getPodskazkaName('Выбирает карту для обмена') }}</span>
                 <span class="obmen1">
                     <span>{{ getPodskazkaName('c') }}</span>
-                    <span>
+                    <span class="nick">
                         {{ state.playerNames[state.playerSlots[state.target!]!] }}
                     </span>
                 </span>
@@ -76,55 +76,55 @@
                     (state.phase === 2 && state.currentPanika?.id === 'davaiDrujit' && state.isObmenReady && state.action !== 'strah')
                 "
                 class="popitka">
-                {{ state.playerNames[state.playerSlots[state.target!]!] }}
+                <span class="nick">{{ state.playerNames[state.playerSlots[state.target!]!] }}</span>
                 {{ getPodskazkaName('Выбирает карту для обмена') }}
                 {{ getPodskazkaName('c') }}
-                {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
+                <span class="nick">{{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}</span>
             </span>
             <span v-if="state.phase === 1" class="popitka">
-                <span class="current hueer">
+                <span class="current hueer nick">
                     {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
                 </span>
                 &nbsp;
                 {{ getPodskazkaName('взять карту') }}
             </span>
             <span v-if="state.action === 'strah'" class="popitka">
-                <span class="current hueer">
+                <span class="current hueer nick">
                     {{ state.playerNames[state.playerSlots[state.target!]!] }}
                 </span>
                 &nbsp;
                 {{ getPodskazkaName('смотрит карту') }}
             </span>
             <span v-if="state.phase === 2 && state.action === null" class="popitka">
-                <span class="current hueer">
+                <span class="current hueer nick">
                     {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
                 </span>
                 &nbsp;
                 {{ getPodskazkaName('играть') }}
             </span>
             <span v-if="state.phase === 2 && (state.action === 'menyaemsyaMestami' || state.action === 'smativayUdochki')" class="popitka">
-                <span class="current hueer">
+                <span class="current hueer nick">
                     {{ state.playerNames[state.playerSlots[state.target!]!] }}
                 </span>
                 &nbsp;
                 {{ getPodskazkaName('свап местом') }}
             </span>
             <div v-if="state.phase === 2 && state.action === 'uporstvo'" class="popitka">
-                <div class="current hueer">
+                <div class="current hueer nick">
                     {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
                 </div>
                 &nbsp;
                 {{ getPodskazkaName('упорство') }}
             </div>
             <div v-if="state.phase === 2 && (state.action === 'analiz' || state.action === 'podozrenie')" class="popitka">
-                <div class="current hueer">
+                <div class="current hueer nick">
                     {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
                 </div>
                 &nbsp;
                 {{ getPodskazkaName('просмотр карты') }}
             </div>
             <div v-if="state.phase === 2 && state.action === 'ognemet'" class="popitka">
-                <div class="current hueer">
+                <div class="current hueer nick">
                     {{ state.playerNames[state.playerSlots[state.target!]!] }}
                 </div>
                 &nbsp;
@@ -142,14 +142,14 @@
                         (state.currentPanika?.id === 'uups' && state.showAllHand === null))
                 "
                 class="popitka">
-                <div class="current hueer">
+                <div class="current hueer nick">
                     {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
                 </div>
                 &nbsp;
                 {{ getPodskazkaName('панику') }}
             </div>
             <div v-if="state.phase === 2 && state.currentPanika?.id === 'vremyaPriznaniy'" class="popitka">
-                <div class="current hueer">
+                <div class="current hueer nick">
                     {{
                         state.vremyaPriznaniySlot !== null
                             ? state.playerNames[state.playerSlots[state.vremyaPriznaniySlot!]!]
@@ -159,7 +159,7 @@
                 {{ getPodskazkaName('панику') }}
             </div>
             <div v-if="(state.currentPanika?.id === 'uups' && state.showAllHand !== null) || state.action === 'viski'">
-                <div class="current hueer">
+                <div class="current hueer nick">
                     {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
                 </div>
                 {{ getPodskazkaName('Показывает карты') }}
@@ -255,6 +255,15 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
+    }
+
+    .nick {
+        display: inline-block;
+        max-width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        vertical-align: middle;
     }
 
     @media screen and (max-width: 1200px) {

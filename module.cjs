@@ -97,6 +97,13 @@ function init(wsServer, path) {
             // initiate
             const startTimer = () => {
                 //TODO: в мозиле не роботает. и прокрутка на мозиле справа - удоли
+                if (/^kek\d{1,2}$/.test(room.playerSlots[room.waitMoveSlot])) {
+                    room.smallTimer = 5
+                    room.bigTimer = 5
+                } else {
+                    room.smallTimer = 15
+                    room.bigTimer = 50
+                }
                 if (testMode) {
                     if (
                         testUserId.includes(room.playerSlots[room.waitMoveSlot])
@@ -629,19 +636,19 @@ function init(wsServer, path) {
                                 startObmen()
                             }
                         } else if (room.currentPanika.id === utils.cardsDeck.razDva.id) {
-                            if (room.target && !room.karantin[room.target]) {
+                            if (room.target && !room.karantin[room.target] && room.target !== room.currentPlayer) {
                                 if (!getThirdPlayers().includes(room.target)) {
                                     pizdets()
                                 }
                                 smenaMest(room.target, room.currentPlayer)
                             } else if (!room.target) {
-                                const target = utils.shuffleArray(getThirdPlayers())[0]
-                                if (!room.karantin[target]) {
+                                const target = utils.shuffleArray(getThirdPlayers()).find(slot => !room.karantin[slot])
+
+                                if (target !== null) {
                                     room.target = target
-                                    smenaMest(room.target, room.currentPlayer)
+                                    smenaMest(target, room.currentPlayer)
                                 }
                             }
-                            room.currentPanika = null
                             startObmen()
                         } else if (room.currentPanika.id === utils.cardsDeck.iViEtoNazivaeteVecherinkoy.id) {
                             iViEtoNazivaeteVecherinkoyPanika()
@@ -673,7 +680,11 @@ function init(wsServer, path) {
                         } else if (room.currentPanika.id === utils.cardsDeck.svidanieVSlepuyu.id) {
                             svidanieVSlepuyuPanika(room.currentPlayer, getRandomDropCardIndex(room.currentPlayer))
                         } else if (room.currentPanika.id === utils.cardsDeck.ubiraysyaProch.id) {
-                            const slots = Object.keys(state.playerHand).map(Number).filter(player => player !== room.currentPlayer)
+                            const slots = Object.keys(state.playerHand).map(Number).filter(player => player !== room.currentPlayer && !room.karantin[player])
+                            if (slots.length === 0) {
+                                startObmen()
+                                return
+                            }
                             room.target = utils.shuffleArray(slots)[0]
                             ubiraysyaProchPanika(room.target, room.currentPlayer)
                         } else if (room.currentPanika.id === utils.cardsDeck.zabivchivost.id) {
@@ -1060,18 +1071,14 @@ function init(wsServer, path) {
                 updateState()
             }
             const razDvaPanika = (target) => {
-                if (getThirdPlayers().includes(target)) {
+                if (target !== null && !room.karantin[target] && getThirdPlayers().includes(target)) {
                     room.target = target
                     resolvePassAction()
                 }
             }
             const ubiraysyaProchPanika = (target, slot) => {
-                if (!room.karantin[target]) {
-                    smenaMest(slot, target)
-                }
+                smenaMest(slot, target)
                 room.currentPanika = null
-                room.target = null
-                startTimer()
                 update()
                 updateState()
                 startObmen()
@@ -1519,11 +1526,9 @@ function init(wsServer, path) {
                             room.currentPanika = null
                             startObmen()
                         } else if (panika.id === utils.cardsDeck.razDva.id) {
-                            if (target !== null) {
-                                razDvaPanika(target)
-                            }
+                            razDvaPanika(target)
                         } else if (panika.id === utils.cardsDeck.ubiraysyaProch.id) {
-                            if (target !== null && state.playerHand[target]) {
+                            if (target !== null && state.playerHand[target] && !room.karantin[target] && target !== room.currentPlayer) {
                                 room.target = target
                                 ubiraysyaProchPanika(target, slot)
                             }
@@ -1586,6 +1591,10 @@ function init(wsServer, path) {
             this.userEventHandlers = {
                 ...this.eventHandlers,
                 'start-game': (user) => {
+                    if (testMode) {
+                        startGame()
+                        return
+                    }
                     if (user === room.hostId && room.phase === 0) {
                         startGame()
                     }
@@ -1627,9 +1636,9 @@ function init(wsServer, path) {
                     if (room.hostId === user && room.phase === 0) {
                         room.startWithNechto = !room.startWithNechto
                         if (room.startWithNechto) {
-                            room.gameLog.push({ action: 'С нечто в стартовых руках' })
+                            room.gameLog.push({ action: 'С Нечто в стартовых руках' })
                         } else {
-                            room.gameLog.push({ action: 'Без нечто в стартовых руках' })
+                            room.gameLog.push({ action: 'С Нечто в колоде' })
                         }
                         update()
                     }
@@ -1643,7 +1652,7 @@ function init(wsServer, path) {
                     }
                 },
                 'give-host': (user, playerId) => {
-                    if (room.hostId === user && playerId) {
+                    if (room.hostId === user && playerId && user !== playerId) {
                         room.hostId = playerId
                         this.emit('host-changed', user, playerId)
                     }
