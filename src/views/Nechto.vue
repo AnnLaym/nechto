@@ -29,7 +29,6 @@ const state = useNechtoState();
 const service = useNechtoService();
 
 
-
 const bottomButtons = computed<DashMenuButton[]>(() => {
     return [
         {
@@ -63,13 +62,13 @@ const bottomButtons = computed<DashMenuButton[]>(() => {
             }
         },
         {
-            icon: 'person',
+            icon: 'person', // TODO: добавить иконку и оповещение хоста о том, что будет игра с нечто/без нечто
             onClick: () => {
                 service.startWithNechto();
             }
         },
         {
-            icon: offZvuk ? 'volume_up' : 'volume_off',
+            icon: offZvuk ? 'volume_up' : 'volume_off', // TODO: не работает
             onClick: () => {
                 offnutZvuk();
             }
@@ -81,7 +80,7 @@ const bottomButtons = computed<DashMenuButton[]>(() => {
             }
         },
         {
-            icon: 'pause_circle_filled',
+            icon: 'pause_circle_filled', // TODO: добавить вторую кнопку
             onClick: () => {
                 service.pauseGame()
             }
@@ -103,8 +102,7 @@ const numberSettings: DashMenuNumberSetting[] = [
 
 <style>
 body.dark-theme {
-    background-color: #161816 !important;
-    ;
+    background-color: #161816 !important;;
     color: var(--text-color);
     padding-top: 10px;
     place-items: start;

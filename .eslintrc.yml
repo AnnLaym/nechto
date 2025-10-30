@@ -1,0 +1,65 @@
+root: true
+env:
+  browser: true
+  es2021: true
+  node: true
+  jest: true
+extends:
+  - eslint:recommended
+  - plugin:@typescript-eslint/recommended
+  - plugin:vue/vue3-recommended
+  - plugin:prettier/recommended
+  - plugin:yml/recommended
+  - plugin:yml/prettier
+parser: vue-eslint-parser
+parserOptions:
+  parser: '@typescript-eslint/parser'
+  ecmaVersion: latest
+  sourceType: module
+overrides:
+  - files: '*.{yaml,yml}'
+    parser: yaml-eslint-parser
+rules:
+  no-empty:
+    - error
+    - allowEmptyCatch: true
+  no-irregular-whitespace: off
+  '@typescript-eslint/explicit-function-return-type': off
+  '@typescript-eslint/strict-boolean-expressions': off
+  '@typescript-eslint/no-explicit-any': off
+  '@typescript-eslint/no-namespace': off
+  '@typescript-eslint/no-var-requires': off
+  '@typescript-eslint/no-empty-function': off
+  '@typescript-eslint/no-unused-vars':
+    - error
+    - argsIgnorePattern: ^_
+      varsIgnorePattern: ^_
+  vue/multi-word-component-names: off
+  vue/no-use-v-if-with-v-for: off
+  vue/no-mutating-props:
+    - error
+    - shallowOnly: true
+  vue/no-template-shadow: off
+  vue/html-self-closing:
+    - error
+    - html:
+        void: any
+  vue/v-on-event-hyphenation:
+    - error
+    - always
+    - autofix: true
+  vue/valid-v-slot:
+    - error
+    - allowModifiers: true
+  vue/component-name-in-template-casing:
+    - error
+  vue/component-tags-order:
+    - error
+    - order:
+        - template
+        - script
+        - style
+  yml/plain-scalar:
+    - error
+    - always
+  vue/no-deprecated-slot-attribute: off

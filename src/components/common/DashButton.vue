@@ -6,13 +6,12 @@
 </template>
 
 <script lang="ts" setup>
-    import MaterialIcon from './MaterialIcon.vue';
+    import MaterialIcon from './MaterialIcon.vue'
 
     defineProps<{
-        title?: string,
-        icon?: string,
-    }>();
-
+        title?: string
+        icon?: string
+    }>()
 </script>
 
 <style scoped>
