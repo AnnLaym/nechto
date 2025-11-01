@@ -143,6 +143,7 @@ export function createNechtoService() {
         soblaznResolve: (index: number) => socket.emit('resolve-soblazn', index),
         shufflePlayers: () => socket.emit('shuffle-players'),
         pauseGame: () => socket.emit('toggle-pause'),
+        setTimer: (smallTimer: number, bigTimer: number) => socket.emit('set-timer', smallTimer, bigTimer),
     }
 }
 const zoomed = ref(false)

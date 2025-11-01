@@ -73,7 +73,7 @@ function init(wsServer, path) {
                 [0, 2, 4, 6].forEach(ind => {
                     room.playerSlots[ind] = `kek${ind}`
                     room.playerNames[`kek${ind}`] = `kek${ind}`
-                    // room.karantin[ind] = 10
+                    room.karantin[ind] = 10
                 })
             }
             this.room = room
@@ -97,20 +97,13 @@ function init(wsServer, path) {
             // initiate
             const startTimer = () => {
                 //TODO: в мозиле не роботает. и прокрутка на мозиле справа - удоли
-                if (/^kek\d{1,2}$/.test(room.playerSlots[room.waitMoveSlot])) {
-                    room.smallTimer = 5
-                    room.bigTimer = 5
-                } else {
-                    room.smallTimer = 10
-                    room.bigTimer = 30
-                }
                 if (testMode) {
                     if (
                         testUserId.includes(room.playerSlots[room.waitMoveSlot])
                         || testUserId.includes(room.playerSlots[room.vremyaPriznaniySlot])
                     ) {
                         room.smallTimer = 10
-                        room.bigTimer = 10
+                        room.bigTimer = 15
                     } else {
                         room.smallTimer = 0.4
                         room.bigTimer = 0.4
@@ -733,6 +726,16 @@ function init(wsServer, path) {
                 }
             }
             // utils
+            const resetStol = () => {
+                room.karantin = {}
+                room.winner = null
+                state.nechto = null
+                state.zarajennie = []
+                state.survivors = []
+                state.umerZarajennim = []
+                state.umerChelovekom = []
+                state.umerSlots = []
+            }
             const reshuffle = () => {
                 if (state.deck.length === 0) {
                     state.deck = [...state.discard]
@@ -1114,7 +1117,9 @@ function init(wsServer, path) {
                     }
                     state.playerHand[nextPlayer].push(karta1)
                     state.playerHand[slot].splice(state.tsepnayaReaksiaObmenKard[slot], 1)
-                    processKrinj(nextPlayer)
+                })
+                Object.keys(state.playerHand).map(Number).forEach(slot => {
+                    processKrinj(slot)
                 })
                 room.currentPanika = null
                 endRound()
@@ -1125,9 +1130,10 @@ function init(wsServer, path) {
                     room.readyPlayers[slot] = true
                     if (isAllPlayersReady()) {
                         startTsepnayaReaksia()
+                    } else {
+                        updatePlayerState(room.playerSlots[slot])
                     }
                     update()
-                    updateState()
                 }
             }
             const svidanieVSlepuyuPanika = (slot, index) => {
@@ -1574,10 +1580,6 @@ function init(wsServer, path) {
             this.userEventHandlers = {
                 ...this.eventHandlers,
                 'start-game': (user) => {
-                    if (testMode) {
-                        startGame()
-                        return
-                    }
                     if (user === room.hostId && room.phase === 0) {
                         startGame()
                     }
@@ -1585,13 +1587,7 @@ function init(wsServer, path) {
                 'abort-game': (user) => {
                     if (user === room.hostId) {
                         if (room.phase === 0) {
-                            room.karantin = {}
-                            state.nechto = null
-                            state.zarajennie = []
-                            state.survivors = []
-                            state.umerZarajennim = []
-                            state.umerChelovekom = []
-                            state.umerSlots = []
+                            resetStol()
                             update()
                             updateState()
                         } else {
@@ -1654,44 +1650,24 @@ function init(wsServer, path) {
                 'shuffle-players': (user) => {
                     if (room.hostId === user && room.phase === 0) {
                         shufflePlayerSLots()
-                        room.karantin = {}
-                        state.nechto = null
-                        state.zarajennie = []
-                        state.survivors = []
-                        state.umerZarajennim = []
-                        state.umerChelovekom = []
-                        state.umerSlots = []
+                        resetStol()
                     }
                     update()
                     updateState()
                 },
                 'toggle-pause': (user) => {
-                    if (user === room.hostId)
-                        room.paused = !room.paused
-                    update()
-                },
-                'toggle-paused': (user) => {
                     if (user === room.hostId) {
                         room.paused = !room.paused
-                        if (!room.paused && room.timeChanged) {
-                            room.timeChanged = false
+                        if (!room.paused) {
                             startTimer()
                         }
                     }
                     update()
                 },
-                'toggle-timed': (user) => {
+                'set-timer': (user, smallTimer, bigTimer) => {
                     if (user === room.hostId) {
-                        room.timed = !room.timed
-                        if (!room.timed) {
-                            room.paused = true
-                            clearInterval(timerInterval)
-                        } else {
-                            if (room.phase !== 'idle') {
-                                room.paused = false
-                                startTimer()
-                            } else room.paused = true
-                        }
+                        room.smallTimer = smallTimer
+                        room.bigTimer = bigTimer
                     }
                     update()
                 },

@@ -1,6 +1,5 @@
 <template>
-    <div class="button" @click="clickLog()">X</div>
-    <div v-if="isClossed" ref="bodyLog" class="bodyLog" @scroll="handleScroll()">
+    <div ref="bodyLog" class="bodyLog" @scroll="handleScroll()">
         <div v-if="trogal" class="startScroll" @click="startScroll()">лог на паузе</div>
         <div v-for="message in state.gameLog" class="message">
             <span v-if="message.action && !message.panika" class="messageCard">
@@ -77,7 +76,6 @@
     import Card from './Card.vue'
 
     const bodyLog = ref<HTMLElement>()
-    var isClossed = ref(true)
     const clicknutaCarta: number | null = null
     const trogal = ref(false)
     const neTrogal = computed(() => !trogal.value)
@@ -102,9 +100,6 @@
             scrollBottom()
         }
     })
-    const clickLog = () => {
-        isClossed.value = !isClossed.value
-    }
     const clickCard = () => {}
 
     const colors = ['#B24A7C', '#A32A2A', '#653E29', '#C38144', '#BDB35B', '#6BB95E', '#29572B', '#227A80', '#898989', '#318FC5', '#2C3E7C', '#543B89']

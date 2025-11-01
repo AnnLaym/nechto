@@ -9,7 +9,7 @@
             <div
                 v-if="
                     state.timed && !state.paused
-                        ? (state.currentPanika !== null && state.currentPanika.id === 'tsepnayaReaksia' && !state.readyPlayers[slot] && state.umerSlots?.includes(slot)) ||
+                        ? (state.currentPanika !== null && state.currentPanika.id === 'tsepnayaReaksia' && !state.readyPlayers[slot] && !state.umerSlots?.includes(slot)) ||
                           (state.currentPanika == null && state.waitMoveSlot === slot) ||
                           (state.currentPanika !== null && state.currentPanika.id !== 'tsepnayaReaksia' && state.waitMoveSlot === slot)
                         : (state.action === 'strah' && state.waitMoveSlot === slot) ||
@@ -18,8 +18,11 @@
                           (state.currentPanika?.id === 'vremyaPriznaniy' && state.showAllHand !== null && state.waitMoveSlot === slot)
                 "
                 class="newTimer"
-                :style="{ 'background-position': `${timerWidth}px 124px` }">
-                <i class="material-icons">person</i>
+                :style="{ 'background-position': `${timerWidth}px ${FRAME_WIDTH}px` }">
+                <div class="timer-wrapper">
+                    <i class="material-icons">person</i>
+                    <span class="timer-value">{{ Math.floor((state.fullTimer - timePassed) / 1000) }}</span>
+                </div>
             </div>
             <div v-if="slot === state.userSlot" class="setAvatarButton" />
             <img :src="reactCommonRoom().getPlayerAvatarURL(state.playerSlots[slot]!) || '/nechto/cards/avatar1.png'" class="otdelnii" />
@@ -40,18 +43,21 @@
     const service = useNechtoService()
     const state = useNechtoState()
     const skrito = ref(false)
+    const UPDATE_INTERVAL = 50
+    const FRAME_WIDTH = 124
+    const TOTAL_FRAMES = 7
 
     defineProps<{
         slot: Slot
     }>()
 
+    const timePassed = ref(0)
+
     const timerWidth = computed(() => {
         const time = state.value.time - timePassed.value
-        //const percentage = (time / state.value.fullTimer) * 100;
-        const tile = Math.round((869 * time) / state.value.fullTimer) * 124
+        const tile = Math.round((FRAME_WIDTH * TOTAL_FRAMES * time) / state.value.fullTimer) * FRAME_WIDTH
         return tile >= 0 ? tile : 0
     })
-    const timePassed = ref(0)
     let interval: number
 
     watch(state, () => {
@@ -59,8 +65,8 @@
         timePassed.value = 0
         if (state.value.time) {
             interval = window.setInterval(() => {
-                timePassed.value += 50
-            }, 50)
+                timePassed.value += UPDATE_INTERVAL
+            }, UPDATE_INTERVAL)
         }
     })
 </script>
@@ -83,6 +89,12 @@
         object-fit: fill;
         width: 100%;
         position: absolute;
+        transition: opacity 0.5s ease;
+    }
+
+    .kartinka:hover .umer {
+        opacity: 0;
+        pointer-events: none;
     }
 
     .karantin {
@@ -92,6 +104,7 @@
         width: 100%;
         background-size: contain;
         z-index: 1;
+        pointer-events: none;
     }
 
     .kartinka {
@@ -135,6 +148,28 @@
         height: 100%;
         background-image: url(./img/timerAvatar.png);
         width: 100%;
+    }
+
+    .timer-wrapper {
+        position: relative;
+        display: inline-block;
+        z-index: 1;
+    }
+
+    .timer-value {
+        position: absolute;
+        top: 50%;
+        left: 100%;
+        transform: translateY(-50%);
+        margin-left: 4px;
+    }
+
+    .setAvatarButton {
+        display: none;
+        background-color: gray;
+        opacity: 70%;
+        width: 50px;
+        height: 50px;
     }
 
     @media screen and (max-width: 1200) {

@@ -27,7 +27,14 @@
             <div v-else>
                 <div class="suka" @click="slotClick(slot)">
                     <span class="text">
-                        {{ reactCommonRoom().getPlayerAvatarURL(state.playerSlots[slot]!) || state.playerSlots[slot] ? state.playerNames[state.playerSlots[slot]!] : '' }}
+                        <span v-if="state.playerSlots[slot] !== null">
+                            <span v-if="state.onlinePlayers.includes(state.playerSlots[slot]!)">
+                                {{ state.playerNames[state.playerSlots[slot]!] }}
+                            </span>
+                            <span v-else>
+                                <s class="offline">{{ state.playerNames[state.playerSlots[slot]!] }}</s>
+                            </span>
+                        </span>
                     </span>
                     <div class="host-cntrols">
                         <span v-if="state.hostId === state.userId" @click="service.removePLayer(state.playerSlots[slot])">
@@ -54,7 +61,7 @@
 
 <script lang="ts" setup>
     import { getKnopkaName } from '../log'
-    import { reactCommonRoom, Slot, useNechtoService, useNechtoState } from '../service'
+    import { Slot, useNechtoService, useNechtoState } from '../service'
     import { proccessSoundClient } from '../sound'
     import avatarSpace from './avatarSpace.vue'
 
@@ -108,6 +115,10 @@
     @font-face {
         font-family: 'matToni1234';
         src: url('/src/shrifty/Montserrat-Light.ttf');
+    }
+
+    .offline {
+        text-decoration-color: gray;
     }
 
     .dver {
@@ -230,14 +241,6 @@
     .host-cntrols i {
         background: none;
         outline: none;
-    }
-
-    .setAvatarButton {
-        display: none;
-        background-color: gray;
-        opacity: 70%;
-        width: 50px;
-        height: 50px;
     }
 
     .chel {

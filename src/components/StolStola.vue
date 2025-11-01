@@ -163,13 +163,7 @@
                 @click="service.panicAction(service.selectedCard.value, service.selectedTarget.value!)">
                 {{ getKnopkaName('polojitKartuNaObmen') }}
             </div>
-            <div
-                v-if="
-                    (state.userSlot === state.currentPlayer && state.chekCards?.length && state.action !== `uporstvo` && state.phase === 2) ||
-                    ((state.action === 'strah' || state.currentPanika?.id === 'tolkoMejduNami') && state.userSlot === state.target)
-                "
-                class="knopka"
-                @click="service.resolvePassActin()">
+            <div v-if="showKnopka" class="knopka" @click="service.resolvePassActin()">
                 <div>{{ getKnopkaName('ok') }}</div>
             </div>
             <div
@@ -298,7 +292,7 @@
 </template>
 
 <script lang="ts" setup>
-    import { computed } from 'vue'
+    import { computed, ref, watch } from 'vue'
     import { getKnopkaName } from '../log'
     import { useNechtoService, useNechtoState } from '../service'
     import Card from './Card.vue'
@@ -336,6 +330,22 @@
     const chekhandForPlayNeObmen = computed(() => state.value.cards?.some((card) => card.id === 'mimo' || card.id === 'netUjSpasibo' || card.id === 'strah'))
     const chekSgorelaJopaIliNet = computed(() => state.value.cards?.some((card) => card.id === 'nikakogoShahlika'))
     const passPriSmeneTaburetok = computed(() => state.value.cards?.some((card) => card.id === 'mneIZdesNePloha'))
+
+    const showKnopka = ref(false)
+    const shouldShowKnopka = computed(
+        () =>
+            (state.value.userSlot === state.value.currentPlayer && state.value.chekCards?.length && state.value.action !== `uporstvo` && state.value.phase === 2) ||
+            ((state.value.action === 'strah' || state.value.currentPanika?.id === 'tolkoMejduNami') && state.value.userSlot === state.value.target),
+    )
+    watch(shouldShowKnopka, (newVal) => {
+        if (newVal) {
+            setTimeout(() => {
+                showKnopka.value = true
+            }, 1000) // задержка 1 секунда
+        } else {
+            showKnopka.value = false // скрываем сразу, если условие перестало быть истинным
+        }
+    })
 </script>
 
 <style scoped>
