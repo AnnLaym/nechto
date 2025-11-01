@@ -1248,10 +1248,11 @@ function init(wsServer, path) {
                             if (!room.karantin[target]) {
                                 if (card.id === utils.cardsDeck.smativayUdochki.id) {
                                     room.action = utils.cardsDeck.smativayUdochki.id
-                                    room.target = target
                                     room.waitMoveSlot = target
+                                    room.target = target
                                     sigrat()
                                     logs()
+                                    startTimer()
                                     update()
                                     updateState()
                                 } else if (card.id === utils.cardsDeck.soblazn.id) {
