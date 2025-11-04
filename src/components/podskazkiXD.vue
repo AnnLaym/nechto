@@ -95,12 +95,19 @@
                 &nbsp;
                 {{ getPodskazkaName('смотрит карту') }}
             </span>
-            <span v-if="state.phase === 2 && state.action === null" class="popitka">
+            <span v-if="state.phase === 2 && state.action === null && !state.karantin[state.currentPlayer!]" class="popitka">
                 <span class="current hueer nick">
                     {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
                 </span>
                 &nbsp;
                 {{ getPodskazkaName('играть') }}
+            </span>
+            <span v-if="state.phase === 2 && state.action === null && state.karantin[state.currentPlayer!]" class="popitka">
+                <span class="current hueer nick">
+                    {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
+                </span>
+                &nbsp;
+                {{ getPodskazkaName('сбросить') }}
             </span>
             <span v-if="state.phase === 2 && (state.action === 'menyaemsyaMestami' || state.action === 'smativayUdochki')" class="popitka">
                 <span class="current hueer nick">
@@ -201,7 +208,6 @@
 <style scoped>
     @font-face {
         font-family: 'matToni1234';
-        /* Название вашего кастомного шрифта */
         src: url('/src/shrifty/Montserrat-Regular.ttf');
     }
 
@@ -234,6 +240,7 @@
         justify-content: center;
         align-items: center;
         display: flex;
+        padding: 0 2%;
     }
 
     .otdelnii {

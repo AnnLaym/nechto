@@ -2,22 +2,22 @@
     <div
         class="chel"
         :class="{
-        [`slot-color-${state.startSlotColor.value ? state.startSlotColor : slot}`]: true,
-        'selected': service.selectedTarget.value === slot && state.phase === 2,
-        'sosed': state.cards && state.phase === 2 && state.action === null
-            ? state.cards![service.selectedCard.value!]?.target === 'sosed' && state.normSosed.includes(slot)
-            : false,
-        'any': state.cards && state.phase === 2 && state.action === null && state.currentPanika?.id !== 'tsepnayaReaksia'
-            ? state.cards![service.selectedCard.value!]?.target === 'any'
-            && state.normPlayer.includes(slot) : false,
-        'selfOrSosed': state.cards && state.phase === 2 && state.action === null && state.currentPanika?.id !== 'tsepnayaReaksia'
-            ? state.cards![service.selectedCard.value!]?.target === 'selfOrSosed'
-            && (state.normSosed.includes(slot) || slot === state.userSlot)
-            : false,
-        'thirdplayer': state.currentPanika?.id !== 'tsepnayaReaksia' && state.action === null &&
-            state.currentPanika?.id === 'razDva' && state.currentPlayer === state.userSlot && state.phase === 2
-            ? state.normThirdPlayers.includes(slot) : false,
-    }"
+            [`slot-color-${state.startSlotColor.value ? state.startSlotColor : slot}`]: true,
+            'selected': service.selectedTarget.value === slot && state.phase === 2,
+            'sosed': state.cards && state.phase === 2 && state.action === null
+                ? state.cards![service.selectedCard.value!]?.target === 'sosed' && state.normSosed.includes(slot)
+                : false,
+            'any': state.cards && state.phase === 2 && state.action === null && state.currentPanika?.id !== 'tsepnayaReaksia'
+                ? state.cards![service.selectedCard.value!]?.target === 'any'
+                && state.normPlayer.includes(slot) : false,
+            'selfOrSosed': state.cards && state.phase === 2 && state.action === null && state.currentPanika?.id !== 'tsepnayaReaksia'
+                ? state.cards![service.selectedCard.value!]?.target === 'selfOrSosed'
+                && (state.normSosed.includes(slot) || slot === state.userSlot)
+                : false,
+            'thirdplayer': state.currentPanika?.id !== 'tsepnayaReaksia' && state.action === null &&
+                state.currentPanika?.id === 'razDva' && state.currentPlayer === state.userSlot && state.phase === 2
+                ? state.normThirdPlayers.includes(slot) : false,
+        }"
         @click="slotClick(slot)">
         <div v-if="state.currentPlayer === slot" class="backgroundJ" />
         <div class="roditel">
@@ -25,7 +25,11 @@
                 {{ getKnopkaName('sest') }}
             </div>
             <div v-else>
-                <div class="suka" @click="slotClick(slot)">
+                <div
+                    class="suka"
+                    :class="{ 'can-hide': state.hostId === state.userId || slot === state.userSlot }"
+                    :data-host="state.playerSlots[slot] === state.hostId"
+                    @click="slotClick(slot)">
                     <span class="text">
                         <span v-if="state.playerSlots[slot] !== null">
                             <span v-if="state.onlinePlayers.includes(state.playerSlots[slot]!)">
@@ -37,10 +41,12 @@
                         </span>
                     </span>
                     <div class="host-cntrols">
-                        <span v-if="state.hostId === state.userId" @click="service.removePLayer(state.playerSlots[slot])">
+                        <span v-if="state.hostId === state.userId && state.playerSlots[slot] !== null" @click="service.removePLayer(state.playerSlots[slot])">
                             <i class="material-icons host-button settings-button" title="Remove">delete_forever</i>
                         </span>
-                        <span v-if="state.hostId === state.userId && slot !== state.userSlot" @click="service.giveHost(state.playerSlots[slot]!)">
+                        <span
+                            v-if="state.hostId === state.userId && slot !== state.userSlot && state.playerSlots[slot] !== null"
+                            @click="service.giveHost(state.playerSlots[slot]!)">
                             <i class="material-icons host-button settings-button" title="Give Host">military_tech</i>
                         </span>
                         <span v-if="state.playerSlots[slot] === state.hostId">
@@ -118,7 +124,8 @@
     }
 
     .offline {
-        text-decoration-color: gray;
+        text-decoration-color: #333;
+        text-decoration-thickness: 2px;
     }
 
     .dver {
@@ -201,6 +208,7 @@
         display: inline-block;
         white-space: nowrap;
         font-family: matToni123;
+        pointer-events: none;
     }
 
     .suka .text {
@@ -223,20 +231,22 @@
         gap: 5px;
         opacity: 0;
         transition: opacity 0.3s ease;
-        /* добавляем, чтобы не обрезалось */
         z-index: 10;
         pointer-events: auto;
     }
 
-    .roditel:hover .text {
+    .suka.can-hide:hover .text {
         opacity: 0;
     }
 
-    .roditel:hover .host-cntrols {
+    .suka[data-host='true']:hover .text {
+        opacity: 0;
+    }
+
+    .suka:hover .host-cntrols {
         opacity: 1;
     }
 
-    /* Убираем стандартные эффекты фона и outline у кнопок */
     .host-cntrols span,
     .host-cntrols i {
         background: none;
@@ -257,6 +267,7 @@
         width: 90%;
         position: absolute;
         height: 90%;
+        pointer-events: none;
     }
 
     @media screen and (max-width: 1200) {

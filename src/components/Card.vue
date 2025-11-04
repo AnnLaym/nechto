@@ -7,9 +7,8 @@
             v-if="!vLoge || (vLoge && zoomed)"
             class="kartinka"
             :style="{
-        'background-image': `url(/nechto/cards/${card.type !== 'panika'
-            ? card.id !== 'zarajenie' ? card.id : `z${card.zNumber!}` : 'panika'}.png)`
-    }">
+                'background-image': `url(/nechto/cards/${card.type !== 'panika' ? (card.id !== 'zarajenie' ? card.id : `z${card.zNumber}`) : 'panika'}.png)`,
+            }">
             <div class="name">{{ getCardName(card.id).toUpperCase() }}</div>
             <div v-if="selected || zoomed" class="podkladka">
                 <div v-if="selected || zoomed" class="opisanie">

@@ -121,7 +121,7 @@ export function proccessSound(prevState: NechtoState, newStat: NechtoState) {
             playSound('glyadiPoStoronamVzuk')
         }
 
-        if (newStat.gameLog[newStat.gameLog.length - 1]['card']?.id === 'viski' && newStat.showAllHand?.length !== prevState.showAllHand?.length) {
+        if (newStat.gameLog[newStat.gameLog.length - 1]['card']?.id === 'viski' && newStat.showAllHand?.length !== prevState.showAllHand?.length && newStat.showAllHand !== null) {
             playSound('viskiVzuk')
         }
 
@@ -133,8 +133,7 @@ export function proccessSound(prevState: NechtoState, newStat: NechtoState) {
             playSound('mneIZdesNelzyaVzuk')
         }
 
-        // TODO: воспроизводит 2 раза
-        if (newStat.gameLog[newStat.gameLog.length - 1]?.card?.id === 'strah') {
+        if (newStat.gameLog[newStat.gameLog.length - 1]?.card?.id === 'strah' && newStat.action === 'strah') {
             playSound('strahVzuk')
         }
 

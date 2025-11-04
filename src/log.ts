@@ -70,9 +70,9 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
     },
     topor: {
         log: {
-            ru: 'испольует топор',
-            ua: 'використовує сокиру',
-            en: 'uses axe',
+            ru: 'испольует на',
+            ua: 'використовує на',
+            en: 'uses on',
         },
         title: {
             ru: 'Топор',
@@ -291,9 +291,9 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
     },
     karantin: {
         log: {
-            ru: 'сажает на карантин',
-            ua: 'садить на карантин',
-            en: 'puts in quarantine',
+            ru: 'заковывает',
+            ua: 'заковає',
+            en: 'shackles',
         },
         title: {
             ru: 'Карантин',
@@ -852,6 +852,13 @@ const podskazkaData: Record<string, ActionMetaData> = {
             ru: 'должен сыграть или сбросить карту',
             ua: 'повинен зіграти або скинути карту',
             en: 'must play or drop card',
+        },
+    },
+    'сбросить': {
+        log: {
+            ru: 'должен сбросить карту',
+            ua: 'повинен скинути карту',
+            en: 'must drop card',
         },
     },
     'упорство': {

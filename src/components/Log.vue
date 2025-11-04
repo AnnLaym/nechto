@@ -49,8 +49,8 @@
                     <Card :v-loge="true" :card="message.card" :zoomed="clicknutaCarta" />
                 </span>
             </span>
-            <span v-if="message.card && message.panika" class="messageCard" :style="{ color: '#C71585' }">
-                {{ getKnopkaName('panika') }}
+            <span v-if="message.card && message.panika" class="messageCard panika" :style="{ color: '#C71585' }">
+                {{ getKnopkaName('panika') }}&nbsp;
                 <Card :v-loge="true" :card="message.card" :zoomed="clicknutaCarta" />
             </span>
             <span v-if="message.smetKrinj" class="messageCard">
@@ -146,9 +146,12 @@
         flex-flow: row;
         justify-content: left;
         gap: 3px;
-        display: flex;
         flex-wrap: wrap;
         overflow-x: hidden;
+    }
+
+    .messageCard.panika {
+        flex-wrap: nowrap;
     }
 
     .actor {

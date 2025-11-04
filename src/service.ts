@@ -65,6 +65,7 @@ export interface NechtoState {
     nechto?: Slot | null
     zarajennie?: Slot[]
     survivors?: Slot[]
+    deckList?: Record<string, number>[]
     umerZarajennim?: Slot[]
     umerChelovekom?: Slot[]
     umerSlots: Slot[] | null
@@ -93,7 +94,7 @@ export function useNechtoService() {
     return nechtoService
 }
 export type UserLang = 'ua' | 'ru' | 'en'
-export const userLang: Ref<UserLang> = ref(localStorage.userLang || 'ua')
+export const userLang: Ref<UserLang> = ref(localStorage.userLang || 'ru')
 export const hyphenate = ((window as any).createHyphenator as any)((window as any).hyphenationPatternsRu as any) as (text: string) => string
 export const hyphenateEn = ((window as any).createHyphenator as any)((window as any).hyphenationPatternsEnUs as any) as (text: string) => string
 export function toggleLanguage1() {
@@ -207,12 +208,26 @@ function maintainState() {
                 }
                 if (prevState.currentPanika && !state.currentPanika) {
                     nechtoService.selectedCard.value = null
+                    nechtoService.selectedZabivchivost1.value = null
+                    nechtoService.selectedZabivchivost2.value = null
+                    nechtoService.selectedZabivchivost3.value = null
                 }
                 if (state.phase === 1) {
                     nechtoService.selectedCard.value = null
                 }
                 if (prevState.cards !== state.cards) {
                     nechtoService.selectedCard.value = null
+                }
+            } else if (
+                nechtoService.selectedZabivchivost1.value !== null ||
+                nechtoService.selectedZabivchivost2.value !== null ||
+                nechtoService.selectedZabivchivost3.value !== null
+            ) {
+                if (prevState.currentPanika && !state.currentPanika) {
+                    nechtoService.selectedCard.value = null
+                    nechtoService.selectedZabivchivost1.value = null
+                    nechtoService.selectedZabivchivost2.value = null
+                    nechtoService.selectedZabivchivost3.value = null
                 }
             }
             if (nechtoService?.selectedTarget.value !== null) {

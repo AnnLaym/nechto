@@ -12,7 +12,6 @@ function init(wsServer, path) {
         app = wsServer.app,
         registry = wsServer.users,
         EventEmitter = require('events'),
-        //utils = require('./utils.cjs'),
         channel = 'citadels',
         //testMode = process.argv[2] === "debug";
         testMode = false
@@ -67,6 +66,7 @@ function init(wsServer, path) {
                 normSosed: null,
                 normPlayer: null,
                 normThirdPlayers: null,
+                deckList: [],
                 winner: null,
             }
             if (true || testMode) {
@@ -185,6 +185,9 @@ function init(wsServer, path) {
                     state.nechto = null
                     state.zarajennie = []
                     state.survivors = room.playerSlots.map((it, index) => index).filter(inx => room.playerSlots[inx])
+                    room.deckList = Object.keys(utils.cardsDeck).map(key => ({
+                        [key]: utils.cardsDeck[key].count[state.survivors.length],
+                    }))
                     state.umerZarajennim = []
                     state.umerChelovekom = []
                     room.action = null
@@ -636,7 +639,7 @@ function init(wsServer, path) {
                             } else if (room.target === null) {
                                 const target = utils.shuffleArray(getThirdPlayers()).find(slot => !room.karantin[slot])
 
-                                if (target !== null) {
+                                if (target !== null && target !== undefined) {
                                     room.target = target
                                     smenaMest(target, room.currentPlayer)
                                 }
@@ -845,7 +848,18 @@ function init(wsServer, path) {
                     state.nechto = slot1
                 }
 
-                [room.karantin[slot1], room.karantin[slot2]] = [room.karantin[slot2], room.karantin[slot1]]
+                const karantin1 = room.karantin[slot1]
+                const karantin2 = room.karantin[slot2]
+                if (karantin2 !== undefined) {
+                    room.karantin[slot1] = karantin2
+                } else {
+                    delete room.karantin[slot1]
+                }
+                if (karantin1 !== undefined) {
+                    room.karantin[slot2] = karantin1
+                } else {
+                    delete room.karantin[slot2]
+                }
 
                 const zarajenSlot1 = state.zarajennie.includes(slot1)
                 const zarajenSlot2 = state.zarajennie.includes(slot2)
@@ -1186,7 +1200,7 @@ function init(wsServer, path) {
                             startObmen()
                         }
                     } else {
-                        const result = indexesHandWithoutZarajenie(state.playerHand[slot])
+                        const result = utils.shuffleArray(indexesHandWithoutZarajenie(state.playerHand[slot]))
                         zabivchivostPanika(slot, result[0], result[1], result[2], true)
                     }
                 }
@@ -1235,10 +1249,11 @@ function init(wsServer, path) {
                             state.discard.push(card)
                             state.playerHand[slot].splice(index, 1)
                         }
-                        const logs = () => {
+                        const logs = (target) => {
+                            target = target ?? room.target
                             room.gameLog.push({
                                 card: card,
-                                actors: [room.playerSlots[room.currentPlayer], (room.target || room.target === 0) ? room.playerSlots[room.target] : null],
+                                actors: [room.playerSlots[room.currentPlayer], (target !== undefined && target !== null) ? room.playerSlots[target] : null],
                             })
                         }
                         const nextPlayer = getNextPlayer(room.invertDirection)
@@ -1251,7 +1266,7 @@ function init(wsServer, path) {
                                     room.waitMoveSlot = target
                                     room.target = target
                                     sigrat()
-                                    logs()
+                                    logs(target)
                                     startTimer()
                                     update()
                                     updateState()
@@ -1259,7 +1274,7 @@ function init(wsServer, path) {
                                     room.action = utils.cardsDeck.soblazn.id
                                     room.target = target
                                     sigrat()
-                                    logs()
+                                    logs(target)
                                     startTimer()
                                     update()
                                     updateState()
@@ -1269,13 +1284,13 @@ function init(wsServer, path) {
                             if (card.id === utils.cardsDeck.topor.id) {
                                 if (!isDoorMissing(target)) {
                                     room.dveri.splice(room.dveri.indexOf(getNextPlayer(true, slot) === target ? target : slot), 1)
-                                    logs()
+                                    logs(target)
                                     sigrat()
                                     pushDiscardDver()
                                     startObmen()
                                 } else if (room.karantin[target]) {
                                     delete room.karantin[target]
-                                    logs()
+                                    logs(target)
                                     sigrat()
                                     pushDiscardKarantin()
                                     startObmen()
@@ -1283,7 +1298,7 @@ function init(wsServer, path) {
                             } else if (card.id === utils.cardsDeck.zakolchennayDver.id) {
                                 if (isDoorMissing(target)) {
                                     room.dveri.push(getNextPlayer(true, slot) === target ? target : slot)
-                                    logs()
+                                    logs(target)
                                     state.playerHand[slot].splice(index, 1)
                                     startObmen()
                                 }
@@ -1293,14 +1308,14 @@ function init(wsServer, path) {
                                     room.target = target
                                     room.waitMoveSlot = target
                                     sigrat()
-                                    logs()
+                                    logs(target)
                                     startTimer()
                                     update()
                                     updateState()
                                 } else if (card.id === utils.cardsDeck.analiz.id) {
                                     room.action = utils.cardsDeck.analiz.id
                                     room.target = target
-                                    logs()
+                                    logs(target)
                                     state.showCard[room.currentPlayer] = state.playerHand[room.target]
                                     sigrat()
                                     startTimer()
@@ -1310,7 +1325,7 @@ function init(wsServer, path) {
                                     room.action = utils.cardsDeck.podozrenie.id
                                     room.target = target
                                     room.waitMoveSlot = room.currentPlayer
-                                    logs()
+                                    logs(target)
                                     sigrat()
                                     const showedCard = [state.playerHand[room.target][utils.shuffleArray([0, 1, 2, 3])[0]]]
                                     state.showCard[room.currentPlayer] = showedCard
@@ -1323,7 +1338,7 @@ function init(wsServer, path) {
                                     room.target = target
                                     room.waitMoveSlot = target
                                     sigrat()
-                                    logs()
+                                    logs(target)
                                     startTimer()
                                     update()
                                     updateState()
@@ -1336,7 +1351,7 @@ function init(wsServer, path) {
                                     room.karantin[target] = 2
                                     state.playerHand[slot].splice(index, 1)
                                     flags.selfKarantin = true
-                                    logs()
+                                    logs(target)
                                     startObmen()
                                 }
                             }
@@ -1599,13 +1614,14 @@ function init(wsServer, path) {
                 'toggle-lock': (user) => {
                     if (user === room.hostId) {
                         room.teamsLocked = !room.teamsLocked
+                        update()
                     }
-                    update()
                 },
                 'players-join': (user, slot) => {
                     if (!room.teamsLocked && room.playerSlots[slot] === null) {
-                        if (~room.playerSlots.indexOf(user))
+                        if (~room.playerSlots.indexOf(user)) {
                             room.playerSlots[room.playerSlots.indexOf(user)] = null
+                        }
                         room.playerSlots[slot] = user
                         room.spectators.delete(user)
                         update()
@@ -1635,14 +1651,15 @@ function init(wsServer, path) {
                     if (room.hostId === user && playerId && user !== playerId) {
                         room.hostId = playerId
                         this.emit('host-changed', user, playerId)
+                        update()
                     }
-                    update()
                 },
                 'remove-player': (user, playerId) => {
-                    if (room.hostId === user && playerId)
+                    if (room.hostId === user && playerId !== null) {
                         removePlayer(playerId)
-                    update()
-                    updateState()
+                        update()
+                        updateState()
+                    }
                 },
                 'update-avatar': (user, id) => {
                     room.playerAvatars[user] = id
@@ -1652,9 +1669,9 @@ function init(wsServer, path) {
                     if (room.hostId === user && room.phase === 0) {
                         shufflePlayerSLots()
                         resetStol()
+                        update()
+                        updateState()
                     }
-                    update()
-                    updateState()
                 },
                 'toggle-pause': (user) => {
                     if (user === room.hostId) {
@@ -1662,15 +1679,15 @@ function init(wsServer, path) {
                         if (!room.paused) {
                             startTimer()
                         }
+                        update()
                     }
-                    update()
                 },
                 'set-timer': (user, smallTimer, bigTimer) => {
                     if (user === room.hostId) {
                         room.smallTimer = smallTimer
                         room.bigTimer = bigTimer
+                        update()
                     }
-                    update()
                 },
             }
         }

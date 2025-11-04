@@ -21,7 +21,6 @@
                 :style="{ 'background-position': `${timerWidth}px ${FRAME_WIDTH}px` }">
                 <div class="timer-wrapper">
                     <i class="material-icons">person</i>
-                    <span class="timer-value">{{ Math.floor((state.fullTimer - timePassed) / 1000) }}</span>
                 </div>
             </div>
             <div v-if="slot === state.userSlot" class="setAvatarButton" />
@@ -154,14 +153,6 @@
         position: relative;
         display: inline-block;
         z-index: 1;
-    }
-
-    .timer-value {
-        position: absolute;
-        top: 50%;
-        left: 100%;
-        transform: translateY(-50%);
-        margin-left: 4px;
     }
 
     .setAvatarButton {

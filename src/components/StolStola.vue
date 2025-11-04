@@ -2,19 +2,33 @@
     <div class="stol" :style="!state.invertDirection ? 'background-image: url(/nechto/img/stolTrue.png)' : 'background-image: url(/nechto/img/stolFalse.png)'">
         <div class="top">
             <div class="deki">
-                <div
-                    :style="{
-                        'background-image': state.isNextCardPanika ? `url(/nechto/img/panica.png)` : `url(/nechto/cards/4.png)`,
-                    }"
-                    class="deka">
-                    <div class="deka-count">{{ state.deckSize }}</div>
+                <div class="deka-wrapper" style="position: relative; display: inline-block">
+                    <div
+                        :style="{
+                            'background-image': state.isNextCardPanika ? `url(/nechto/img/panica.png)` : `url(/nechto/cards/4.png)`,
+                        }"
+                        class="deka"
+                        @click="state.phase !== 0 && (showCardList = !showCardList)">
+                        <div class="deka-count" title="Deck">{{ state.deckSize }}</div>
+                    </div>
+                    <div v-if="showCardList && state.phase !== 0" class="card-list-popup" @click="showCardList = false">
+                        <ul>
+                            <li v-for="(cardObj, index) in allCards" :key="index">
+                                <span v-for="(count, name) in cardObj" :key="name">{{ getCardName(name) }}: {{ count }}</span>
+                            </li>
+                            <hr />
+                            <li>
+                                <b>{{ allCards?.flatMap(Object.values).reduce((s, v) => s + v, 0) }}</b>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
                 <div
                     :style="{
                         'background-image': state.isPrevCardPanika ? `url(/nechto/img/panica.png)` : `url(/nechto/cards/4.png)`,
                     }"
                     class="deka">
-                    <div class="deka-count">{{ state.discardSize }}</div>
+                    <div class="deka-count" title="Discard">{{ state.discardSize }}</div>
                 </div>
             </div>
         </div>
@@ -293,12 +307,16 @@
 
 <script lang="ts" setup>
     import { computed, ref, watch } from 'vue'
-    import { getKnopkaName } from '../log'
+    import { getCardName, getKnopkaName } from '../log'
     import { useNechtoService, useNechtoState } from '../service'
     import Card from './Card.vue'
 
     const service = useNechtoService()
     const state = useNechtoState()
+
+    const showCardList = ref(false)
+
+    const allCards = computed(() => state.value.deckList)
 
     function uporstvoClick(index: number) {
         service.resolveAction(index)
@@ -334,7 +352,11 @@
     const showKnopka = ref(false)
     const shouldShowKnopka = computed(
         () =>
-            (state.value.userSlot === state.value.currentPlayer && state.value.chekCards?.length && state.value.action !== `uporstvo` && state.value.phase === 2) ||
+            (state.value.userSlot === state.value.currentPlayer &&
+                state.value.chekCards?.length &&
+                state.value.action !== null &&
+                state.value.action !== `uporstvo` &&
+                state.value.phase === 2) ||
             ((state.value.action === 'strah' || state.value.currentPanika?.id === 'tolkoMejduNami') && state.value.userSlot === state.value.target),
     )
     watch(shouldShowKnopka, (newVal) => {
@@ -346,6 +368,13 @@
             showKnopka.value = false // скрываем сразу, если условие перестало быть истинным
         }
     })
+
+    watch(
+        () => state.value.phase,
+        (newVal) => {
+            if (newVal === 0) showCardList.value = false
+        },
+    )
 </script>
 
 <style scoped>
@@ -464,6 +493,38 @@
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+
+    .card-list-popup {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.4);
+        color: white;
+        border-radius: 5px;
+        padding: 10px;
+        z-index: 330;
+        max-height: 300px;
+        overflow-y: auto;
+        min-width: 120px;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .card-list-popup::-webkit-scrollbar {
+        display: none;
+    }
+
+    .card-list-popup ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .card-list-popup li {
+        margin: 5px 0;
+        white-space: nowrap;
     }
 
     @media screen and (max-width: 1200px) {
