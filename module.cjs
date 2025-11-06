@@ -232,15 +232,17 @@ function init(wsServer, path) {
                 endGame()
             }
             const isGameEnd = (target) => {
-                if (state.zarajennie.length + (state.nechto ? 1 : 0) === Object.keys(state.playerHand).length) {
+                const hasNechto = state.nechto !== null && state.nechto !== undefined
+                if (state.zarajennie.length + (hasNechto ? 1 : 0) === Object.keys(state.playerHand).length) {
                     endGame()
                 } else if (target === state.nechto) {
                     endGame('nechtoZdohlo')
-                } else if (Object.keys(state.playerHand).length === 1 && !state.nechto) {
+                } else if (Object.keys(state.playerHand).length === 1 && !hasNechto) {
                     pizdets()
                 }
             }
             const endGame = (nechtoZdohlo) => {
+                const hasNechto = state.nechto !== null && state.nechto !== undefined
                 room.timed = false
                 room.currentPlayer = null
                 room.phase = 0
@@ -251,9 +253,9 @@ function init(wsServer, path) {
                 room.vremyaPriznaniySlot = null
                 room.isObmenReady = false
                 state.uporstvoCards = {}
-                if (state.nechto && nechtoZdohlo) {
+                if (hasNechto && nechtoZdohlo) {
                     room.winner = 'ebanati'
-                } else if (state.nechto && state.zarajennie.length + (state.nechto ? 1 : 0) === Object.keys(state.playerHand).length) {
+                } else if (state.zarajennie.length + (hasNechto ? 1 : 0) === Object.keys(state.playerHand).length) {
                     room.winner = 'nechto and team'
                 }
                 state.survivors = state.survivors.filter(slot => ![...state.zarajennie, ...state.umerZarajennim, ...state.umerChelovekom, state.nechto].includes(slot))
@@ -336,7 +338,7 @@ function init(wsServer, path) {
                 startObmen()
             }
             const becomeNechto = (slot) => {
-                if (state.nechto || state.nechto === 0) {
+                if (state.nechto !== null && state.nechto !== undefined) {
                     pizdets()
                 } else {
                     state.nechto = slot

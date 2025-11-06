@@ -152,10 +152,9 @@ const createDeck = (players, startWithNechto, testMode) => {
     if (testMode) {
         const testDeck = Array(8).fill(NaN).map(_ => ({ ...cardsDeck.zarajenie }))
         const testDeck2 = Array(8).fill(NaN).map(_ => ({ ...cardsDeck.ognemet }))
-        const testDeck3 = Array(4).fill(NaN).map(_ => ({ ...cardsDeck.ognemet }))
+        const testDeck3 = Array(8).fill(NaN).map(_ => ({ ...cardsDeck.ognemet }))
         return [
             ...shuffleArray([...testDeck, ...testDeck2, ...testDeck3]),
-            ...[cardsDeck.zabivchivost],
             ...[cardsDeck.nechto],
             ...[cardsDeck.zarajenie],
             ...[cardsDeck.zarajenie],
