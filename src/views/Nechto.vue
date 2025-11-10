@@ -10,9 +10,9 @@
         <div v-if="showTimerPopup" class="timer-popup">
             <div class="timer-inputs">
                 <i class="material-icons timer-icon">timer</i>
-                <input :value="localSmallTimer" type="number" min="5" max="99" @input="onSmallTimerChange($event.target.value)" />
+                <input :value="localSmallTimer" type="number" min="5" max="99" @input="onSmallTimerChange($event)" />
                 <i class="material-icons timer-icon">hourglass_full</i>
-                <input :value="localBigTimer" type="number" min="10" max="99" @input="onBigTimerChange($event.target.value)" />
+                <input :value="localBigTimer" type="number" min="10" max="99" @input="onBigTimerChange($event)" />
             </div>
         </div>
         <div v-if="promoMenu" class="promo-popup">
@@ -152,16 +152,20 @@
         // },
     ]
 
-    function onSmallTimerChange(val: number) {
+    function onSmallTimerChange(event: Event) {
+        const val = Number((event.target as HTMLInputElement)?.value)
+        if (!val) return
         if (state.value.userId === state.value.hostId) {
-            const small = Math.max(5, Math.min(Number(val), 69))
+            const small = Math.max(5, Math.min(val, 69))
             service.setTimer(small, state.value.bigTimer)
         }
     }
 
-    function onBigTimerChange(val: number) {
+    function onBigTimerChange(event: Event) {
+        const val = Number((event.target as HTMLInputElement)?.value)
+        if (!val) return
         if (state.value.userId === state.value.hostId) {
-            const big = Math.max(10, Math.min(Number(val), 99))
+            const big = Math.max(10, Math.min(val, 99))
             service.setTimer(state.value.smallTimer, big)
         }
     }
