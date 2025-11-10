@@ -84,7 +84,6 @@
     }
 
     .kartinka {
-        /* background-image: url(cards/karantin.png) !important; */
         background-size: cover;
         flex: 1;
         user-select: none;

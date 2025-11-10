@@ -3,13 +3,14 @@ const cardTypes = {
     card: {},
 }
 
-for (let card in cardTypes) {
-    cardTypes[card].id = card
+for (let type in cardTypes) {
+    cardTypes[type].id = type
 }
 
 const targets = {
     sosed: {},
     selfOrSosed: {},
+    overSosed: {},
     any: {},
 }
 
@@ -23,7 +24,7 @@ const cardsDeck = {
         count: { 4: 2, 5: 2, 6: 3, 7: 3, 8: 3, 9: 4, 10: 4, 11: 5, 12: 5 },
     },
     analiz: {
-        type: cardTypes.card.id, target: targets.sosed.id, allReady: true,
+        type: cardTypes.card.id, target: targets.sosed.id,
         count: { 4: 0, 5: 1, 6: 2, 7: 2, 8: 2, 9: 3, 10: 3, 11: 3, 12: 3 },
     },
     topor: {
@@ -40,7 +41,7 @@ const cardsDeck = {
     },
     uporstvo: {
         type: cardTypes.card.id,
-        count: { 4: 2, 5: 2, 6: 3, 7: 3, 8: 3, 9: 3, 10: 4, 11: 4, 12: 4 },
+        count: { 4: 2, 5: 2, 6: 3, 7: 3, 8: 3, 9: 4, 10: 5, 11: 5, 12: 5 },
     },
     glyadiPoStoronam: {
         type: cardTypes.card.id,
@@ -52,7 +53,7 @@ const cardsDeck = {
     },
     smativayUdochki: {
         type: cardTypes.card.id, target: targets.any.id, action: true,
-        count: { 4: 2, 5: 2, 6: 2, 7: 3, 8: 3, 9: 3, 10: 3, 11: 4, 12: 4 },
+        count: { 4: 2, 5: 2, 6: 2, 7: 3, 8: 3, 9: 4, 10: 4, 11: 5, 12: 5 },
     },
     soblazn: {
         type: cardTypes.card.id, endTurn: true, target: targets.any.id, action: true,
@@ -87,60 +88,72 @@ const cardsDeck = {
         count: { 4: 1, 5: 1, 6: 1, 7: 2, 8: 2, 9: 2, 10: 2, 11: 3, 12: 3 },
     },
     iViEtoNazivaeteVecherinkoy: {
-        type: cardTypes.panika, allReady: true,
+        type: cardTypes.panika.id, allReady: true,
         count: { 4: 0, 5: 1, 6: 1, 7: 1, 8: 1, 9: 2, 10: 2, 11: 2, 12: 2 },
     },
     razDva: {
-        type: cardTypes.panika,
+        type: cardTypes.panika.id,
         count: { 4: 0, 5: 1, 6: 1, 7: 1, 8: 1, 9: 2, 10: 2, 11: 2, 12: 2 },
     },
     ubiraysyaProch: {
-        type: cardTypes.panika, target: targets.any.id,
+        type: cardTypes.panika.id, target: targets.any.id,
         count: { 4: 0, 5: 1, 6: 1, 7: 1, 8: 1, 9: 1, 10: 1, 11: 1, 12: 1 },
     },
     starieVerevki: {
-        type: cardTypes.panika,
+        type: cardTypes.panika.id,
         count: { 4: 0, 5: 0, 6: 1, 7: 1, 8: 1, 9: 2, 10: 2, 11: 2, 12: 2 },
     },
     tolkoMejduNami: {
-        type: cardTypes.panika, target: targets.sosed.id,
+        type: cardTypes.panika.id, target: targets.sosed.id,
         count: { 4: 0, 5: 0, 6: 0, 7: 1, 8: 1, 9: 2, 10: 2, 11: 2, 12: 2 },
     },
     davaiDrujit: {
-        type: cardTypes.panika, target: targets.any.id,
+        type: cardTypes.panika.id, target: targets.any.id,
         count: { 4: 0, 5: 0, 6: 0, 7: 1, 8: 1, 9: 2, 10: 2, 11: 2, 12: 2 },
     },
     vremyaPriznaniy: {
-        type: cardTypes.panika,
+        type: cardTypes.panika.id,
         count: { 4: 0, 5: 0, 6: 0, 7: 0, 8: 1, 9: 1, 10: 1, 11: 1, 12: 1 },
     },
     tsepnayaReaksia: {
-        type: cardTypes.panika, endTurn: true, allReady: true,
+        type: cardTypes.panika.id, endTurn: true, allReady: true,
         count: { 4: 0, 5: 1, 6: 1, 7: 1, 8: 1, 9: 2, 10: 2, 11: 2, 12: 2 },
     },
     triChetyre: {
-        type: cardTypes.panika,
+        type: cardTypes.panika.id,
         count: { 4: 0, 5: 1, 6: 1, 7: 1, 8: 1, 9: 2, 10: 2, 11: 2, 12: 2 },
     },
     uups: {
-        type: cardTypes.panika, target: targets.sosed.id,
+        type: cardTypes.panika.id, target: targets.sosed.id,
         count: { 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 1, 12: 1 },
     },
     svidanieVSlepuyu: {
-        type: cardTypes.panika, endTurn: true,
+        type: cardTypes.panika.id, endTurn: true,
         count: { 4: 0, 5: 1, 6: 1, 7: 1, 8: 1, 9: 1, 10: 2, 11: 2, 12: 2 },
     },
     zabivchivost: {
-        type: cardTypes.panika,
+        type: cardTypes.panika.id,
         count: { 4: 0, 5: 1, 6: 1, 7: 1, 8: 1, 9: 1, 10: 1, 11: 1, 12: 1 },
     },
     zarajenie: {
         type: cardTypes.card.id,
-        count: { 4: 8, 5: 9, 6: 12, 7: 13, 8: 15, 9: 16, 10: 19, 11: 19, 12: 19 },
+        count: { 4: 8, 5: 8, 6: 9, 7: 12, 8: 13, 9: 15, 10: 17, 11: 20, 12: 20 },
     },
     nechto: {
         type: cardTypes.card.id, giveAble: false,
         count: { 4: 1, 5: 1, 6: 1, 7: 1, 8: 1, 9: 1, 10: 1, 11: 1, 12: 1 },
+    },
+    lovecraft: {
+        type: cardTypes.card.id, target: targets.any.id, promo: true,
+        count: { 4: 0, 5: 0, 6: 1, 7: 1, 8: 1, 9: 1, 10: 1, 11: 1, 12: 1 },
+    },
+    necronomicon: {
+        type: cardTypes.card.id, target: targets.any.id, promo: true,
+        count: { 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 1, 11: 1, 12: 1 },
+    },
+    dynamite: {
+        type: cardTypes.card.id, target: targets.overSosed.id, promo: true,
+        count: { 4: 0, 5: 0, 6: 0, 7: 0, 8: 1, 9: 1, 10: 1, 11: 1, 12: 1 },
     },
 }
 
@@ -148,15 +161,15 @@ for (let card in cardsDeck) {
     cardsDeck[card].id = card
 }
 
-const createDeck = (players, startWithNechto, testMode) => {
+const createDeck = (players, startWithNechto, promo, testMode) => {
     if (testMode) {
-        const testDeck = Array(8).fill(NaN).map(_ => ({ ...cardsDeck.zarajenie }))
-        const testDeck2 = Array(8).fill(NaN).map(_ => ({ ...cardsDeck.ognemet }))
-        const testDeck3 = Array(8).fill(NaN).map(_ => ({ ...cardsDeck.ognemet }))
+        const testDeck = Array(8).fill(NaN).map(_ => ({ ...cardsDeck.podozrenie }))
+        const testDeck2 = Array(8).fill(NaN).map(_ => ({ ...cardsDeck.lovecraft }))
+        const testDeck3 = Array(8).fill(NaN).map(_ => ({ ...cardsDeck.necronomicon }))
         return [
             ...shuffleArray([...testDeck, ...testDeck2, ...testDeck3]),
+            ...[cardsDeck.analiz],
             ...[cardsDeck.nechto],
-            ...[cardsDeck.zarajenie],
             ...[cardsDeck.zarajenie],
             ...[cardsDeck.zarajenie],
             ...[cardsDeck.zarajenie],
@@ -186,11 +199,12 @@ const createDeck = (players, startWithNechto, testMode) => {
             realdeck.push(cardFull)
         }
     })
-    let newDeck = realdeck.filter(card => card.id !== cardsDeck.zarajenie.id && card.type === cardTypes.card.id && card.id !== cardsDeck.nechto.id)
-    let panikDeck = realdeck.filter(card => card.type === cardTypes.panika)
-    let zarajenieDeck = realdeck.filter(card => card.id === cardsDeck.zarajenie.id)
-    let nechtoDeck = realdeck.filter(card => card.id === cardsDeck.nechto.id)
-    let shuffledDeck = shuffleArray([...newDeck])
+    const newDeck = realdeck.filter(card => card.id !== cardsDeck.zarajenie.id && card.type === cardTypes.card.id && card.id !== cardsDeck.nechto.id && card.promo !== true)
+    const panikDeck = realdeck.filter(card => card.type === cardTypes.panika.id)
+    const zarajenieDeck = realdeck.filter(card => card.id === cardsDeck.zarajenie.id)
+    const nechtoDeck = realdeck.filter(card => card.id === cardsDeck.nechto.id)
+    const promoDeck = realdeck.filter(card => card.promo && promo[card.id])
+    let shuffledDeck = shuffleArray([...newDeck, ...promoDeck])
     if (startWithNechto) {
         let shuffleArrayNechto = [...shuffledDeck].splice(0, playersCardWillbe)
         shuffleArrayNechto.push(...nechtoDeck)
@@ -222,15 +236,10 @@ function shuffleArray(array) {
     return array
 }
 
-const getUniqueDistricts = () => {
-    return Object.keys(districts).filter((district) => districts[district].type === 9)
-}
-
 module.exports = {
     cardsDeck,
     cardTypes,
     targets,
     createDeck,
-    getUniqueDistricts,
     shuffleArray,
 }

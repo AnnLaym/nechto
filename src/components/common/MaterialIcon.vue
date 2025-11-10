@@ -22,4 +22,17 @@
             color: var(--primary-color-text);
         }
     }
+
+    .button-icon {
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+        filter: invert(1);
+
+        &:hover {
+            background-color: var(--primary-color);
+            color: var(--primary-color-text);
+            filter: invert(0);
+        }
+    }
 </style>

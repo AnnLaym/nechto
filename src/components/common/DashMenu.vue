@@ -15,7 +15,12 @@
         </div>
         <div class="flex gap-2 justify-content-end">
             <div v-for="(button, index) of props.bottomButtons" :key="index" class="hidden-part flex gap-2">
-                <MaterialIcon :icon="button.icon" button @click="button.onClick" />
+                <template v-if="button.icon.endsWith('.svg')">
+                    <img :src="button.icon" class="button-icon" @click="button.onClick" />
+                </template>
+                <template v-else>
+                    <MaterialIcon :icon="button.icon" button @click="button.onClick" />
+                </template>
             </div>
             <MaterialIcon icon="settings" />
         </div>

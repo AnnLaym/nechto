@@ -12,8 +12,10 @@ export function getKnopkaName(knopkaId: keyof typeof knopki) {
 export function getCardLog(cardId: CardId) {
     return cardsData[cardId]?.log[userLang.value] ?? cardId
 }
-export function getActionLog(action: keyof typeof actionsData) {
-    return actionsData[action]?.log[userLang.value] ?? action
+export function getActionLog(action: keyof typeof actionsData, count?: number) {
+    const template = actionsData[action]?.log[userLang.value] ?? action
+    if (count === undefined || count === null) return template
+    return template.replace('{count}', count.toString())
 }
 export function getPodskazkaName(podskazka: keyof typeof podskazkaData) {
     return podskazkaData[podskazka]?.log[userLang.value] ?? podskazka
@@ -528,60 +530,111 @@ const cardsData: PartialRecord<CardId, CardMetaData> = {
         },
     },
     zarajenie: {
-        desciption: {
-            ru: 'Получив эту карту от другого игрока, вы становитесь зараженным и обязаны держать ее на руке до конца игры',
-            ua: "Отримавши цю карту від іншого гравця, ви стаєте зараженим та зобов'язані тримати її в руці до кінця гри",
-            en: 'When you receive this card from another player, you become infected and must keep it in your hand for the rest of the game',
+        log: {
+            ru: '',
+            ua: '',
+            en: '',
         },
         title: {
             ru: 'Заражение',
             ua: 'Зараження',
             en: 'Infected',
         },
+        desciption: {
+            ru: 'Получив эту карту от другого игрока, вы становитесь зараженным и обязаны держать ее на руке до конца игры',
+            ua: "Отримавши цю карту від іншого гравця, ви стаєте зараженим та зобов'язані тримати її в руці до кінця гри",
+            en: 'When you receive this card from another player, you become infected and must keep it in your hand for the rest of the game',
+        },
+    },
+    nechto: {
         log: {
             ru: '',
             ua: '',
             en: '',
-        },
-    },
-    nechto: {
-        desciption: {
-            ru: 'Теперь Вы Нечто',
-            ua: 'Тепер Ви Щось',
-            en: 'Now you are Thing',
         },
         title: {
             ru: 'Нечто',
             ua: 'Щось',
             en: 'Thing',
         },
+        desciption: {
+            ru: 'Теперь Вы Нечто',
+            ua: 'Тепер Ви Щось',
+            en: 'Now you are Thing',
+        },
+    },
+    lovecraft: {
         log: {
-            ru: '',
-            ua: '',
-            en: '',
+            ru: 'проверяет',
+            ua: 'перевіряє',
+            en: 'checks',
+        },
+        title: {
+            ru: 'Лавкрафт',
+            ua: 'Лавкрафт',
+            en: 'Lovecraft',
+        },
+        desciption: {
+            ru: 'Посмотрите карты на руке любого выбранного игрока',
+            ua: 'Подивіться карти на руці будь-якого обраного гравця',
+            en: 'The player of your choice must show you all of the cards in his hand',
+        },
+    },
+    necronomicon: {
+        log: {
+            ru: 'изгоняет',
+            ua: 'виганяючи',
+            en: 'banishes',
+        },
+        title: {
+            ru: 'Некрономикон',
+            ua: 'Некрономікон',
+            en: 'Necronomicon',
+        },
+        desciption: {
+            ru: 'Исключите игрока по вашему выбору из игры',
+            ua: 'Виключіть гравця за вашим вибором з гри',
+            en: 'Eliminate the player of your choice from the game',
+        },
+    },
+    dynamite: {
+        log: {
+            ru: 'взрывает',
+            ua: 'підривати',
+            en: 'explodes',
+        },
+        title: {
+            ru: 'Динамит',
+            ua: 'Динаміт',
+            en: 'Dynamite',
+        },
+        desciption: {
+            ru: "Выберите второго игрока слева или справа и исключите его из игры. Удалите все карты 'Заколоченная дверь' между вами",
+            ua: "Виберіть другого гравця ліворуч або праворуч і виключіть його з гри. Видаліть всі карти 'Забиті двері' між вами",
+            en: "Choose the second player to your left or your right and eliminate him from the game. Remove all the 'Barred Doors' between you",
         },
     },
 }
 const actionsData: Record<string, ActionMetaData> = {
     'bez-nechto': {
         log: {
-            ru: 'с Нечто в колоде',
-            ua: 'з Щось у колоді',
-            en: 'with Thing in deck',
+            ru: 'в колоде',
+            ua: 'у колоді',
+            en: 'in deck',
         },
     },
     's-nechto': {
         log: {
-            ru: 'с Нечто в стартовых руках',
-            ua: 'з Щось у стартових руках',
-            en: 'with Thing in starting hands',
+            ru: 'в стартовых руках',
+            ua: 'у стартових руках',
+            en: 'in starting hands',
         },
     },
     'start-game': {
         log: {
-            ru: 'Старт игры',
-            ua: 'Початок гри',
-            en: 'Game start',
+            ru: 'Старт с Нечто',
+            ua: 'Початок з Щось',
+            en: 'Game with Thing',
         },
     },
     'end-game': {
@@ -666,6 +719,13 @@ const actionsData: Record<string, ActionMetaData> = {
             ru: 'Невозможное действие',
             ua: 'Неможлива дія',
             en: 'Impossible action',
+        },
+    },
+    'players': {
+        log: {
+            ru: 'От {count} игроков',
+            ua: 'Від {count} гравців',
+            en: 'From {count} players',
         },
     },
 }
@@ -910,6 +970,13 @@ const podskazkaData: Record<string, ActionMetaData> = {
             en: 'refuses or agrees to die',
         },
     },
+    'здохнуть': {
+        log: {
+            ru: 'соглашается на смерть',
+            ua: 'погоджується на смерть',
+            en: 'agrees to die',
+        },
+    },
     'для начала': {
         log: {
             ru: 'Для начала игры необходимо минимум 4 игрока',
@@ -919,9 +986,9 @@ const podskazkaData: Record<string, ActionMetaData> = {
     },
     'хост начать': {
         log: {
-            ru: 'Хост может начать игру',
-            ua: 'Хост може почати гру',
-            en: 'Host can start the game',
+            ru: 'Хост может начать игру с Нечто',
+            ua: 'Хост може почати гру з Щось',
+            en: 'Host can start the game with Thing',
         },
     },
     'панику-цепи': {

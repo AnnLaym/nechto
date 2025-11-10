@@ -5,7 +5,7 @@
                 <div class="deka-wrapper" style="position: relative; display: inline-block">
                     <div
                         :style="{
-                            'background-image': state.isNextCardPanika ? `url(/nechto/img/panica.png)` : `url(/nechto/cards/4.png)`,
+                            'background-image': state.isNextCardPanika ? `url(/nechto/img/panika.png)` : `url(/nechto/cards/4.png)`,
                         }"
                         class="deka"
                         @click="state.phase !== 0 && (showCardList = !showCardList)">
@@ -25,7 +25,7 @@
                 </div>
                 <div
                     :style="{
-                        'background-image': state.isPrevCardPanika ? `url(/nechto/img/panica.png)` : `url(/nechto/cards/4.png)`,
+                        'background-image': state.isPrevCardPanika ? `url(/nechto/img/panika.png)` : `url(/nechto/cards/4.png)`,
                     }"
                     class="deka">
                     <div class="deka-count" title="Discard">{{ state.discardSize }}</div>
@@ -141,7 +141,11 @@
                 v-if="
                     state.phase === 2 &&
                     state.target === state.userSlot &&
-                    (state.action === 'ognemet' || state.action === 'menyaemsyaMestami' || state.action === 'smativayUdochki')
+                    (state.action === 'ognemet' ||
+                        state.action === 'necronomicon' ||
+                        state.action === 'dynamite' ||
+                        state.action === 'menyaemsyaMestami' ||
+                        state.action === 'smativayUdochki')
                 "
                 class="knopka"
                 @click="service.resolvePassActin()">
@@ -235,7 +239,7 @@
                     <span>
                         {{ getKnopkaName('карты') }}
                     </span>
-                    <span v-if="state.currentPanika?.id === 'tolkoMejduNami' || state.action === 'podozrenie'">
+                    <span v-if="state.currentPanika?.id === 'tolkoMejduNami' || state.action === 'podozrenie' || state.action === 'analiz' || state.action === 'lovecraft'">
                         {{ state.playerNames[state.playerSlots[state.target!]!] }}
                     </span>
                     <span v-else-if="state.currentPanika?.id !== 'tolkoMejduNami'">
@@ -291,7 +295,7 @@
             <div
                 v-if="
                     (state.currentPanika?.id === 'tolkoMejduNami' && state.target !== null && state.userSlot !== state.target) ||
-                    (state.action === 'analiz' && state.userSlot !== state.currentPlayer)
+                    ((state.action === 'analiz' || state.action === 'lovecraft') && state.userSlot !== state.currentPlayer)
                 "
                 class="uporstvo1">
                 <div

@@ -33,6 +33,11 @@ export interface NechtoState {
     currentPlayer: Slot | null
     invertDirection: boolean
     startWithNechto: boolean
+    promo: {
+        lovecraft: boolean
+        necronomicon: boolean
+        dynamite: boolean
+    }
     currentPanika: Card | null
     action: CardId | null | string
     karantin: Record<Slot, number>
@@ -145,6 +150,7 @@ export function createNechtoService() {
         shufflePlayers: () => socket.emit('shuffle-players'),
         pauseGame: () => socket.emit('toggle-pause'),
         setTimer: (smallTimer: number, bigTimer: number) => socket.emit('set-timer', smallTimer, bigTimer),
+        setPromo: (lovecraft: boolean, necronomicon: boolean, dynamite: boolean) => socket.emit('set-promo', lovecraft, necronomicon, dynamite),
     }
 }
 const zoomed = ref(false)
@@ -164,10 +170,12 @@ export function mouseDaun() {
 const nechtoState = ref<NechtoState>(window.gameState || ({ inited: false } as NechtoState))
 let stateMaintained = false
 let nechtoService: ReturnType<typeof createNechtoService> | undefined
-export const offZvuk = ref(false)
+const saved = localStorage.getItem('offZvuk')
+export const offZvuk = ref(saved !== null ? saved === 'true' : false)
 
 export function offnutZvuk() {
     offZvuk.value = !offZvuk.value
+    localStorage.setItem('offZvuk', offZvuk.value ? 'true' : 'false')
 }
 
 function maintainState() {

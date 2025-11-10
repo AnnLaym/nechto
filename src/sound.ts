@@ -2,17 +2,21 @@ import analizZvukFile from './components/zvuki/analiz.mp3'
 import axeZvukFile from './components/zvuki/axe.mp3'
 import clickSoundFile from './components/zvuki/click.mp3'
 import zakolotilDverZvukFile from './components/zvuki/door.mp3'
+import dynamiteZvukFile from './components/zvuki/dynamite.mp3'
 import grabCardZvukFile from './components/zvuki/grabCard.mp3'
 import pickZvukFile from './components/zvuki/heartPick.mp3'
 import karantinZvukFile from './components/zvuki/karantin.mp3'
+import lovecraftZvukFile from './components/zvuki/lovecraft.mp3'
 import mimoZvukFile from './components/zvuki/mimo.mp3'
 import nechtoZvukFile from './components/zvuki/nechto.mp3'
 import nechtoWinZvukFile from './components/zvuki/nechto_win.mp3'
+import necronomiconZvukFile from './components/zvuki/necronomicon.mp3'
 import ognemetZvukFile from './components/zvuki/ognemet.mp3'
 import nikakogoShashlikaZvukFile from './components/zvuki/ognetushitel.mp3'
-import panicaZvukFile from './components/zvuki/panica.mp3'
+import panikaZvukFile from './components/zvuki/panika.mp3'
 import podozrenieZvukFile from './components/zvuki/podozrenie.mp3'
 import soblaznZvukFile from './components/zvuki/soblazn.mp3'
+import startGameWithNechtoZvukFile from './components/zvuki/start-with-nechto.mp3'
 import startGameZvukFile from './components/zvuki/startGame.mp3'
 import startRoundZvukFile from './components/zvuki/startHoda.mp3'
 import strahZvukFile from './components/zvuki/strah.mp3'
@@ -26,35 +30,40 @@ import { NechtoState, offZvuk } from './service'
 // TODO: добавить звук конца таймера
 
 const sounds = {
-    startRoundVzuk: new Audio(startRoundZvukFile), // work
-    startGameVzuk: new Audio(startGameZvukFile), // work
-    pickVzuk: new Audio(pickZvukFile), // work
-    panicaVzuk: new Audio(panicaZvukFile), // work
-    grabCardVzuk: new Audio(grabCardZvukFile), // work
+    startRoundVzuk: new Audio(startRoundZvukFile),
+    startGameVzuk: new Audio(startGameZvukFile),
+    startGameWithNechtoVzuk: new Audio(startGameWithNechtoZvukFile),
+    pickVzuk: new Audio(pickZvukFile),
+    panikaVzuk: new Audio(panikaZvukFile),
+    grabCardVzuk: new Audio(grabCardZvukFile),
     svapMestaVzuk: new Audio(svapMestaZvukFile),
-    clickSound: new Audio(clickSoundFile), // work
-    karantinVzuk: new Audio(karantinZvukFile), // work
-    zakolotilDverVzuk: new Audio(zakolotilDverZvukFile), //work
-    zarajenieVzuk: new Audio(zarajenieZvukFile), // work
+    clickSound: new Audio(clickSoundFile),
+    karantinVzuk: new Audio(karantinZvukFile),
+    zakolotilDverVzuk: new Audio(zakolotilDverZvukFile),
+    zarajenieVzuk: new Audio(zarajenieZvukFile),
     axeVzuk: new Audio(axeZvukFile),
-    ognemetVzuk: new Audio(ognemetZvukFile), // work
-    analizVzuk: new Audio(analizZvukFile), // work
-    mimoVzuk: new Audio(mimoZvukFile),
-    nechtoWinVzuk: new Audio(nechtoWinZvukFile), //work
-    nechtoVzuk: new Audio(nechtoZvukFile), // work
-    nikakogoShashlikaVzuk: new Audio(nikakogoShashlikaZvukFile),
-    podozrenieVzuk: new Audio(podozrenieZvukFile), //work
-    soblaznVzuk: new Audio(soblaznZvukFile),
-    strahVzuk: new Audio(strahZvukFile), //work
+    ognemetVzuk: new Audio(ognemetZvukFile),
+    analizVzuk: new Audio(analizZvukFile),
+    mimoVzuk: new Audio(mimoZvukFile), // TODO
+    nechtoWinVzuk: new Audio(nechtoWinZvukFile),
+    nechtoVzuk: new Audio(nechtoZvukFile),
+    nikakogoShashlikaVzuk: new Audio(nikakogoShashlikaZvukFile), // TODO
+    podozrenieVzuk: new Audio(podozrenieZvukFile),
+    soblaznVzuk: new Audio(soblaznZvukFile), // TODO
+    strahVzuk: new Audio(strahZvukFile),
     uporstvoVzuk: new Audio(uporstvoZvukFile),
-    viskiVzuk: new Audio(viskiZvukFile), //work
-    glyadiPoStoronamVzuk: new Audio(glyadiPoStoronamZvukFile), //work
-    mneIZdesNelzyaVzuk: new Audio(mneIZdesNelzyaZvukFile), //work
+    viskiVzuk: new Audio(viskiZvukFile),
+    glyadiPoStoronamVzuk: new Audio(glyadiPoStoronamZvukFile),
+    mneIZdesNelzyaVzuk: new Audio(mneIZdesNelzyaZvukFile),
+    lovecraftVzuk: new Audio(lovecraftZvukFile),
+    necronomiconVzuk: new Audio(necronomiconZvukFile),
+    dynamiteVzuk: new Audio(dynamiteZvukFile),
 }
 
 sounds.startGameVzuk.volume = 0.3
+sounds.startGameWithNechtoVzuk.volume = 0.3
 sounds.startRoundVzuk.volume = 0.3
-sounds.panicaVzuk.volume = 0.3
+sounds.panikaVzuk.volume = 0.3
 
 const tihieZvuki: (keyof typeof sounds)[] = [
     'mneIZdesNelzyaVzuk',
@@ -68,9 +77,11 @@ const tihieZvuki: (keyof typeof sounds)[] = [
     'mimoVzuk',
     'analizVzuk',
     'axeVzuk',
+    'lovecraftVzuk',
+    'necronomiconVzuk',
+    'dynamiteVzuk',
 ]
 
-// TODO: сделать чтобы для карт в открытую игралис звуки для всех а не только для того кто играет
 const playSound = (sound: keyof typeof sounds) => {
     if (!offZvuk.value) {
         if (tihieZvuki.includes(sound)) {
@@ -82,27 +93,31 @@ const playSound = (sound: keyof typeof sounds) => {
 export function proccessSound(prevState: NechtoState, newStat: NechtoState) {
     if (!prevState.inited) return
 
-    if (prevState.currentPlayer !== prevState.userSlot && newStat.currentPlayer === newStat.userSlot && !newStat.spectators.includes(newStat.userId) && !offZvuk.value) {
+    if (prevState.currentPlayer !== prevState.userSlot && newStat.currentPlayer === newStat.userSlot && !newStat.spectators.includes(newStat.userId)) {
         playSound('startRoundVzuk')
     }
 
-    if (prevState.phase === 0 && newStat.phase === 1 && !offZvuk.value) {
-        playSound('startGameVzuk')
+    if (prevState.phase === 0 && newStat.phase === 1) {
+        if (newStat.startWithNechto) {
+            playSound('startGameWithNechtoVzuk')
+        } else {
+            playSound('startGameVzuk')
+        }
     }
 
-    if (!prevState.currentPanika && newStat.currentPanika && !offZvuk.value) {
-        playSound('panicaVzuk')
+    if (!prevState.currentPanika && newStat.currentPanika) {
+        playSound('panikaVzuk')
     }
 
-    if (prevState.phase === 1 && newStat.phase === 2 && !offZvuk.value && newStat.currentPlayer === newStat.userSlot) {
+    if (prevState.phase === 1 && newStat.phase === 2 && newStat.currentPlayer === newStat.userSlot) {
         playSound('grabCardVzuk')
     }
 
-    if (prevState.phase === 2 && prevState.playerSlots.join('') !== newStat.playerSlots.join('') && !offZvuk.value) {
+    if (prevState.phase === 2 && prevState.playerSlots.join('') !== newStat.playerSlots.join('')) {
         playSound('svapMestaVzuk')
     }
 
-    if (prevState.gameLog.length !== newStat.gameLog.length && !offZvuk.value) {
+    if (prevState.gameLog.length !== newStat.gameLog.length) {
         playSound('clickSound')
         if (newStat.gameLog[newStat.gameLog.length - 1]['card']?.id === 'topor') {
             playSound('axeVzuk')
@@ -114,7 +129,13 @@ export function proccessSound(prevState: NechtoState, newStat: NechtoState) {
             !prevState.umerSlots!.join('').includes(newStat.playerSlots.indexOf(newStat.gameLog[newStat.gameLog.length - 1]['actors']?.[1]!).toString()) &&
             prevState.umerSlots?.length !== newStat.umerSlots?.length
         ) {
-            playSound('ognemetVzuk')
+            if (newStat.action === 'ognemet') {
+                playSound('ognemetVzuk')
+            } else if (newStat.action === 'necronomicon') {
+                playSound('necronomiconVzuk')
+            } else if (newStat.action === 'dynamite') {
+                playSound('dynamiteVzuk')
+            }
         }
 
         if (newStat.gameLog[newStat.gameLog.length - 1]['card']?.id === 'glyadiPoStoronam' && prevState.invertDirection !== newStat.invertDirection) {
@@ -144,13 +165,17 @@ export function proccessSound(prevState: NechtoState, newStat: NechtoState) {
         if (newStat.gameLog[newStat.gameLog.length - 1]['card']?.id === 'analiz' && newStat.action === 'analiz') {
             playSound('analizVzuk')
         }
+
+        if (newStat.gameLog[newStat.gameLog.length - 1]['card']?.id === 'lovecraft' && newStat.action === 'lovecraft') {
+            playSound('lovecraftVzuk')
+        }
     }
 
-    if (Object.values(prevState.readyPlayers).filter((it) => it === true).length !== Object.values(newStat.readyPlayers).filter((it) => it === true).length && !offZvuk.value) {
+    if (Object.values(prevState.readyPlayers).filter((it) => it === true).length !== Object.values(newStat.readyPlayers).filter((it) => it === true).length) {
         playSound('clickSound')
     }
 
-    // TODO: сделать звук на каждое уменьшение карантина
+    // TODO: сделать звук на каждое уменьшение карантина?
     if (!offZvuk.value) {
         for (let i = 0; i <= Object.values(prevState.karantin).length; i++) {
             if (prevState.karantin[i] !== 2 && newStat.karantin[i] === 2) {

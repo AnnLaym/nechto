@@ -10,7 +10,7 @@
                     (state.phase === 2 && state.action === 'uporstvo') ||
                     (state.phase === 2 && state.currentPanika && state.currentPanika?.id !== 'davaiDrujit') ||
                     (state.phase === 2 && state.action === 'soblazn' && !state.isObmenReady) ||
-                    (state.phase === 2 && (state.action === 'analiz' || state.action === 'viski')) ||
+                    (state.phase === 2 && (state.action === 'analiz' || state.action === 'viski' || state.action === 'lovecraft')) ||
                     (state.phase === 2 && state.currentPanika?.id === 'davaiDrujit' && !state.isObmenReady)
                 "
                 :src="reactCommonRoom().getPlayerAvatarURL(state.playerSlots[state.currentPlayer!]!) || ' /nechto/cards/avatar1.png'"
@@ -22,7 +22,7 @@
                     (state.phase === 2 && state.action === 'soblazn' && state.isObmenReady) ||
                     (state.phase === 2 && state.currentPanika?.id === 'davaiDrujit' && state.isObmenReady) ||
                     state.action === 'strah' ||
-                    (state.phase === 2 && state.action === 'ognemet')
+                    (state.phase === 2 && (state.action === 'ognemet' || state.action === 'necronomicon' || state.action === 'dynamite'))
                 "
                 :src="reactCommonRoom().getPlayerAvatarURL(state.playerSlots[state.target!]!) || ' /nechto/cards/avatar1.png'"
                 class="otdelnii" />
@@ -123,12 +123,15 @@
                 &nbsp;
                 {{ getPodskazkaName('упорство') }}
             </div>
-            <div v-if="state.phase === 2 && (state.action === 'analiz' || state.action === 'podozrenie')" class="popitka">
+            <div v-if="state.phase === 2 && (state.action === 'analiz' || state.action === 'podozrenie' || state.action === 'lovecraft')" class="popitka">
                 <div class="current hueer nick">
                     {{ state.playerNames[state.playerSlots[state.currentPlayer!]!] }}
                 </div>
                 &nbsp;
                 {{ getPodskazkaName('просмотр карты') }}
+                <div class="current hueer nick">
+                    {{ state.playerNames[state.playerSlots[state.target!]!] }}
+                </div>
             </div>
             <div v-if="state.phase === 2 && state.action === 'ognemet'" class="popitka">
                 <div class="current hueer nick">
@@ -136,6 +139,13 @@
                 </div>
                 &nbsp;
                 {{ getPodskazkaName('сгореть') }}
+            </div>
+            <div v-if="state.phase === 2 && (state.action === 'necronomicon' || state.action === 'dynamite')" class="popitka">
+                <div class="current hueer nick">
+                    {{ state.playerNames[state.playerSlots[state.target!]!] }}
+                </div>
+                &nbsp;
+                {{ getPodskazkaName('здохнуть') }}
             </div>
             <div
                 v-if="
@@ -193,13 +203,15 @@
                 "
                 class="popitka">
                 {{ getPodskazkaName('хост начать') }}
+                <span v-if="state.startWithNechto">{{ getActionLog('s-nechto') }}</span>
+                <span v-else>{{ getActionLog('bez-nechto') }}</span>
             </div>
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-    import { getPodskazkaName } from '../log'
+    import { getActionLog, getPodskazkaName } from '../log'
     import { reactCommonRoom, useNechtoState } from '../service'
 
     const state = useNechtoState()
@@ -223,7 +235,7 @@
         height: 100px;
         width: 300px;
         opacity: 70%;
-        padding: 10px;
+        padding: 1px;
         margin-bottom: 50px;
         font-family: matToni1234;
         z-index: 1;
